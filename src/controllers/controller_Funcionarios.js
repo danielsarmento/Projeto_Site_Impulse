@@ -48,7 +48,7 @@ exports.create = async (req, res) => {
       },
     });
     console.log(funcionario);
-    res.json({ status: 200, message: "Funcionário cadastrado com sucesso!" });
+    res.json({ status: 200, message: "Funcionário cadastrado com sucesso!" }, funcionario);
   } catch (err) {
     console.error(err);
     res.json({
