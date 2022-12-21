@@ -23,10 +23,11 @@ exports.create = async (req, res) => {
     escolaVinculo,
     horasAlocadas,
     dataDemissao,
-    turnOver,
+    turnOver
   } = req.body;
+
   try {
-    const funcionario = await prisma.employee.create({
+    const funcionarioCadastrado = await prisma.employee.create({
       data: {
         nome,
         rg,
@@ -44,15 +45,14 @@ exports.create = async (req, res) => {
         escolaVinculo,
         horasAlocadas,
         dataDemissao,
-        turnOver,
-      },
+        turnOver
+      }
     });
-    console.log(funcionario);
-    res.json({ status: 200, message: "Funcionário cadastrado com sucesso!" }, funcionario);
+    res.json({message: "Funcionário cadastrado com sucesso!", funcionarioCadastrado});
+
   } catch (err) {
     console.error(err);
     res.json({
-      status: 400,
       error: "Dados inválidos",
       message: "Um ou mais campos estão inválidos",
     });
