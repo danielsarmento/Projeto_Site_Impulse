@@ -64,16 +64,14 @@ exports.searchAll = async (req, res) => {
 };
 
 exports.search = async (req, res) => {
-  const {nomeFuncionario} = req.params;
+  const {id} = req.params;
+  const id_ = parseInt(id);
   
   try{
     const client = await prisma.client.findMany({
       where: {
-        nome: {
-          startsWith: nomeFuncionario,
-          mode: "insensitive",
-        },
-      }
+        id: id_
+      },
     });
 
     if(client.length == 0){
