@@ -14,7 +14,7 @@ routes.get("/", controller_funcionarios.welcome);
 
 // Rotas de Funcionários
 routes.post("/funcionarios", controller_funcionarios.create);
-routes.get("/funcionarios", middleware_autenticacao, controller_funcionarios.searchAll);
+routes.get("/funcionarios", middleware_autenticacao.auth, controller_funcionarios.searchAll);
 routes.get("/funcionarios/:nomeFuncionario" ,controller_funcionarios.search);
 routes.get("/funcionarios/buscar/:id", controller_funcionarios.search_Id);
 routes.put("/funcionarios/:id", controller_funcionarios.updateOne);
