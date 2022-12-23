@@ -12,14 +12,14 @@ exports.autenticaUsuario = async (req, res) => {
     const senhaCrypto = criaHash(senha)
 
     if(!email || !senha){
-        return res.json({
+        return res.json.status(400)({
             error: "Dados inválidos",
             message: "Um ou mais campos estão inválidos"
         })
     }
     try{
 
-        const users = await prisma.user.findFirst({
+        const users = await prisma.user.findMany({
             where: {
                 email
             }
