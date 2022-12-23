@@ -13,33 +13,33 @@ const middleware_autenticacao = require('../middlewares/middleware_autenticacao'
 routes.get("/", controller_funcionarios.welcome);
 
 // Rotas de Funcionários
-routes.post("/funcionarios", middleware_autenticacao.auth ,controller_funcionarios.create);
-routes.get("/funcionarios", middleware_autenticacao.auth ,controller_funcionarios.searchAll);
-routes.get("/funcionarios/:nomeFuncionario", middleware_autenticacao.auth ,controller_funcionarios.search);
-routes.get("/funcionarios/buscar/:id", middleware_autenticacao.auth ,controller_funcionarios.search_Id);
-routes.put("/funcionarios/:id", middleware_autenticacao.auth ,controller_funcionarios.updateOne);
-routes.delete("/funcionarios/:id", middleware_autenticacao.auth ,controller_funcionarios.deleteOne);
+routes.post("/funcionarios", controller_funcionarios.create);
+routes.get("/funcionarios",controller_funcionarios.searchAll);
+routes.get("/funcionarios/:nomeFuncionario" ,controller_funcionarios.search);
+routes.get("/funcionarios/buscar/:id", controller_funcionarios.search_Id);
+routes.put("/funcionarios/:id", controller_funcionarios.updateOne);
+routes.delete("/funcionarios/:id",controller_funcionarios.deleteOne);
 
 //Rotas de Clientes
-routes.post("/clientes", middleware_autenticacao.auth ,controller_clientes.create);
-routes.get("/clientes", middleware_autenticacao.auth , controller_clientes.searchAll);
-routes.get("/clientes/:id", middleware_autenticacao.auth ,controller_clientes.search);
-routes.put("/clientes/:id", middleware_autenticacao.auth ,controller_clientes.updateOne);
-routes.delete("/clientes/:id", middleware_autenticacao.auth ,controller_clientes.deleteOne);
+routes.post("/clientes",controller_clientes.create);
+routes.get("/clientes", controller_clientes.searchAll);
+routes.get("/clientes/:id",controller_clientes.search);
+routes.put("/clientes/:id",controller_clientes.updateOne);
+routes.delete("/clientes/:id",controller_clientes.deleteOne);
 
 //Rotas de Produtos
-routes.post("/produtos", middleware_autenticacao.auth ,controller_produtos.create);
-routes.get("/produtos", middleware_autenticacao.auth ,controller_produtos.searchAll);
-routes.get("/produtos/:id", middleware_autenticacao.auth ,controller_produtos.searchId);
-routes.put("/produtos/:id", middleware_autenticacao.auth ,controller_produtos.updateOne);
-routes.delete("/produtos/:id", middleware_autenticacao.auth ,controller_produtos.deleteOne);
+routes.post("/produtos",controller_produtos.create);
+routes.get("/produtos",controller_produtos.searchAll);
+routes.get("/produtos/:id",controller_produtos.searchId);
+routes.put("/produtos/:id",controller_produtos.updateOne);
+routes.delete("/produtos/:id",controller_produtos.deleteOne);
 
 //Rotas de Aquisições
-routes.post("/aquisicoes", middleware_autenticacao.auth ,controller_aquisicoes.create);
-routes.get("/aquisicoes", middleware_autenticacao.auth ,controller_aquisicoes.searchAll);
-routes.get("/aquisicoes/:id", middleware_autenticacao.auth ,controller_aquisicoes.searchId);
-routes.put("/aquisicoes/:id", middleware_autenticacao.auth ,controller_aquisicoes.updateOne);
-routes.delete("/aquisicoes/:id", middleware_autenticacao.auth ,controller_aquisicoes.deleteOne);
+routes.post("/aquisicoes",controller_aquisicoes.create);
+routes.get("/aquisicoes",controller_aquisicoes.searchAll);
+routes.get("/aquisicoes/:id",controller_aquisicoes.searchId);
+routes.put("/aquisicoes/:id",controller_aquisicoes.updateOne);
+routes.delete("/aquisicoes/:id",controller_aquisicoes.deleteOne);
 
 // Rotas de Usuários
 routes.post("/usuario/create", controller_usuarios.createUser);
