@@ -19,13 +19,13 @@ exports.autenticaUsuario = async (req, res) => {
     }
     try{
 
-        const users = await prisma.user.findFirst({
+        const users = await prisma.user.findMany({
             where: {
                 email
             }
         })
 
-        if(email === users.email && senhaCrypto === users.senha){
+        if(email === users[0].email && senhaCrypto === users[0].senha){
             // Gerar Token
             const token = sign(
                 {
@@ -39,9 +39,9 @@ exports.autenticaUsuario = async (req, res) => {
                 }
             )
             return res.status(200).json({
-                id: users.id,
-                nome: users.nome,
-                email: users.email,
+                id: users[0].id,
+                nome: users[0].nome,
+                email: users[0].email,
                 token: token
             })
         } else {
