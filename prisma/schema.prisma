@@ -50,21 +50,30 @@ model Client {
 }
 
 model Product {
-  id                  Int     @id @default(autoincrement())
-  segmento String
+  id        Int    @id @default(autoincrement())
+  segmento  String
   descricao String
 
   @@map("produtos")
 }
 
 model Acquisition {
-  id                  Int     @id @default(autoincrement())
-  nomeCliente String
-  nomeProduto String
+  id            Int      @id @default(autoincrement())
+  nomeCliente   String
+  nomeProduto   String
   dataAdquirido DateTime
-  dataRetirada DateTime
-  situacao String
-  valorMensal String
+  dataRetirada  DateTime
+  situacao      String
+  valorMensal   String
 
   @@map("aquisicoes")
+}
+
+model User {
+  id    Int    @id @default(autoincrement())
+  nome  String
+  email String @unique
+  senha String
+
+  @@map("usuarios")
 }
