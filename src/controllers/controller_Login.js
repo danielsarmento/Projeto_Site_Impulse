@@ -19,12 +19,11 @@ exports.autenticaUsuario = async (req, res) => {
     }
     try{
 
-        const users = await prisma.user.findMany({
+        const users = await prisma.user.findFirst({
             where: {
                 email
             }
         })
-        console.log(users)
 
         if(email === users.email && senhaCrypto === users.senha){
             // Gerar Token
