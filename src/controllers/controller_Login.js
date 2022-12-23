@@ -2,6 +2,7 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const { createHash } = require('crypto');
 const { sign } = require('jsonwebtoken');
+require('dotenv').config();
 
 function criaHash(senha){
     return createHash('sha256').update(senha).digest('hex');
