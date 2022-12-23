@@ -21,7 +21,7 @@ exports.autenticaUsuario = async (req, res) => {
 
         const users = await prisma.user.findMany({
             where: {
-                email
+                email: email
             }
         })
 
@@ -29,13 +29,13 @@ exports.autenticaUsuario = async (req, res) => {
             // Gerar Token
             const token = sign(
                 {
-                    nome: users.nome,
-                    email: users.email
+                    nome: users[0].nome,
+                    email: users[0].email
                 },
                 process.env.JWT_SECRET,
                 {
-                    subject: `${users.id}`,
-                    expiresIn: '1h'
+                    subject: `${users[0].id}`,
+                    expiresIn: '10h'
                 }
             )
             return res.status(200).json({
@@ -45,7 +45,7 @@ exports.autenticaUsuario = async (req, res) => {
                 token: token
             })
         } else {
-            return res.json({
+            return res.status(401).json({
                 message: "Email ou senha estão inválidos",
               }); 
         }

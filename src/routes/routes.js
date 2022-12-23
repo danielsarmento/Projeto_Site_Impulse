@@ -6,7 +6,7 @@ const controller_clientes = require("../controllers/controller_Clientes");
 const controller_produtos = require("../controllers/controller_Produtos");
 const controller_aquisicoes = require("../controllers/controller_Aquisicoes");
 const controller_usuarios = require('../controllers/controller_Usuarios');
-const controller_autenticacao = require('../controllers/controller_Login');
+const controller_login = require('../controllers/controller_Login');
 
 const middleware_autenticacao = require('../middlewares/middleware_autenticacao');
 
@@ -14,7 +14,7 @@ routes.get("/", controller_funcionarios.welcome);
 
 // Rotas de Funcionários
 routes.post("/funcionarios", controller_funcionarios.create);
-routes.get("/funcionarios",middleware_autenticacao,controller_funcionarios.searchAll);
+routes.get("/funcionarios", middleware_autenticacao, controller_funcionarios.searchAll);
 routes.get("/funcionarios/:nomeFuncionario" ,controller_funcionarios.search);
 routes.get("/funcionarios/buscar/:id", controller_funcionarios.search_Id);
 routes.put("/funcionarios/:id", controller_funcionarios.updateOne);
@@ -45,6 +45,6 @@ routes.delete("/aquisicoes/:id",controller_aquisicoes.deleteOne);
 routes.post("/usuario/create", controller_usuarios.createUser);
 
 // Rota de Autenticação
-routes.post("/auth", controller_autenticacao.autenticaUsuario);
+routes.post("/auth", controller_login.autenticaUsuario);
 
 module.exports = routes;
