@@ -2,7 +2,6 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const { createHash } = require('crypto');
 const { sign } = require('jsonwebtoken');
-require('dotenv').config();
 
 function criaHash(senha){
     return createHash('sha256').update(senha).digest('hex');
@@ -33,7 +32,7 @@ exports.autenticaUsuario = async (req, res) => {
                     nome: users[0].nome,
                     email: users[0].email
                 },
-                "d41a88eb1803552942d81184810cf9148475079ab0e02126f0028212777fa648",
+                process.env.JWT_SECRET,
                 {
                     subject: `${users[0].id}`,
                     expiresIn: '10h'
