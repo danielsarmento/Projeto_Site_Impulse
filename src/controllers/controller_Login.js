@@ -33,7 +33,7 @@ exports.autenticaUsuario = async (req, res) => {
                     nome: users[0].nome,
                     email: users[0].email
                 },
-                process.env.JWT_SECRET,
+                "d41a88eb1803552942d81184810cf9148475079ab0e02126f0028212777fa648",
                 {
                     subject: `${users[0].id}`,
                     expiresIn: '10h'
