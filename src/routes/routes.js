@@ -9,96 +9,33 @@ const controller_usuarios = require("../controllers/controller_Usuarios");
 const controller_login = require("../controllers/controller_Login");
 const controller_form1 = require("../controllers/controller_Formulario1");
 const controller_form2 = require("../controllers/controller_Formulario2");
+const controller_acessos = require("../controllers/controller_Acessos");
 
 const middleware_autenticacao = require("../middlewares/middleware_autenticacao");
 
 routes.get("/", controller_funcionarios.welcome);
 
 // Rotas de Funcionários
-routes.post(
-  "/funcionarios",
-  middleware_autenticacao.auth,
-  controller_funcionarios.create
-);
-routes.get(
-  "/funcionarios",
-  middleware_autenticacao.auth,
-  controller_funcionarios.searchAll
-);
-routes.get(
-  "/funcionarios/:nomeFuncionario",
-  middleware_autenticacao.auth,
-  controller_funcionarios.search
-);
-routes.get(
-  "/funcionarios/buscar/:id",
-  middleware_autenticacao.auth,
-  controller_funcionarios.search_Id
-);
-routes.put(
-  "/funcionarios/:id",
-  middleware_autenticacao.auth,
-  controller_funcionarios.updateOne
-);
-routes.delete(
-  "/funcionarios/:id",
-  middleware_autenticacao.auth,
-  controller_funcionarios.deleteOne
-);
+routes.post("/funcionarios", controller_funcionarios.create);
+routes.get("/funcionarios", controller_funcionarios.searchAll);
+routes.get("/funcionarios/:nomeFuncionario", controller_funcionarios.search);
+routes.get("/funcionarios/buscar/:id", controller_funcionarios.search_Id);
+routes.put("/funcionarios/:id", controller_funcionarios.updateOne);
+routes.delete("/funcionarios/:id", controller_funcionarios.deleteOne);
 
 //Rotas de Clientes
-routes.post(
-  "/clientes",
-  middleware_autenticacao.auth,
-  controller_clientes.create
-);
-routes.get(
-  "/clientes",
-  middleware_autenticacao.auth,
-  controller_clientes.searchAll
-);
-routes.get(
-  "/clientes/:id",
-  middleware_autenticacao.auth,
-  controller_clientes.search
-);
-routes.put(
-  "/clientes/:id",
-  middleware_autenticacao.auth,
-  controller_clientes.updateOne
-);
-routes.delete(
-  "/clientes/:id",
-  middleware_autenticacao.auth,
-  controller_clientes.deleteOne
-);
+routes.post("/clientes", controller_clientes.create);
+routes.get("/clientes", controller_clientes.searchAll);
+routes.get("/clientes/:id", controller_clientes.search);
+routes.put("/clientes/:id", controller_clientes.updateOne);
+routes.delete("/clientes/:id", controller_clientes.deleteOne);
 
 //Rotas de Produtos
-routes.post(
-  "/produtos",
-  middleware_autenticacao.auth,
-  controller_produtos.create
-);
-routes.get(
-  "/produtos",
-  middleware_autenticacao.auth,
-  controller_produtos.searchAll
-);
-routes.get(
-  "/produtos/:id",
-  middleware_autenticacao.auth,
-  controller_produtos.searchId
-);
-routes.put(
-  "/produtos/:id",
-  middleware_autenticacao.auth,
-  controller_produtos.updateOne
-);
-routes.delete(
-  "/produtos/:id",
-  middleware_autenticacao.auth,
-  controller_produtos.deleteOne
-);
+routes.post("/produtos", controller_produtos.create);
+routes.get("/produtos", controller_produtos.searchAll);
+routes.get("/produtos/:id", controller_produtos.searchId);
+routes.put("/produtos/:id", controller_produtos.updateOne);
+routes.delete("/produtos/:id", controller_produtos.deleteOne);
 
 //Rotas de Aquisições
 routes.post("/aquisicoes", controller_aquisicoes.create);
@@ -114,25 +51,15 @@ routes.post("/usuario/create", controller_usuarios.createUser);
 routes.post("/auth", controller_login.autenticaUsuario);
 
 //Rotas de Formulários
-routes.post(
-  "/formularios/form1",
-  middleware_autenticacao.auth,
-  controller_form1.create
-);
-routes.post(
-  "/formularios/form1/buscar",
-  middleware_autenticacao.auth,
-  controller_form1.searchOne
-);
-routes.post(
-  "/formularios/form2",
-  middleware_autenticacao.auth,
-  controller_form2.create
-);
-routes.post(
-  "/formularios/form2/buscar",
-  middleware_autenticacao.auth,
-  controller_form2.search
-);
+routes.post("/formularios/form1", controller_form1.create);
+routes.post("/formularios/form1/buscar", controller_form1.searchOne);
+routes.post("/formularios/form2", controller_form2.create);
+routes.post("/formularios/form2/buscar", controller_form2.search);
+
+// Rotas de Acessos
+routes.post("/createAcesso", controller_acessos.create);
+routes.get("/acessos/:id", controller_acessos.searchId);
+routes.put("/acessos/:id", controller_acessos.updateOne);
+routes.delete("/acessos/:id", controller_acessos.deleteOne);
 
 module.exports = routes;

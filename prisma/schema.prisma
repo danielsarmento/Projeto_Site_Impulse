@@ -46,10 +46,9 @@ model Employee {
 }
 
 model Client {
-  id                  Int     @id @default(autoincrement())
+  id                  Int           @id @default(autoincrement())
   nome                String
-  cnpj                String  @unique
-  cnpjApto            String?
+  cnpj                String        @unique
   razaoSocial         String
   endereco            String?
   numero              String?
@@ -59,29 +58,34 @@ model Client {
   emailResponsavel    String
   nomeResponsavel     String
   telefoneResponsavel String?
-  Situacao            String
+  situacao            String
+  acquisition         Acquisition[]
 
   @@map("clientes")
 }
 
+model Acquisition {
+  id             Int      @id @default(autoincrement())
+  pastaCliente   String?
+  nomeServico    String
+  dataAdquirido  DateTime
+  dataPrevista   DateTime
+  dataFinalizada DateTime
+  situacao       String
+  valorMensal    String
+  fk_clientId    Int
+  client         Client   @relation(fields: [fk_clientId], references: [id])
+
+  @@map("aquisicoes")
+}
+
 model Product {
   id        Int    @id @default(autoincrement())
+  nome      String
   segmento  String
   descricao String
 
   @@map("produtos")
-}
-
-model Acquisition {
-  id            Int      @id @default(autoincrement())
-  nomeCliente   String
-  nomeProduto   String
-  dataAdquirido DateTime
-  dataRetirada  DateTime
-  situacao      String
-  valorMensal   String
-
-  @@map("aquisicoes")
 }
 
 model User {
@@ -96,15 +100,15 @@ model User {
 model Form1 {
   id         Int      @id @default(autoincrement())
   email      String
-  question1  String
-  question2  String
-  question3  String
-  question4  String
-  question5  String
-  question6  String
-  question7  String
-  question8  String
-  question9  String
+  question1  String?
+  question2  String?
+  question3  String?
+  question4  String?
+  question5  String?
+  question6  String?
+  question7  String?
+  question8  String?
+  question9  String?
   created_at DateTime @default(now())
 
   fk_employeeId Int
@@ -116,21 +120,30 @@ model Form1 {
 model Form2 {
   id            Int      @id @default(autoincrement())
   email         String
-  question1     String
-  question2     String
-  question3     String
-  question4     String
-  question5     String
-  question6     String
-  question7     String
-  question8     String
-  question9     String
-  question10    String
-  question11    String
+  question1     String?
+  question2     String?
+  question3     String?
+  question4     String?
+  question5     String?
+  question6     String?
+  question7     String?
+  question8     String?
+  question9     String?
+  question10    String?
+  question11    String?
   created_at    DateTime @default(now())
   fk_employeeId Int
 
   Employee Employee @relation(fields: [fk_employeeId], references: [id])
 
   @@map("formulario2")
+}
+
+model Acess {
+  id           Int    @id @default(autoincrement())
+  titulo       String
+  url          String
+  login        String
+  senha        String
+  departamento String
 }

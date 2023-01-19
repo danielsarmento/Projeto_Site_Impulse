@@ -3,72 +3,125 @@ const prisma = new PrismaClient();
 
 exports.create = async (req, res) => {
     const {
-        nomeCliente, 
-        nomeProduto, 
+        pastaCliente, 
+        nomeServico, 
         dataAdquirido, 
-        dataRetirada, 
+        dataPrevista,
+        dataFinalizada, 
         situacao,
-        valorMensal} = req.body;
+        valorMensal,
+        fk_clientId
+    } = req.body;
         
-        try{
+    if( !nomeServico ||
+        !dataAdquirido || 
+        !dataPrevista ||
+        !dataFinalizada || 
+        !situacao ||
+        !valorMensal ||
+        !fk_clientId){
+            return res.status(400).json({message: "Dados Inválidos"})
+    }
+    const id = parseInt(fk_clientId);
+    try{
+            const client = await prisma.client.findMany({
+                where: {
+                  id: id
+                },
+            });
+
+            if(client.length < 1){
+                return res.status(404).json({message: "Cliente não encontrado!"})
+            }
+
             const aquisicaoCadastrada = await prisma.acquisition.create({
                 data: {
-                    nomeCliente, 
-                    nomeProduto, 
+                    pastaCliente, 
+                    nomeServico, 
                     dataAdquirido, 
-                    dataRetirada, 
+                    dataPrevista,
+                    dataFinalizada, 
                     situacao,
-                    valorMensal
+                    valorMensal,
+                    fk_clientId
                 }
             });
             res.status(200).json({
                 aquisicaoCadastrada
             })
-        } catch(err){
+    } catch(err){
             console.log(err)
-            res.status(400).json({Message:"Recurso Não Cadastrado" })
-        }
+            res.status(500).end();
+    }
 };
 
 exports.searchId = async (req, res) => {
     const {id} = req.params;
+    if(!id){
+        return res.status(400).json({message: "Dados Inválidos"})
+    }
     const id_ = parseInt(id);
-     try{
+
+    try{
         const aquisicao = await prisma.acquisition.findMany({
             where: {
                 id: id_
             }
         })
+        if(aquisicao.length < 1){
+            return res.status(404).json({message: "Dados Não Encontrados"})
+        }
         res.status(200).json({
             aquisicao
         })
      }catch(err){
         console.log(err)
-        res.status(400).json({Message:"Recurso Não Encontrado" })
+        res.status(500).end();
     } 
 };
 
 exports.searchAll = async (req, res) => {
      try{
         const aquisicao = await prisma.acquisition.findMany();
+        if(aquisicao.length <1){
+            return res.status(404).json({message: "Dados Não Encontrados"})
+        }
         res.status(200).json({
             aquisicao
         })
      }catch(err){
         console.log(err)
-        res.status(400).json({Message:"Recurso Não Encontrado" })
+        res.status(500).end();
     } 
 };
 
 exports.updateOne = async (req, res) => {
     const {id} = req.params;
+    if(!id){
+        return res.status(400).json({message: "Dados Inválidos"})
+    }
+
     const {
-        nomeCliente, 
-        nomeProduto, 
+        pastaCliente, 
+        nomeServico, 
         dataAdquirido, 
-        dataRetirada, 
+        dataPrevista,
+        dataFinalizada, 
         situacao,
-        valorMensal} = req.body;
+        valorMensal,
+        fk_clientId
+    } = req.body;
+
+    if( !nomeServico ||
+        !dataAdquirido || 
+        !dataPrevista ||
+        !dataFinalizada || 
+        !situacao ||
+        !valorMensal ||
+        !fk_clientId){
+            return res.status(400).json({message: "Dados Inválidos"})
+    }
+
     const id_ = parseInt(id);
     try{
         const aquisicao = await prisma.acquisition.update({
@@ -76,28 +129,30 @@ exports.updateOne = async (req, res) => {
                 id:id_
             },
             data: {
-                nomeCliente, 
-                nomeProduto, 
+                pastaCliente, 
+                nomeServico, 
                 dataAdquirido, 
-                dataRetirada, 
+                dataPrevista,
+                dataFinalizada, 
                 situacao,
-                valorMensal
+                valorMensal,
+                fk_clientId
             }
         });
     res.status(200).json({aquisicao});
 
     }catch (err) {
         console.log(err)
-        res.json({
-            status: 400,
-            error: "Dados inválidos",
-            message: "Um ou mais campos estão inválidos",
-          });
+        res.status(500).end();
     }
 };
 
 exports.deleteOne = async (req, res) => {
     const {id} = req.params;
+    if(!id){
+        return res.status(400).json({message: "Dados Inválidos"})
+    }
+    
     const id_ = parseInt(id);
     try{
         const produtoDeletado = await prisma.acquisition.delete({
@@ -105,9 +160,9 @@ exports.deleteOne = async (req, res) => {
                 id: id_
             },
         })
-        res.json({status: 204, Message: "Recurso Deletado"})
+        res.status(204).json({Message: "Recurso Deletado", produtoDeletado})
     } catch (err) {
         console.log(err)
-        res.json({status: 404, error: "Recurso Não Encontrado", Message: "Recurso Não Encontrado"})
+        res.status(500).end();
     }
-}
+};

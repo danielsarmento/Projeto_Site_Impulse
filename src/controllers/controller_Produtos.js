@@ -2,44 +2,48 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 exports.create = async (req, res) => {
-    const {segmento, descricao} = req.body;
+    const {nome, segmento, descricao} = req.body;
+    if( !nome || 
+        !segmento ||
+        !descricao){
+          return res.status(400).json({message: "Dados Inválidos"})
+    }
+
     try{
         const produto = await prisma.product.create({
             data: {
-                segmento, descricao
+                nome, segmento, descricao
             }
         });
-        console.log(produto);
-    res.status(200).json({message: "Produto cadastrado com sucesso!" });
+
+        res.status(200).json({message: "Produto cadastrado com sucesso!", produto});
 
     }catch (err) {
         console.log(err)
-        res.json({
-            status: 400,
-            error: "Dados inválidos",
-            message: "Um ou mais campos estão inválidos",
-          });
+        res.status(500).end();
     }
 };
 
 exports.searchAll = async (req, res) => {
     try{
         const produtos = await prisma.product.findMany();
-        console.log(produtos);
-    res.status(200).json({message: "Produtos cadastrados", produtos });
+        if(produtos.length < 1){
+            return res.status(404).json({message: "Dados Não Encontrados"})
+        }
+        res.status(200).json({produtos});
 
     }catch (err) {
         console.log(err)
-        res.json({
-            status: 400,
-            error: "Dados inválidos",
-            message: "Um ou mais campos estão inválidos",
-          });
+        res.status(500).end();
     }
 };
 
 exports.searchId = async (req, res) => {
     const {id} = req.params;
+    if(!id){
+        return res.status(400).json({message: "Dados Inválidos"})
+    }
+
     const id_ = parseInt(id);
     try{
         const produtos = await prisma.product.findMany({
@@ -47,22 +51,27 @@ exports.searchId = async (req, res) => {
                 id:id_
             }
         });
-        console.log(produtos);
-    res.status(200).json({message: "Produto cadastrado", produtos });
+        res.status(200).json({message: "Produto cadastrado", produtos });
 
     }catch (err) {
         console.log(err)
-        res.json({
-            status: 400,
-            error: "Dados inválidos",
-            message: "Um ou mais campos estão inválidos",
-          });
+        res.status(500).end();
     }
 };
 
 exports.updateOne = async (req, res) => {
     const {id} = req.params;
-    const {segmento, descricao} = req.body;
+    if(!id){
+        return res.status(400).json({message: "Dados Inválidos"})
+    }
+
+    const {nome, segmento, descricao} = req.body;
+    if( !nome || 
+        !segmento ||
+        !descricao){
+          return res.status(400).json({message: "Dados Inválidos"})
+    }
+
     const id_ = parseInt(id);
     try{
         const produtos = await prisma.product.update({
@@ -70,36 +79,36 @@ exports.updateOne = async (req, res) => {
                 id:id_
             },
             data: {
+                nome,
                 segmento, 
                 descricao
             }
         });
-        console.log(produtos);
-    res.status(200).json({message: "Produto editado com sucesso", produtos });
+        res.status(200).json({message: "Produto editado com sucesso", produtos });
 
     }catch (err) {
         console.log(err)
-        res.json({
-            status: 400,
-            error: "Dados inválidos",
-            message: "Um ou mais campos estão inválidos",
-          });
+        res.status(500).end();
     }
 };
 
 exports.deleteOne = async (req, res) => {
     const {id} = req.params;
+    if(!id){
+        return res.status(400).json({message: "Dados Inválidos"})
+    }
+
     const id_ = parseInt(id);
-    console.log(id)
     try{
         const produtoDeletado = await prisma.product.delete({
             where: {
                 id: id_
             },
         })
-        res.json({status: 204, Message: "Recurso Deletado"})
+        res.status(200).json({Message: "Recurso Deletado", produtoDeletado})
+
     } catch (err) {
         console.log(err)
-        res.json({status: 404, error: "Recurso Não Encontrado", Message: "Recurso Não Encontrado"})
+        res.status(500).end();
     }
-}
+};

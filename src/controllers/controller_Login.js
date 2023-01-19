@@ -53,10 +53,7 @@ exports.autenticaUsuario = async (req, res) => {
 
     } catch (err) {
         console.error(err);
-        res.json({
-          error: "Dados inválidos",
-          message: "Um ou mais campos estão inválidos",
-        });
+        res.status(500).end();
     }
 
     

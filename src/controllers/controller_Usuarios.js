@@ -8,25 +8,25 @@ function criaHash(senha){
 
 exports.createUser = async (req, res) => {
     const {nome, email, senha} = req.body;
+    if( !nome || 
+        !email ||
+        !senha){
+          return res.status(400).json({message: "Dados Inválidos"})
+    }
+
     const senhaCrypto = criaHash(senha);
     
     try{
-        if(!nome || !email || !senha){
-            res.status(200).json({message: "Um ou mais campos estão inválidos!",create: false})
-        }
         const novoUsuario = await prisma.user.create({
             data: {
                 nome, email, senha: senhaCrypto
             }
         })
-        console.log(`Nome: ${nome}\n e-mail: ${email}\n senha: ${senhaCrypto}`)
-        res.status(200).json({message: "Usuário Cadastrado Com Sucesso!",create: true/*, novoUsuario*/})
+        
+        res.status(200).json({message: "Usuário Cadastrado Com Sucesso!", novoUsuario})
 
     } catch (err) {
         console.error(err);
-        res.json({
-          error: "Dados inválidos",
-          message: "Um ou mais campos estão inválidos",
-        });
+        res.status(500).end();
     }
 }

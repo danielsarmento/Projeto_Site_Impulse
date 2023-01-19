@@ -32,12 +32,32 @@ exports.create = async (req, res) => {
       status,
       rua,
       numero,
+      complemento,
       bairro,
       cidade,
       estado,
       cep
   } = req.body;
-  console.log()
+  
+  if( nome ||
+      cpf ||
+      dataNascimento ||
+      email ||
+      telefoneWapp ||
+      dataContratacao ||
+      modeloContratacao ||
+      departamento ||
+      cargo ||
+      horasAlocadas ||
+      status ||
+      rua ||
+      numero ||
+      bairro ||
+      cidade ||
+      estado ||
+      cep){
+      return res.status(400).json({message: "Dados Inválidos"})
+}
 
   try {
     const funcionarioCadastrado = await prisma.employee.create({
@@ -67,48 +87,46 @@ exports.create = async (req, res) => {
         status,
         rua,
         numero,
+        complemento,
         bairro,
         cidade,
         estado,
         cep
       }
     });
-    res.json({message: "Funcionário cadastrado com sucesso!", funcionarioCadastrado});
+    res.status(200).json({message: "Funcionário cadastrado com sucesso!", funcionarioCadastrado});
 
   } catch (err) {
     console.error(err);
-    res.json({
-      error: "Dados inválidos",
-      message: "Um ou mais campos estão inválidos",
-    });
+    res.status(500).end();
   }
 };
 
 exports.searchAll = async (req, res) => {
   try {
-
     const todos_funcionarios = await prisma.employee.findMany();
+
     if(todos_funcionarios.length > 0){
-      res.json({
+      res.status(200).json({
         message: "Funcionários cadastrados",
         todos_funcionarios,
       });
     } else {
-      res.json({
-        message: "Não há funcionários cadastrados"
-      });
+      return res.status(404).json({message: "Dados Não Encontrados"})
     }
-    
+  
   } catch (err) {
     console.error(err);
-    res.json({
-      error: "Dados não encontrados",
-    });
+    res.status(500).end();
   }
 };
 
 exports.search = async (req, res) => {
   const { nomeFuncionario } = req.params;
+
+  if(!nomeFuncionario){
+    return res.status(404).json({message: "Dados Inválidos"})
+  }
   try {
     const func = await prisma.employee.findMany({
       where: {
@@ -118,20 +136,23 @@ exports.search = async (req, res) => {
         },
       },
     });
-    res.json({ func });
+    if(func.length < 1){
+      return res.status(404).json({message: "Dados Não Encontrados"})
+    }
+    res.status(200).json({ func });
+
   } catch (err) {
     console.error(err);
-    res.json({
-      status: 400,
-      error: "Dados não encontrados",
-    });
+    res.status(500).end();
   }
 };
 
 exports.search_Id = async (req, res) => {
   const { id } = req.params;
+  if(!id){
+    return res.status(400).json({message: "Dados Inválidos"})
+  }
   const id_ = parseInt(id);
-  console.log(id)
 
   try {
     const func = await prisma.employee.findMany({
@@ -140,44 +161,81 @@ exports.search_Id = async (req, res) => {
       },
     });
 
-    res.json({ status: 200, func });
+    if(func.length < 1){
+      res.status(404).json({ message: 'Cliente não encontrado'})
+    } else {
+      res.status(200).json({func})
+    }
+    
   } catch (err) {
     console.error(err);
-    res.json({
-      status: 400,
-      error: "Dados não encontrados",
-    });
+    res.status(500).end();
   }
 };
 
 exports.updateOne = async (req, res) => {
   const { id } = req.params;
+  if(!id){
+    return res.status(400).json({message: "Dados Inválidos"})
+  }
+
   const id_ = parseInt(id);
   const {
-    nome,
-    rg,
-    cpf,
-    dataNascimento,
-    email,
-    telefoneWapp,
-    salario,
-    codBanco,
-    agenciaBanco,
-    contaBanco,
-    pixBanco,
-    centroDeCusto,
-    dataContratacao,
-    modeloContratacao,
-    departamento,
-    cargo,
-    estagio,
-    escolaVinculo,
-    horasAlocadas,
-    dataDemissao,
-    turnOver,
-    sindicato,
-    status
+      nome,
+      rg,
+      cpf,
+      dataNascimento,
+      email,
+      telefoneWapp,
+      salario,
+      codBanco,
+      agenciaBanco,
+      contaBanco,
+      pixBanco,
+      dataContratacao,
+      modeloContratacao,
+      departamento,
+      cargo,
+      estagio,
+      escolaVinculo,
+      horasAlocadas,
+      dataDemissao,
+      turnOver,
+      centroDeCusto,
+      sindicato,
+      status,
+      rua,
+      numero,
+      complemento,
+      bairro,
+      cidade,
+      estado,
+      cep
   } = req.body;
+
+  if(!id){
+    return res.status(400).json({message: "Dados Inválidos"})
+  }
+
+  if( nome ||
+      cpf ||
+      dataNascimento ||
+      email ||
+      telefoneWapp ||
+      dataContratacao ||
+      modeloContratacao ||
+      departamento ||
+      cargo ||
+      horasAlocadas ||
+      status ||
+      rua ||
+      numero ||
+      bairro ||
+      cidade ||
+      estado ||
+      cep){
+    return res.status(400).json({message: "Dados Inválidos"})
+}
 
   try {
     const func_edit = await prisma.employee.update({
@@ -196,7 +254,6 @@ exports.updateOne = async (req, res) => {
         agenciaBanco,
         contaBanco,
         pixBanco,
-        centroDeCusto,
         dataContratacao,
         modeloContratacao,
         departamento,
@@ -206,23 +263,33 @@ exports.updateOne = async (req, res) => {
         horasAlocadas,
         dataDemissao,
         turnOver,
+        centroDeCusto,
         sindicato,
-        status
+        status,
+        rua,
+        numero,
+        complemento,
+        bairro,
+        cidade,
+        estado,
+        cep
       },
     });
 
-    res.json({ status: 200, func_edit });
+    res.status(200).json({ message: 'Funcionário editado com sucesso!', func_edit });
+
   } catch (err) {
     console.error(err);
-    res.json({
-      status: 400,
-      error: "Dados não editados",
-    });
+    res.status(500).end();
   }
 };
 
 exports.deleteOne = async (req, res) => {
   const { id } = req.params;
+
+  if(!id){
+    return res.status(400).json({message: "Dados Inválidos"})
+  }
   const id_ = parseInt(id);
 
   try {
@@ -231,12 +298,11 @@ exports.deleteOne = async (req, res) => {
         id: id_
       },
     });
-    res.json({ status: 204, message: "Funcionário removido com sucesso!" });
+
+    res.status(200).json({ message: "Funcionário removido com sucesso!", func_edit });
+
   } catch (err) {
     console.error(err);
-    res.json({
-      status: 400,
-      error: "Dados não deletados",
-    });
+    res.status(500).end();
   }
 };
