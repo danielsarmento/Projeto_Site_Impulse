@@ -1,0 +1,136 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Employee {
+  id                Int       @id @default(autoincrement())
+  nome              String
+  rg                String?   @unique
+  cpf               String    @unique
+  dataNascimento    DateTime
+  email             String    @unique
+  telefoneWapp      String
+  salario           String?
+  codBanco          String?
+  agenciaBanco      String?
+  contaBanco        String?
+  pixBanco          String?
+  dataContratacao   DateTime
+  modeloContratacao String
+  departamento      String
+  cargo             String
+  estagio           String?
+  escolaVinculo     String?
+  horasAlocadas     Int
+  dataDemissao      DateTime?
+  turnOver          String?
+  centroDeCusto     String?
+  sindicato         String?
+  status            String
+  rua               String
+  numero            String
+  complemento       String?
+  bairro            String
+  cidade            String
+  estado            String
+  cep               String
+  formulario1       Form1[]
+  formulario2       Form2[]
+
+  @@map("funcionarios")
+}
+
+model Client {
+  id                  Int     @id @default(autoincrement())
+  nome                String
+  cnpj                String  @unique
+  cnpjApto            String?
+  razaoSocial         String
+  endereco            String?
+  numero              String?
+  complemento         String?
+  bairro              String?
+  cidade              String?
+  emailResponsavel    String
+  nomeResponsavel     String
+  telefoneResponsavel String?
+  Situacao            String
+
+  @@map("clientes")
+}
+
+model Product {
+  id        Int    @id @default(autoincrement())
+  segmento  String
+  descricao String
+
+  @@map("produtos")
+}
+
+model Acquisition {
+  id            Int      @id @default(autoincrement())
+  nomeCliente   String
+  nomeProduto   String
+  dataAdquirido DateTime
+  dataRetirada  DateTime
+  situacao      String
+  valorMensal   String
+
+  @@map("aquisicoes")
+}
+
+model User {
+  id    Int    @id @default(autoincrement())
+  nome  String
+  email String @unique
+  senha String
+
+  @@map("usuarios")
+}
+
+model Form1 {
+  id         Int      @id @default(autoincrement())
+  email      String
+  question1  String
+  question2  String
+  question3  String
+  question4  String
+  question5  String
+  question6  String
+  question7  String
+  question8  String
+  question9  String
+  created_at DateTime @default(now())
+
+  fk_employeeId Int
+  Employee      Employee @relation(fields: [fk_employeeId], references: [id])
+
+  @@map("formulario1")
+}
+
+model Form2 {
+  id            Int      @id @default(autoincrement())
+  email         String
+  question1     String
+  question2     String
+  question3     String
+  question4     String
+  question5     String
+  question6     String
+  question7     String
+  question8     String
+  question9     String
+  question10    String
+  question11    String
+  created_at    DateTime @default(now())
+  fk_employeeId Int
+
+  Employee Employee @relation(fields: [fk_employeeId], references: [id])
+
+  @@map("formulario2")
+}
