@@ -27,9 +27,7 @@ exports.create = async (req, res) => {
 exports.searchAll = async (req, res) => {
     try{
         const produtos = await prisma.product.findMany();
-        if(produtos.length < 1){
-            return res.status(404).json({message: "Dados Não Encontrados"})
-        }
+    
         res.status(200).json({produtos});
 
     }catch (err) {

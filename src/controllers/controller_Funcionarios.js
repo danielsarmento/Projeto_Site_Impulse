@@ -106,14 +106,9 @@ exports.searchAll = async (req, res) => {
   try {
     const todos_funcionarios = await prisma.employee.findMany();
 
-    if(todos_funcionarios.length > 0){
       res.status(200).json({
-        message: "Funcionários cadastrados",
-        todos_funcionarios,
-      });
-    } else {
-      return res.status(404).json({message: "Dados Não Encontrados"})
-    }
+        todos_funcionarios
+      })
   
   } catch (err) {
     console.error(err);
@@ -136,9 +131,7 @@ exports.search = async (req, res) => {
         },
       },
     });
-    if(func.length < 1){
-      return res.status(404).json({message: "Dados Não Encontrados"})
-    }
+    
     res.status(200).json({ func });
 
   } catch (err) {
@@ -161,11 +154,7 @@ exports.search_Id = async (req, res) => {
       },
     });
 
-    if(func.length < 1){
-      res.status(404).json({ message: 'Cliente não encontrado'})
-    } else {
-      res.status(200).json({func})
-    }
+    res.status(200).json({func})
     
   } catch (err) {
     console.error(err);

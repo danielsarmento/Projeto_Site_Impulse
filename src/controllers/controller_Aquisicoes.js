@@ -68,12 +68,11 @@ exports.searchId = async (req, res) => {
                 id: id_
             }
         })
-        if(aquisicao.length < 1){
-            return res.status(404).json({message: "Dados Não Encontrados"})
-        }
+        
         res.status(200).json({
             aquisicao
-        })
+        });
+
      }catch(err){
         console.log(err)
         res.status(500).end();
@@ -83,12 +82,11 @@ exports.searchId = async (req, res) => {
 exports.searchAll = async (req, res) => {
      try{
         const aquisicao = await prisma.acquisition.findMany();
-        if(aquisicao.length <1){
-            return res.status(404).json({message: "Dados Não Encontrados"})
-        }
+        
         res.status(200).json({
             aquisicao
-        })
+        });
+        
      }catch(err){
         console.log(err)
         res.status(500).end();

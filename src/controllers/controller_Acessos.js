@@ -44,11 +44,7 @@ exports.searchId = async (req, res) => {
       },
     });
 
-    if(acesso.length < 1){
-      res.status(404).json({ message: 'Acesso não encontrado'})
-    } else {
-      res.status(200).json({acesso})
-    }
+    res.status(200).json({acesso})
     
   } catch (err) {
     console.error(err);

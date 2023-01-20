@@ -62,13 +62,7 @@ exports.search = async (req, res) => {
             }
         });
 
-        if(form2.length < 1){
-            return res.status(404).json({message: 'Não há formulário cadastrado para este email!'})
-        } else {
-
-            return res.status(200).json({form2})
-        }
-
+        return res.status(200).json({form2})
 
     } catch (err){
         console.error(err)
