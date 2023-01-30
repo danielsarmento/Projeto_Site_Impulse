@@ -89,12 +89,64 @@ model Product {
 }
 
 model User {
-  id    Int    @id @default(autoincrement())
-  nome  String
-  email String @unique
-  senha String
+  id               Int                @id @default(autoincrement())
+  nome             String
+  email            String             @unique
+  senha            String
+  created_at       DateTime           @default(now())
+  UsersRoles       UsersRoles[]
+  UsersPermissions UsersPermissions[]
 
   @@map("usuarios")
+}
+
+model Roles {
+  id               Int                @id @default(autoincrement())
+  nome             String
+  descricao        String
+  created_at       DateTime           @default(now())
+  UsersRoles       UsersRoles[]
+  RolesPermissions RolesPermissions[]
+
+  @@map("funcoes")
+}
+
+model Permissions {
+  id               Int                @id @default(autoincrement())
+  nome             String
+  descricao        String
+  created_at       DateTime           @default(now())
+  UsersPermissions UsersPermissions[]
+  RolesPermissions RolesPermissions[]
+
+  @@map("permissoes")
+}
+
+model UsersRoles {
+  id         Int      @id @default(autoincrement())
+  user       User     @relation(fields: [fk_UserId], references: [id])
+  role       Roles    @relation(fields: [fk_RoleId], references: [id])
+  fk_UserId  Int
+  fk_RoleId  Int
+  created_at DateTime @default(now())
+}
+
+model UsersPermissions {
+  id              Int         @id @default(autoincrement())
+  user            User        @relation(fields: [fk_UserId], references: [id])
+  permission      Permissions @relation(fields: [fk_PermissionId], references: [id])
+  fk_UserId       Int
+  fk_PermissionId Int
+  created_at      DateTime    @default(now())
+}
+
+model RolesPermissions {
+  id              Int         @id @default(autoincrement())
+  role            Roles       @relation(fields: [fk_RoleId], references: [id])
+  permission      Permissions @relation(fields: [fk_PermissionId], references: [id])
+  fk_RoleId       Int
+  fk_PermissionId Int
+  created_at      DateTime    @default(now())
 }
 
 model Form1 {
@@ -146,4 +198,6 @@ model Acess {
   login        String
   senha        String
   departamento String
+
+  @@map("acessos")
 }
