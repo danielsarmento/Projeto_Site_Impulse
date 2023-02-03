@@ -4,9 +4,9 @@ Esse projeto refere-se ao sistema envolvendo o site da Impulse. Esta sendo desen
 
 ## Iniciar Projeto
 
-````npm init```
+```npm init```
 
-````npm run dev```
+```npm run dev```
 
 ## Variáveis Sensíveis
 

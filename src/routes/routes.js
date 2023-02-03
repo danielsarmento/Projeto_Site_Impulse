@@ -12,12 +12,14 @@ const controller_form2 = require("../controllers/controller_Formulario2");
 const controller_acessos = require("../controllers/controller_Acessos");
 const controller_roles = require('../controllers/controller_Roles');
 const controller_permissions = require('../controllers/controller_Permissions');
+const controller_acl = require('../controllers/controller_AccessControlList')
 
 const middleware_autenticacao = require("../middlewares/middleware_autenticacao");
 
 routes.get("/", controller_funcionarios.welcome);
 routes.post("/createRole", controller_roles.createRole);
 routes.post("/createPermission", controller_permissions.createPermission);
+routes.post("/editPermissions", controller_acl.execute);
 
 // Rotas de Funcionários
 routes.post("/funcionarios", controller_funcionarios.create);
