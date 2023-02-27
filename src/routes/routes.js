@@ -61,6 +61,7 @@ routes.post("/formularios/form1", controller_form1.create);
 routes.post("/formularios/form1/buscar", controller_form1.searchOne);
 routes.post("/formularios/form2", controller_form2.create);
 routes.post("/formularios/form2/buscar", controller_form2.search);
+routes.get("/formularios/relatorio", controller_form1.relatorio);
 
 // Rotas de Acessos
 routes.post("/createAcesso", controller_acessos.create);
