@@ -10,6 +10,7 @@ exports.create = async (req, res) => {
         dataFinalizada, 
         situacao,
         valorMensal,
+        descricao,
         fk_clientId
     } = req.body;
         
@@ -43,6 +44,7 @@ exports.create = async (req, res) => {
                     dataFinalizada, 
                     situacao,
                     valorMensal,
+                    descricao,
                     fk_clientId
                 }
             });
@@ -107,6 +109,7 @@ exports.updateOne = async (req, res) => {
         dataFinalizada, 
         situacao,
         valorMensal,
+        descricao,
         fk_clientId
     } = req.body;
 
@@ -134,6 +137,7 @@ exports.updateOne = async (req, res) => {
                 dataFinalizada, 
                 situacao,
                 valorMensal,
+                descricao,
                 fk_clientId
             }
         });

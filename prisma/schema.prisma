@@ -75,6 +75,7 @@ model Acquisition {
   dataFinalizada DateTime
   situacao       String
   valorMensal    String
+  descricao      String?
   fk_clientId    Int
   client         Client   @relation(fields: [fk_clientId], references: [id])
 
