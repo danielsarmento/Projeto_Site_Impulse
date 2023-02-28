@@ -36,19 +36,19 @@ routes.get("/clientes/:id", controller_clientes.search);
 routes.put("/clientes/:id", controller_clientes.updateOne);
 routes.delete("/clientes/:id", controller_clientes.deleteOne);
 
-//Rotas de Produtos
-routes.post("/produtos", controller_produtos.create);
-routes.get("/produtos", controller_produtos.searchAll);
-routes.get("/produtos/:id", controller_produtos.searchId);
-routes.put("/produtos/:id", controller_produtos.updateOne);
-routes.delete("/produtos/:id", controller_produtos.deleteOne);
+//Rotas de Servicos/produtos
+routes.post("/servicos", controller_produtos.create);
+routes.get("/servicos", controller_produtos.searchAll);
+routes.get("/servicos/:id", controller_produtos.searchId);
+routes.put("/servicos/:id", controller_produtos.updateOne);
+routes.delete("/servicos/:id", controller_produtos.deleteOne);
 
-//Rotas de Aquisições
-routes.post("/aquisicoes", controller_aquisicoes.create);
-routes.get("/aquisicoes", controller_aquisicoes.searchAll);
-routes.get("/aquisicoes/:id", controller_aquisicoes.searchId);
-routes.put("/aquisicoes/:id", controller_aquisicoes.updateOne);
-routes.delete("/aquisicoes/:id", controller_aquisicoes.deleteOne);
+//Rotas de Aquisições/clienteservicos
+routes.post("/clienteservicos", controller_aquisicoes.create);
+routes.get("/clienteservicos", controller_aquisicoes.searchAll);
+routes.get("/clienteservicos/:id", controller_aquisicoes.searchId);
+routes.put("/clienteservicos/:id", controller_aquisicoes.updateOne);
+routes.delete("/clienteservicos/:id", controller_aquisicoes.deleteOne);
 
 // Rotas de Usuários
 routes.post("/usuario/create", controller_usuarios.createUser);
@@ -63,10 +63,10 @@ routes.post("/formularios/form2", controller_form2.create);
 routes.post("/formularios/form2/buscar", controller_form2.search);
 routes.get("/formularios/relatorio", controller_form1.relatorio);
 
-// Rotas de Acessos
-routes.post("/createAcesso", controller_acessos.create);
-routes.get("/acessos/:id", controller_acessos.searchId);
-routes.put("/acessos/:id", controller_acessos.updateOne);
-routes.delete("/acessos/:id", controller_acessos.deleteOne);
+// Rotas de Acessos/acessossites
+routes.post("/acessossites", controller_acessos.create);
+routes.get("/acessossites/:id", controller_acessos.searchId);
+routes.put("/acessossites/:id", controller_acessos.updateOne);
+routes.delete("/acessossites/:id", controller_acessos.deleteOne);
 
 module.exports = routes;

@@ -28,9 +28,9 @@ model Employee {
   escolaVinculo     String?
   horasAlocadas     Int
   dataDemissao      DateTime?
-  turnOver          String?
-  centroDeCusto     String?
-  sindicato         String?
+  //turnOver          String?
+  //centroDeCusto     String?
+  //sindicato         String?
   status            String
   rua               String
   numero            String
@@ -55,6 +55,8 @@ model Client {
   complemento         String?
   bairro              String?
   cidade              String?
+  estado              String? //novo
+  cep                 String? //novo
   emailResponsavel    String
   nomeResponsavel     String
   telefoneResponsavel String?
