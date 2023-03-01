@@ -36,23 +36,23 @@ exports.create = async (req, res) => {
       cep
   } = req.body;
   
-  if( nome ||
-      cpf ||
-      dataNascimento ||
-      email ||
-      telefoneWapp ||
-      dataContratacao ||
-      modeloContratacao ||
-      departamento ||
-      cargo ||
-      horasAlocadas ||
-      status ||
-      rua ||
-      numero ||
-      bairro ||
-      cidade ||
-      estado ||
-      cep){
+  if( !nome ||
+      !cpf ||
+      !dataNascimento ||
+      !email ||
+      !telefoneWapp ||
+      !dataContratacao ||
+      !modeloContratacao ||
+      !departamento ||
+      !cargo ||
+      !horasAlocadas ||
+      !status ||
+      !rua ||
+      !numero ||
+      !bairro ||
+      !cidade ||
+      !estado ||
+      !cep){
       return res.status(400).json({message: "Dados Inválidos"})
 }
 
@@ -197,23 +197,23 @@ exports.updateOne = async (req, res) => {
     return res.status(400).json({message: "Dados Inválidos"})
   }
 
-  if( nome ||
-      cpf ||
-      dataNascimento ||
-      email ||
-      telefoneWapp ||
-      dataContratacao ||
-      modeloContratacao ||
-      departamento ||
-      cargo ||
-      horasAlocadas ||
-      status ||
-      rua ||
-      numero ||
-      bairro ||
-      cidade ||
-      estado ||
-      cep){
+  if( !nome ||
+      !cpf ||
+      !dataNascimento ||
+      !email ||
+      !telefoneWapp ||
+      !dataContratacao ||
+      !modeloContratacao ||
+      !departamento ||
+      !cargo ||
+      !horasAlocadas ||
+      !status ||
+      !rua ||
+      !numero ||
+      !bairro ||
+      !cidade ||
+      !estado ||
+      !cep){
     return res.status(400).json({message: "Dados Inválidos"})
 }
 
