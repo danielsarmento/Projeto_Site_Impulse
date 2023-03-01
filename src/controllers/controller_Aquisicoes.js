@@ -81,6 +81,30 @@ exports.searchId = async (req, res) => {
     } 
 };
 
+exports.searchIdFk = async (req, res) => {
+    const {id} = req.params;
+    if(!id){
+        return res.status(400).json({message: "Dados Inválidos"})
+    }
+    const id_ = parseInt(id);
+
+    try{
+        const aquisicao = await prisma.acquisition.findMany({
+            where: {
+                fk_clientId: id_
+            }
+        })
+        
+        res.status(200).json({
+            aquisicao
+        });
+
+     }catch(err){
+        console.log(err)
+        res.status(500).end();
+    } 
+};
+
 exports.searchAll = async (req, res) => {
      try{
         const aquisicao = await prisma.acquisition.findMany();

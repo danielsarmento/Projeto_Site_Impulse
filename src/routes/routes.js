@@ -46,6 +46,7 @@ routes.delete("/servicos/:id", controller_produtos.deleteOne);
 //Rotas de Aquisições/clienteservicos
 routes.post("/clienteservicos", controller_aquisicoes.create);
 routes.get("/clienteservicos", controller_aquisicoes.searchAll);
+routes.get("/clienteservicos/fk/:id", controller_aquisicoes.searchIdFk);
 routes.get("/clienteservicos/:id", controller_aquisicoes.searchId);
 routes.put("/clienteservicos/:id", controller_aquisicoes.updateOne);
 routes.delete("/clienteservicos/:id", controller_aquisicoes.deleteOne);

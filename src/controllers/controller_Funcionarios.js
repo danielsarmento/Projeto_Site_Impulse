@@ -273,7 +273,7 @@ exports.deleteOne = async (req, res) => {
     const func_edit = await prisma.employee.delete({
       where: {
         id: id_
-      },
+      }
     });
 
     res.status(200).json({ message: "Funcionário removido com sucesso!", func_edit });

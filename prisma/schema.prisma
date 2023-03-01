@@ -168,6 +168,7 @@ model Form1 {
 
   fk_employeeId Int
   Employee      Employee @relation(fields: [fk_employeeId], references: [id])
+  // onDelete: Cascade -> Deletar em cascata o DB
 
   @@map("formulario1")
 }
