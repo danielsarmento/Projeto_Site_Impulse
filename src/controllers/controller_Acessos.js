@@ -52,6 +52,18 @@ exports.searchId = async (req, res) => {
   }
 };
 
+exports.searchAll = async (req, res) => {
+  try{
+    const acesso = await prisma.acess.findMany();
+
+    res.status(200).json({acesso})
+    
+  } catch (err) {
+    console.error(err);
+    res.status(500).end();
+  }
+};
+
 exports.updateOne = async (req, res) => {
   const { id } = req.params;
   const {

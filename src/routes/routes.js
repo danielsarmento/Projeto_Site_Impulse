@@ -66,6 +66,7 @@ routes.get("/formularios/relatorio", controller_form1.relatorio);
 
 // Rotas de Acessos/acessossites
 routes.post("/acessossites", controller_acessos.create);
+routes.get("/acessossites", controller_acessos.searchAll);
 routes.get("/acessossites/:id", controller_acessos.searchId);
 routes.put("/acessossites/:id", controller_acessos.updateOne);
 routes.delete("/acessossites/:id", controller_acessos.deleteOne);
