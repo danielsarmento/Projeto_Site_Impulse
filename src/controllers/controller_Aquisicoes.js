@@ -14,12 +14,7 @@ exports.create = async (req, res) => {
         fk_clientId
     } = req.body;
         
-    if( !nomeServico ||
-        !dataAdquirido || 
-        !dataPrevista ||
-        !dataFinalizada || 
-        !situacao ||
-        !valorMensal ||
+    if( 
         !fk_clientId){
             return res.status(400).json({message: "Dados Inválidos"})
     }
@@ -136,16 +131,6 @@ exports.updateOne = async (req, res) => {
         descricao,
         fk_clientId
     } = req.body;
-
-    if( !nomeServico ||
-        !dataAdquirido || 
-        !dataPrevista ||
-        !dataFinalizada || 
-        !situacao ||
-        !valorMensal ||
-        !fk_clientId){
-            return res.status(400).json({message: "Dados Inválidos"})
-    }
 
     const id_ = parseInt(id);
     try{
