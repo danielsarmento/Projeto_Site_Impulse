@@ -89,6 +89,8 @@ exports.relatorio = async (req, res) => {
             where: whereClause
         });
 
+        console.log(respostasFormulario1)
+
         const questionNumbers = question ? [question] : [1, 2, 3, 4, 5, 6, 7, 8];
 
             const result = questionNumbers.reduce((acc, questionNumber) => {
