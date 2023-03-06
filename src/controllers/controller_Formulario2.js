@@ -17,8 +17,8 @@ exports.create = async (req, res) => {
         if(funcionario.length < 1){
             return res.status(404).json({message: 'Email não cadastrado'})
         }
-
-        let fk_employeedId = funcionario.id;
+        console.log(funcionario)
+        let fk_employeedId = funcionario[0].id;
 
         const form2 = await prisma.form2.create({
             data: {
