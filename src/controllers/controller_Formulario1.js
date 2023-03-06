@@ -84,7 +84,7 @@ exports.relatorio = async (req, res) => {
         if (funcionarioId) {
             whereClause.AND.push({ fk_employeeId: funcionarioId });
         }
-
+        console.log(whereClause)
         const respostasFormulario1 = await prisma.formulario1.findMany({
             where: whereClause
         });
