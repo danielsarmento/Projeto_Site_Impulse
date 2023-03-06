@@ -186,7 +186,6 @@ model Form2 {
   question8     String?
   question9     String?
   question10    String?
-  question11    String?
   created_at    DateTime @default(now())
   fk_employeeId Int
 

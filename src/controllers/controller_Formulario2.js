@@ -2,7 +2,7 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 exports.create = async (req, res) => {
-    const { email, question1, question2, question3, question4, question5, question6, question7, question8, question9, question10, question11} = req.body;
+    const { email, question1, question2, question3, question4, question5, question6, question7, question8, question9, question10} = req.body;
     if(!email){
         return res.status(400).json({message: "Dados Inválidos"})
     }
@@ -32,8 +32,7 @@ exports.create = async (req, res) => {
                 question7, 
                 question8, 
                 question9,
-                question10,
-                question11, 
+                question10, 
                 Employee: {
                     connect:{
                             id: fk_employeedId
