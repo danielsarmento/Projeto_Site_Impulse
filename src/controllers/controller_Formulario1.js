@@ -71,61 +71,54 @@ exports.relatorio = async (req, res) => {
     const { dataInicio, dataFim } = req.query;
     const funcionarioId = req.query.funcionarioId ? parseInt(req.query.funcionarioId) : undefined;
     const question = req.query.question ? parseInt(req.query.question) : undefined;
-
   
     try {
-        const whereClause = {
-            AND: [
-                { created_at: { gte: dataInicio } },
-                { created_at: { lt: dataFim } }
-            ]
-        };
-
-        if (funcionarioId) {
-            whereClause.AND.push({ fk_employeeId: funcionarioId });
-        }
-        console.log(whereClause)
-        
-        const respostasFormulario1 = await prisma.formulario1.findMany({
-            where: whereClause
-        });
-
-        console.log(respostasFormulario1)
-
-        const questionNumbers = question ? [question] : [1, 2, 3, 4, 5, 6, 7, 8];
-
-            const result = questionNumbers.reduce((acc, questionNumber) => {
-
-                const questionKey = `question${questionNumber}`;
-
-                const questionScores = respostasFormulario1.map(
-                    respostaFormulario => parseInt(respostaFormulario[questionKey])
-                );
-
-                const maxScore = Math.max(...questionScores);
-                const minScore = Math.min(...questionScores);
-                
-                const totalScore = questionScores.reduce((sum, score) => sum + score, 0);
-                    const averageScore = totalScore / questionScores.length;
-                    const scoreCounts = questionScores.reduce((counts, score) => {
-                        counts[score] = (counts[score] || 0) + 1;
-                    return counts;
-                    }, {}
-                );
-
-                acc[questionKey] = {
-                    maxScore,
-                    minScore,
-                    totalScore,
-                    averageScore,
-                    scoreCounts
-                };
-
-            return acc;
-            
+      const whereClause = {
+        AND: [
+          { created_at: { gte: new Date(dataInicio).toISOString() } },
+          { created_at: { lt: new Date(dataFim).toISOString() } }
+        ]
+      };
+  
+      if (funcionarioId) {
+        whereClause.AND.push({ fk_employeeId: funcionarioId });
+      }
+  
+      const respostasFormulario1 = await prisma.form1.findMany({
+        where: whereClause
+      });
+  
+      const questionNumbers = question ? [question] : [1, 2, 3, 4, 5, 6, 7, 8];
+  
+      const result = questionNumbers.reduce((acc, questionNumber) => {
+        const questionKey = `question${questionNumber}`;
+  
+        const questionScores = respostasFormulario1.map(
+          respostaFormulario => parseInt(respostaFormulario[questionKey])
+        );
+  
+        const maxScore = Math.max(...questionScores);
+        const minScore = Math.min(...questionScores);
+  
+        const totalScore = questionScores.reduce((sum, score) => sum + score, 0);
+        const averageScore = totalScore / questionScores.length;
+        const scoreCounts = questionScores.reduce((counts, score) => {
+          counts[score] = (counts[score] || 0) + 1;
+          return counts;
         }, {});
-
-        return res.json(result)
+  
+        acc[questionKey] = {
+          maxScore,
+          minScore,
+          totalScore,
+          averageScore,
+          scoreCounts
+        };
+  
+        return acc;
+      }, {});
+  
+      return res.json(result);
 
     } catch (error) {
         console.error(error);

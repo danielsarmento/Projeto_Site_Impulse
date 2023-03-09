@@ -6,6 +6,8 @@ Esse projeto refere-se ao sistema envolvendo o site da Impulse. Esta sendo desen
 
 ```npm init```
 
+```npm install```
+
 ```npm run dev```
 
 ## Variáveis Sensíveis
