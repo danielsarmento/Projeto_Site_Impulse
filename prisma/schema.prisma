@@ -67,7 +67,7 @@ model Client {
 }
 
 model Acquisition {
-  id             Int      @id @default(autoincrement())
+  id             Int       @id @default(autoincrement())
   pastaCliente   String?
   nomeServico    String?
   dataAdquirido  DateTime?
@@ -77,7 +77,7 @@ model Acquisition {
   valorMensal    String?
   descricao      String?
   fk_clientId    Int
-  client         Client   @relation(fields: [fk_clientId], references: [id])
+  client         Client    @relation(fields: [fk_clientId], references: [id])
 
   @@map("aquisicoes")
 }
@@ -203,4 +203,26 @@ model Acess {
   departamento String
 
   @@map("acessos")
+}
+
+model TrabalheConosco {
+  id              Int           @id @default(autoincrement())
+  primeiroNome    String
+  sobreNome       String
+  email           String
+  vagaEscolhida   String
+  nivelAtual      String
+  disponibilidade String
+  mensagem        String?
+  anexo           String?
+  createdAt       DateTime      @default(now())
+  updateAt        DateTime      @default(now())
+  observacoes     Observacoes[]
+}
+
+model Observacoes {
+  id                        Int             @id @default(autoincrement())
+  observacao                String?
+  id_candidato              Int
+  candidato_trabalheConosco TrabalheConosco @relation(fields: [id_candidato], references: [id])
 }

@@ -12,7 +12,8 @@ const controller_form2 = require("../controllers/controller_Formulario2");
 const controller_acessos = require("../controllers/controller_Acessos");
 const controller_roles = require('../controllers/controller_Roles');
 const controller_permissions = require('../controllers/controller_Permissions');
-const controller_acl = require('../controllers/controller_AccessControlList')
+const controller_acl = require('../controllers/controller_AccessControlList');
+const controller_trabalheConosco = require("../controllers/controller_TrabalheConosco");
 
 const middleware_autenticacao = require("../middlewares/middleware_autenticacao");
 
@@ -70,5 +71,20 @@ routes.get("/acessossites", controller_acessos.searchAll);
 routes.get("/acessossites/:id", controller_acessos.searchId);
 routes.put("/acessossites/:id", controller_acessos.updateOne);
 routes.delete("/acessossites/:id", controller_acessos.deleteOne);
+
+//Rotas de Candidatos
+routes.post("/candidatos", controller_trabalheConosco.create);
+routes.get("/candidatos", controller_trabalheConosco.searchAll);
+routes.get("/candidatos/nomeouvaga", controller_trabalheConosco.searchByNameOrJobs);
+routes.get("/candidatos/buscar/:id", controller_trabalheConosco.searchById);
+routes.put("/candidatos/:id", controller_trabalheConosco.updateOne);
+routes.delete("/candidatos/:id", controller_trabalheConosco.deleteOne);
+
+//Subrotas de observações com vinculo a candidatos.
+routes.post("/candidatos/:id/obs", controller_trabalheConosco.createObs);
+routes.get("/candidatos/:id/obs", controller_trabalheConosco.searchAllObs);
+routes.get("/candidatos/:id/obs/:idObs", controller_trabalheConosco.searchObsById);
+routes.put("/candidatos/:id/obs/:idObs", controller_trabalheConosco.updateObsOne);
+routes.delete("/candidatos/:id/obs/:idObs", controller_trabalheConosco.deleteObsOne);
 
 module.exports = routes;
