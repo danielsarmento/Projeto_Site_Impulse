@@ -75,8 +75,8 @@ exports.relatorio = async (req, res) => {
     try {
       const whereClause = {
         AND: [
-          { created_at: { gte: new Date(dataInicio).toISOString() } },
-          { created_at: { lt: new Date(dataFim).toISOString() } }
+          { created_at: { gte: dataInicio } },
+          { created_at: { lt: dataFim} }
         ]
       };
   
