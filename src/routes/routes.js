@@ -14,13 +14,25 @@ const controller_roles = require('../controllers/controller_Roles');
 const controller_permissions = require('../controllers/controller_Permissions');
 const controller_acl = require('../controllers/controller_AccessControlList');
 const controller_trabalheConosco = require("../controllers/controller_TrabalheConosco");
+const controller_recuperarSenha = require("../controllers/controller_RecuperacaoDeSenha");
+const controller_pipefy = require("../controllers/controller_Pipefy")
 
 const middleware_autenticacao = require("../middlewares/middleware_autenticacao");
+
+// Rotas de Roles e Permissions
 
 routes.get("/", controller_funcionarios.welcome);
 routes.post("/createRole", controller_roles.createRole);
 routes.post("/createPermission", controller_permissions.createPermission);
 routes.post("/editPermissions", controller_acl.execute);
+
+// Rota de Recuperação de Senhas
+routes.post("/recuperarSenha", controller_recuperarSenha.index);
+routes.post("/cadastrarNovaSenha", controller_recuperarSenha.updatePassword);
+
+// Rotas Para Dash Pipefy
+
+routes.get("/pipefy", controller_pipefy.run);
 
 // Rotas de Funcionários
 routes.post("/funcionarios", controller_funcionarios.create);

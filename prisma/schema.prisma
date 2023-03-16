@@ -28,9 +28,6 @@ model Employee {
   escolaVinculo     String?
   horasAlocadas     Int
   dataDemissao      DateTime?
-  //turnOver          String?
-  //centroDeCusto     String?
-  //sindicato         String?
   status            String
   rua               String
   numero            String
@@ -92,13 +89,15 @@ model Product {
 }
 
 model User {
-  id               Int                @id @default(autoincrement())
-  nome             String
-  email            String             @unique
-  senha            String
-  created_at       DateTime           @default(now())
-  UsersRoles       UsersRoles[]
-  UsersPermissions UsersPermissions[]
+  id                   Int                @id @default(autoincrement())
+  nome                 String
+  email                String             @unique
+  senha                String
+  passwordResetToken   String?
+  passwordResetExpires DateTime?
+  created_at           DateTime           @default(now())
+  UsersRoles           UsersRoles[]
+  UsersPermissions     UsersPermissions[]
 
   @@map("usuarios")
 }

@@ -37,6 +37,7 @@ exports.autenticaUsuario = async (req, res) => {
                     subject: `${users[0].id}`,
                     expiresIn: '10h'
                 }
+                
             )
             return res.status(200).json({
                 id: users[0].id,
