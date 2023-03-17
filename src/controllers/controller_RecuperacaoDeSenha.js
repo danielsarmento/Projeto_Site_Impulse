@@ -15,7 +15,7 @@ async function sendMail(email, token){
         secure: true,
         auth:{
             user: 'contato.impulsebusiness@gmail.com',
-            pass: process.env.PASSWORD_NODEMAILER
+            pass: 'xmloubtruuqukegv'
         }
     });
 

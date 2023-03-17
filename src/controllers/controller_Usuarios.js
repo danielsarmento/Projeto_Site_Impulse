@@ -30,15 +30,6 @@ exports.createUser = async (req, res) => {
                             }
                         }
                     }
-                },
-                UsersPermissions: {
-                    create: {
-                        permission:{
-                            connect:{
-                                id: 3
-                            }
-                        }
-                    }
                 }
             }
         })

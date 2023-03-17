@@ -97,7 +97,7 @@ model User {
   passwordResetExpires DateTime?
   created_at           DateTime           @default(now())
   UsersRoles           UsersRoles[]
-  UsersPermissions     UsersPermissions[]
+  //UsersPermissions     UsersPermissions[]
 
   @@map("usuarios")
 }
@@ -118,7 +118,7 @@ model Permissions {
   nome             String
   descricao        String
   created_at       DateTime           @default(now())
-  UsersPermissions UsersPermissions[]
+  //UsersPermissions UsersPermissions[]
   RolesPermissions RolesPermissions[]
 
   @@map("permissoes")
@@ -133,14 +133,14 @@ model UsersRoles {
   created_at DateTime @default(now())
 }
 
-model UsersPermissions {
-  id              Int         @id @default(autoincrement())
-  user            User        @relation(fields: [fk_UserId], references: [id])
-  permission      Permissions @relation(fields: [fk_PermissionId], references: [id])
-  fk_UserId       Int
-  fk_PermissionId Int
-  created_at      DateTime    @default(now())
-}
+//model UsersPermissions {
+ // id              Int         @id @default(autoincrement())
+ // user            User        @relation(fields: [fk_UserId], references: [id])
+ // permission      Permissions @relation(fields: [fk_PermissionId], references: [id])
+ // fk_UserId       Int
+ //  fk_PermissionId Int
+ // created_at      DateTime    @default(now())
+//}
 
 model RolesPermissions {
   id              Int         @id @default(autoincrement())
