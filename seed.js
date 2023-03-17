@@ -3,8 +3,60 @@ const prisma = new PrismaClient();
 const { createHash } = require('crypto');
 
 async function main() {
-    console.time('speed');
-    /*
+    const dadosAdmin = [
+        {fk_RoleId: 2, fk_PermissionId: 1},
+        {fk_RoleId: 2, fk_PermissionId: 2},
+        {fk_RoleId: 2, fk_PermissionId: 3},
+        {fk_RoleId: 2, fk_PermissionId: 4},
+        {fk_RoleId: 2, fk_PermissionId: 5},
+        {fk_RoleId: 2, fk_PermissionId: 6},
+        {fk_RoleId: 2, fk_PermissionId: 7},
+        {fk_RoleId: 2, fk_PermissionId: 8},
+        {fk_RoleId: 2, fk_PermissionId: 9},
+        {fk_RoleId: 2, fk_PermissionId: 10},
+        {fk_RoleId: 2, fk_PermissionId: 11},
+        {fk_RoleId: 2, fk_PermissionId: 12},
+        {fk_RoleId: 2, fk_PermissionId: 13},
+        {fk_RoleId: 2, fk_PermissionId: 14},
+        {fk_RoleId: 2, fk_PermissionId: 15},
+        {fk_RoleId: 2, fk_PermissionId: 16},
+        {fk_RoleId: 2, fk_PermissionId: 17},
+        {fk_RoleId: 2, fk_PermissionId: 18},
+        {fk_RoleId: 2, fk_PermissionId: 19},
+        {fk_RoleId: 2, fk_PermissionId: 20},
+        {fk_RoleId: 2, fk_PermissionId: 21},
+        {fk_RoleId: 2, fk_PermissionId: 22},
+        {fk_RoleId: 2, fk_PermissionId: 23},
+        {fk_RoleId: 2, fk_PermissionId: 24},
+        {fk_RoleId: 2, fk_PermissionId: 25},
+        {fk_RoleId: 2, fk_PermissionId: 26},
+        {fk_RoleId: 2, fk_PermissionId: 27},
+        {fk_RoleId: 2, fk_PermissionId: 28},
+        {fk_RoleId: 2, fk_PermissionId: 29},
+        {fk_RoleId: 2, fk_PermissionId: 30},
+        {fk_RoleId: 2, fk_PermissionId: 31},
+        {fk_RoleId: 2, fk_PermissionId: 32},
+        {fk_RoleId: 2, fk_PermissionId: 33},
+        {fk_RoleId: 2, fk_PermissionId: 34},
+        {fk_RoleId: 2, fk_PermissionId: 35},
+        //{fk_RoleId: 2, fk_PermissionId: 36},
+        {fk_RoleId: 2, fk_PermissionId: 37},
+        {fk_RoleId: 2, fk_PermissionId: 38},
+        {fk_RoleId: 2, fk_PermissionId: 39},
+        {fk_RoleId: 2, fk_PermissionId: 40},
+        {fk_RoleId: 2, fk_PermissionId: 41},
+        {fk_RoleId: 2, fk_PermissionId: 42},
+        {fk_RoleId: 2, fk_PermissionId: 43},
+        {fk_RoleId: 2, fk_PermissionId: 44},
+        {fk_RoleId: 2, fk_PermissionId: 45},
+        {fk_RoleId: 2, fk_PermissionId: 46}
+    ]
+    const roles = await prisma.rolesPermissions.createMany({
+        data: dadosAdmin
+    })
+    console.log("Criado")
+  /*   console.time('speed');
+
   const func = await prisma.employee.create({
     data: {
       nome: "Brenda",
@@ -37,9 +89,9 @@ async function main() {
       estado: "PB",
       cep: "58410430",
     },
-  });
+  }); */
   
-  const newClient = await prisma.client.create({
+  /* const newClient = await prisma.client.create({
       data: {
           nome: "Cliente Teste1",
           cnpj: "1000000000005",
@@ -83,7 +135,7 @@ async function main() {
             senha: senhaCrypto
         }
     })
-    */
+    
     const form1 = await prisma.form1.create({
         data: {
             email:"teste@teste.com.br", 
@@ -123,24 +175,14 @@ async function main() {
                 }
             }
         }
-    });
+    }); */
     console.timeEnd('speed')
-    
-    console.log(
-        //func,
-        //newClient,
-        //produto,
-        //aquisicaoCadastrada,
-        //novoUsuario
-        form1,
-        form2
-        );
         
     }
-    
-    async function search() {
-  const func = await prisma.employee.findMany();
-  console.log(func);
-}
+//async function search() {
+//const func = await prisma.employee.findMany();
+//console.log(func);
+//}
 
 main();
+

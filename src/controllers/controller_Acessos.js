@@ -54,7 +54,25 @@ exports.searchId = async (req, res) => {
 
 exports.searchAll = async (req, res) => {
   try{
-    const acesso = await prisma.acess.findMany();
+    const id = req.sub;
+    const id_ = Number(id)
+
+    const users = await prisma.user.findFirst({
+      where: {
+        id: id_
+      }
+    })
+    const funcionario = await prisma.employee.findFirst({
+      where: {
+        email: users.email
+      }
+    })
+    
+    const acesso = await prisma.acess.findMany({
+      where: {
+        departamento: funcionario.departamento
+      }
+    });
 
     res.status(200).json({acesso})
     

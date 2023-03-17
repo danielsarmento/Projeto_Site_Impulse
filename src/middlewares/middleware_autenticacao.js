@@ -13,7 +13,8 @@ exports.auth = async (req, res, next) => {
 
     try {
         const {sub} = verify(token, process.env.JWT_SECRET);
-        return next();
+        req.sub = sub;
+        return next()
 
     } catch (err){
         return res.status(401).json({message: "Token invalid"})

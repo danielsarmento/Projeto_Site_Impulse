@@ -1,6 +1,7 @@
 const { PrismaClient } = require("@prisma/client");
 const {randomBytes, createHash} = require("crypto");
-const nodemailer = require('nodemailer');
+const axios = require('axios');
+//const nodemailer = require('nodemailer');
 
 const prisma = new PrismaClient();
 
@@ -8,7 +9,7 @@ function criaHash(senha){
     return createHash('sha256').update(senha).digest('hex');
 }
 
-async function sendMail(email, token){
+/* async function sendMail(email, token){
     const transport = nodemailer.createTransport({
         host: 'smtp.gmail.com',
         port: 465,
@@ -48,37 +49,60 @@ async function sendMail(email, token){
         text: `Sugestão do cliente: ${email}`
         
     })
-}
+} */
 
 exports.index = async (req, res) => {
     const {email} = req.body
     try{
-        const user = await prisma.user.findUnique({
+        const funcionario = await prisma.employee.findUnique({
+            where:{
+                email
+            }
+        })
+        const users = await prisma.user.findUnique({
             where:{
                 email
             }
         })
 
-        if(!user){
+        if(!users){
             res.status(400).json({error: "Usuário não existe"})
         }
         const tokenDeRecuperacao = randomBytes(15).toString("hex")
         const dateNow = new Date()
         dateNow.setHours(dateNow.getHours() + 1)
 
-        
         await prisma.user.update({
             where:{
-                id: user.id
+                id: users.id
             },
             data: {
                 passwordResetToken: tokenDeRecuperacao,
                 passwordResetExpires: dateNow
             }
         })
-        sendMail(user.email, tokenDeRecuperacao)
+        //sendMail(user.email, tokenDeRecuperacao)
+        const disparoWhats = await axios.post('https://api.zenvia.com/v2/channels/whatsapp/messages', {
+            from: '558399088426',
+            to: `${funcionario.telefoneWapp}`,
+            contents: [
+                {
+                    type: 'template',
+                    templateId: 'c6440332-0d0c-4757-82b6-4eb505044e5d',
+                    fields: {
+                        nome: `${funcionario.nome}`,
+                        token: `${tokenDeRecuperacao}`
+                    }
+                }
+            ]
+        }, {
+            headers: {
+                'X-API-TOKEN': "vPfmlPQdR4qympVsDJQIoW7zT-tzZU7Pwuq4",
+                'Content-Type': 'application/json',
+            },
+        });
 
-        res.json({message: "Token de verificação enviado para email cadastrado!"})
+        res.json({message: "Token de verificação enviado para o celular cadastrado!"})
 
     }catch (err){
         console.log(err)

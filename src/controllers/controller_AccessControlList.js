@@ -3,7 +3,6 @@ const prisma = new PrismaClient();
 
 exports.execute = async (req, res) => {
     const {userId, idPermissions} = req.body;
-    console.log(idPermissions)
     
     try {
         // Busca as permissoes atreladas a este usuário
