@@ -89,13 +89,13 @@ model Product {
 }
 
 model User {
-  id                   Int                @id @default(autoincrement())
+  id                   Int          @id @default(autoincrement())
   nome                 String
-  email                String             @unique
+  email                String       @unique
   senha                String
   passwordResetToken   String?
   passwordResetExpires DateTime?
-  created_at           DateTime           @default(now())
+  created_at           DateTime     @default(now())
   UsersRoles           UsersRoles[]
   //UsersPermissions     UsersPermissions[]
 
@@ -128,18 +128,18 @@ model UsersRoles {
   id         Int      @id @default(autoincrement())
   user       User     @relation(fields: [fk_UserId], references: [id])
   role       Roles    @relation(fields: [fk_RoleId], references: [id])
-  fk_UserId  Int
+  fk_UserId  Int      @unique
   fk_RoleId  Int
   created_at DateTime @default(now())
 }
 
 //model UsersPermissions {
- // id              Int         @id @default(autoincrement())
- // user            User        @relation(fields: [fk_UserId], references: [id])
- // permission      Permissions @relation(fields: [fk_PermissionId], references: [id])
- // fk_UserId       Int
- //  fk_PermissionId Int
- // created_at      DateTime    @default(now())
+// id              Int         @id @default(autoincrement())
+// user            User        @relation(fields: [fk_UserId], references: [id])
+// permission      Permissions @relation(fields: [fk_PermissionId], references: [id])
+// fk_UserId       Int
+//  fk_PermissionId Int
+// created_at      DateTime    @default(now())
 //}
 
 model RolesPermissions {

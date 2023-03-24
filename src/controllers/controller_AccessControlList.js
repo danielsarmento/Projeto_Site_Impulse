@@ -2,41 +2,22 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 exports.editRoles = async (req, res) => {
-    const usuariosTratados = []
-    let funcao;
+    const { role, id } = req.body
     try{
-        const usuarios = await prisma.user.findMany({
-            include: {
-                UsersRoles:true
+        const usuarioEdit = await prisma.UsersRoles.update({
+            where:{
+                fk_UserId: Number(id)
+            },
+            data: {
+                fk_RoleId: Number(role)
             }
         })
-        usuarios.map((obj) => {
-            if(obj.UsersRoles[0].fk_RoleId == 1){
-                funcao = "Admin"
-            } if(obj.UsersRoles[0].fk_RoleId == 2){
-                funcao = "FuncInicial"
-            } if(obj.UsersRoles[0].fk_RoleId == 3){
-                funcao = "Gerente"
-            } if(obj.UsersRoles[0].fk_RoleId == 4){
-                funcao = "FuncDev"
-            } if(obj.UsersRoles[0].fk_RoleId == 5){
-                funcao = "FuncRH"
-            } if(obj.UsersRoles[0].fk_RoleId == 6){
-                funcao = "FuncComercial"
-            } if(obj.UsersRoles[0].fk_RoleId == 7){
-                funcao = "FuncFinanceiro"
-            }
-            return usuariosTratados.push({
-                id: obj.id,
-                nome: obj.nome,
-                email: obj.email,
-                funcao: funcao
-            })
-        })
-        res.status(200).json(usuariosTratados)
+        
+        res.status(200).json(usuarioEdit)
+        
     } catch (err){
         console.error(err);
-        res.status(500).end();
+        res.status(500).end()
     }
 }
 
