@@ -23,13 +23,16 @@ const midlleware_RolePermission = require("../middlewares/middleware_roles")
 // Rotas de Roles e Permissions
 
 routes.get("/",middleware_autenticacao.auth, controller_funcionarios.welcome);
+routes.get("/search/users",middleware_autenticacao.auth,(req, res, next)=>{
+    req.permission = "BuscarUsuario"
+    next()},midlleware_RolePermission.verificaRole, controller_usuarios.searchUsers)
 //routes.post("/createRole",middleware_autenticacao, controller_roles.createRole);
 //routes.post("/createPermission",middleware_autenticacao, controller_permissions.createPermission);
-routes.post("/editPermissions",middleware_autenticacao.auth,(req, res, next)=>{
-    req.permission = "EditarPermissao"
-    next()},midlleware_RolePermission.verificaRole, controller_acl.execute);
+//routes.post("/editPermissions",middleware_autenticacao.auth,(req, res, next)=>{
+//    req.permission = "EditarPermissao"
+//    next()},midlleware_RolePermission.verificaRole, controller_acl.execute);
 
-// Rota de Recuperação de Senhas
+// Rota de Recuperação de Senhas 
 routes.post("/recuperarSenha", controller_recuperarSenha.index);
 routes.post("/cadastrarNovaSenha", controller_recuperarSenha.updatePassword);
 
