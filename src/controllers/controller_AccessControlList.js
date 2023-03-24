@@ -3,6 +3,9 @@ const prisma = new PrismaClient();
 
 exports.editRoles = async (req, res) => {
     const { role, id } = req.body
+        if(!role || !id){
+            res.status(400).json({message: "Dados Inválidos"})
+        }
     try{
         const usuarioEdit = await prisma.UsersRoles.update({
             where:{
@@ -14,7 +17,7 @@ exports.editRoles = async (req, res) => {
         })
         
         res.status(200).json(usuarioEdit)
-        
+
     } catch (err){
         console.error(err);
         res.status(500).end()
@@ -34,7 +37,7 @@ exports.execute = async (req, res) => {
         })
 
         if(!usuario){
-            return res.status(400).json({message: "User does not exist!"})
+            return res.status(400).json({message: "Usuário não existe"})
         }
         
         // Excluir os registros viculados ao usuário
