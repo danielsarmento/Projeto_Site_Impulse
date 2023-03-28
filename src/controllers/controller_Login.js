@@ -10,6 +10,7 @@ function criaHash(senha){
 exports.autenticaUsuario = async (req, res) => {
     const {email, senha} = req.body;
     const senhaCrypto = criaHash(senha)
+    let role;
 
     if(!email || !senha){
         return res.status(400).json({
@@ -27,7 +28,7 @@ exports.autenticaUsuario = async (req, res) => {
                 UsersRoles: true
             }
         })
-        console.log(users[0].UsersRoles[0].fk_RoleId)
+        
 
         if(email === users[0].email && senhaCrypto === users[0].senha){
             // Gerar Token
@@ -43,11 +44,23 @@ exports.autenticaUsuario = async (req, res) => {
                 }
                 
             )
+            const roleMap = {
+                1: "Admin",
+                2: "FuncInicial",
+                3: "Gerente",
+                4: "FuncDev",
+                5: "FuncRH",
+                6: "FuncComercial",
+                7: "FuncFinanceiro"
+              };
+              
+            role = roleMap[users[0].UsersRoles[0].fk_RoleId];
+
             return res.status(200).json({
                 id: users[0].id,
                 nome: users[0].nome,
                 email: users[0].email,
-                roleId: users[0].UsersRoles[0].fk_RoleId,
+                role: role,
                 token: token
             })
         } else {
