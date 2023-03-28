@@ -80,3 +80,59 @@ exports.searchUsers = async (req, res) => {
         res.status(500).end();
     }
 }
+
+exports.searchUsersById = async (req, res) => {
+    const { id } = req.params
+    let role;
+    try{
+        const usuario = await prisma.user.findUnique({
+            where:{
+                id : Number(id)
+            },
+            include: {
+                UsersRoles:true
+            }
+        })
+        const roleMap = {
+            1: "Admin",
+            2: "FuncInicial",
+            3: "Gerente",
+            4: "FuncDev",
+            5: "FuncRH",
+            6: "FuncComercial",
+            7: "FuncFinanceiro"
+          };
+          
+        role = roleMap[usuario.UsersRoles[0].fk_RoleId];
+        res.status(200).json({
+                id: usuario.id,
+                nome: usuario.nome,
+                email: usuario.email,
+                funcao: role
+        })
+
+    } catch (err){
+        console.error(err);
+        res.status(500).end();
+    }
+}
+
+exports.editFunc = async(req, res) => {
+    const { id, nome, email } = req.body;
+    try{
+        const user = await prisma.user.update({
+            where: {
+                id
+            },
+            data:{
+                nome,
+                email
+            }
+        })
+        res.status(200).json(user)
+        
+    } catch (err){
+        console.error(err);
+        res.status(500).end();
+    }
+}
