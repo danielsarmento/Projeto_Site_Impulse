@@ -22,8 +22,12 @@ exports.autenticaUsuario = async (req, res) => {
         const users = await prisma.user.findMany({
             where: {
                 email: email
+            },
+            include: {
+                UsersRoles: true
             }
         })
+        console.log(users[0].UsersRoles[0].fk_RoleId)
 
         if(email === users[0].email && senhaCrypto === users[0].senha){
             // Gerar Token
@@ -43,6 +47,7 @@ exports.autenticaUsuario = async (req, res) => {
                 id: users[0].id,
                 nome: users[0].nome,
                 email: users[0].email,
+                roleId: users[0].UsersRoles[0].fk_RoleId,
                 token: token
             })
         } else {
