@@ -20,44 +20,8 @@ exports.valuesCapturas = async () => {
         //const allCards = dadosCards.data.phase.cards.edges
         const quantidadeDeClientes = dadosCards.data.phase.cards_count
 
-        //const valoresPropostaImplementacao =[]
-        //const valoresPropostaRecorrencia = []
-        
-        //Verifica se Veio Vazio
-        /* if(allCards.length == 0){
-            return {
-                valorImplementacao: 0,
-                valorRecorrencia: 0,
-                quantidadeDeClientes: quantidadeDeClientes
-            }
-        } else {
-            allCards.map((obj) => {
-                obj.node.fields.map((object)=>{
-                    if(object.name === "Valor da implementação"){
-                        valoresPropostaImplementacao.push(object.value)
-                    } if(object.name === "Valor recorrente da proposta"){
-                        valoresPropostaRecorrencia.push(object.value)
-                    }
-                })
-            })
-            
-            const somaPropostaImplementacao = valoresPropostaImplementacao.reduce((acumulador, valorAtual) => {
-                const numero = Number(valorAtual.replace(".", "").replace(",", "."));
-                return acumulador + numero
-            }, 0)
-    
-            const somaPropostaRecorrencia = valoresPropostaRecorrencia.reduce((acumulador, valorAtual) => {
-                const numero = Number(valorAtual.replace(".", "").replace(",", "."));
-                return acumulador + numero
-            }, 0)
-            
-            
-            
-        } */
-        
         return {
-            //valorImplementacao: somaPropostaImplementacao,
-            //valorRecorrencia: somaPropostaRecorrencia,
+
             quantidadeDeClientes: quantidadeDeClientes
         }
         

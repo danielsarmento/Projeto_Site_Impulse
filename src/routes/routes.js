@@ -16,24 +16,25 @@ const controller_acl = require('../controllers/controller_AccessControlList');
 const controller_trabalheConosco = require("../controllers/controller_TrabalheConosco");
 const controller_recuperarSenha = require("../controllers/controller_RecuperacaoDeSenha");
 const controller_pipefy = require("../controllers/controller_Pipefy")
+const controller_criarAlgoJuntos = require("../controllers/controller_CriarAlgoJuntos")
 
 const middleware_autenticacao = require("../middlewares/middleware_autenticacao");
 const midlleware_RolePermission = require("../middlewares/middleware_roles")
 
 // Rotas de Roles e Permissions
-
 routes.get("/",middleware_autenticacao.auth, controller_funcionarios.welcome);
 routes.put("/editRole",middleware_autenticacao.auth,(req, res, next)=>{
         req.permission = "EditarRole"
         next()},midlleware_RolePermission.verificaRole, controller_acl.editRoles);
 
+// Rotas de Captura do Site
+routes.post("/captura", controller_criarAlgoJuntos.criarCard)
 
 // Rota de Recuperação de Senhas 
 routes.post("/recuperarSenha", controller_recuperarSenha.index);
 routes.post("/cadastrarNovaSenha", controller_recuperarSenha.updatePassword);
 
 // Rotas Para Dash Pipefy
-
 routes.get("/pipefy",middleware_autenticacao.auth,(req, res, next)=>{
     req.permission = "BuscarDashboardPipefy"
     next()},midlleware_RolePermission.verificaRole, controller_pipefy.run);
