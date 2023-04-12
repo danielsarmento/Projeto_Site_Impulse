@@ -9,8 +9,11 @@ exports.create = async (req, res) => {
 
     try{
         const cargo = await prisma.cargo.create({
-            nome,
-            descricao
+            data: {
+                nome,
+                descricao
+            }
+            
         })
 
         res.status(200).json(cargo)
@@ -24,8 +27,7 @@ exports.create = async (req, res) => {
 exports.searchAll = async (req, res) => {
     try{
         const cargos = await prisma.cargo.findMany()
-        console.log(cargos)
-
+        
         res.status(200).json(cargos)
 
     } catch (err) {

@@ -9,8 +9,10 @@ exports.create = async (req, res) => {
 
     try{
         const departamento = await prisma.departamento.create({
-            nome,
-            descricao
+            data: {
+                nome,
+                descricao
+            }
         })
 
         res.status(200).json(departamento)
