@@ -22,8 +22,6 @@ model Employee {
   pixBanco          String?
   dataContratacao   DateTime
   modeloContratacao String
-  departamento      String
-  cargo             String
   estagio           String?
   escolaVinculo     String?
   horasAlocadas     Int
@@ -36,8 +34,13 @@ model Employee {
   cidade            String
   estado            String
   cep               String
-  formulario1       Form1[]
-  formulario2       Form2[]
+  fk_cargoId        Int
+  fk_departamentoId Int
+
+  formulario1  Form1[]
+  formulario2  Form2[]
+  cargo        Cargo        @relation(fields: [fk_cargoId], references: [id])
+  departamento Departamento @relation(fields: [fk_departamentoId], references: [id])
 
   @@map("funcionarios")
 }
@@ -52,12 +55,12 @@ model Client {
   complemento         String?
   bairro              String?
   cidade              String?
-  estado              String? //novo
-  cep                 String? //novo
   emailResponsavel    String
   nomeResponsavel     String
   telefoneResponsavel String?
   situacao            String
+  cep                 String?
+  estado              String?
   acquisition         Acquisition[]
 
   @@map("clientes")
@@ -74,7 +77,8 @@ model Acquisition {
   valorMensal    String?
   descricao      String?
   fk_clientId    Int
-  client         Client    @relation(fields: [fk_clientId], references: [id])
+
+  client Client @relation(fields: [fk_clientId], references: [id])
 
   @@map("aquisicoes")
 }
@@ -89,15 +93,14 @@ model Product {
 }
 
 model User {
-  id                   Int          @id @default(autoincrement())
+  id                   Int         @id @default(autoincrement())
   nome                 String
-  email                String       @unique
+  email                String      @unique
   senha                String
-  passwordResetToken   String?
+  created_at           DateTime    @default(now())
   passwordResetExpires DateTime?
-  created_at           DateTime     @default(now())
-  UsersRoles           UsersRoles[]
-  //UsersPermissions     UsersPermissions[]
+  passwordResetToken   String?
+  UsersRoles           UsersRoles?
 
   @@map("usuarios")
 }
@@ -107,8 +110,8 @@ model Roles {
   nome             String
   descricao        String
   created_at       DateTime           @default(now())
-  UsersRoles       UsersRoles[]
   RolesPermissions RolesPermissions[]
+  UsersRoles       UsersRoles[]
 
   @@map("funcoes")
 }
@@ -118,7 +121,6 @@ model Permissions {
   nome             String
   descricao        String
   created_at       DateTime           @default(now())
-  //UsersPermissions UsersPermissions[]
   RolesPermissions RolesPermissions[]
 
   @@map("permissoes")
@@ -126,48 +128,40 @@ model Permissions {
 
 model UsersRoles {
   id         Int      @id @default(autoincrement())
-  user       User     @relation(fields: [fk_UserId], references: [id])
-  role       Roles    @relation(fields: [fk_RoleId], references: [id])
   fk_UserId  Int      @unique
   fk_RoleId  Int
   created_at DateTime @default(now())
+
+  role Roles @relation(fields: [fk_RoleId], references: [id])
+  user User  @relation(fields: [fk_UserId], references: [id])
 }
 
-//model UsersPermissions {
-// id              Int         @id @default(autoincrement())
-// user            User        @relation(fields: [fk_UserId], references: [id])
-// permission      Permissions @relation(fields: [fk_PermissionId], references: [id])
-// fk_UserId       Int
-//  fk_PermissionId Int
-// created_at      DateTime    @default(now())
-//}
-
 model RolesPermissions {
-  id              Int         @id @default(autoincrement())
-  role            Roles       @relation(fields: [fk_RoleId], references: [id])
-  permission      Permissions @relation(fields: [fk_PermissionId], references: [id])
+  id              Int      @id @default(autoincrement())
   fk_RoleId       Int
   fk_PermissionId Int
-  created_at      DateTime    @default(now())
+  created_at      DateTime @default(now())
+
+  permission Permissions @relation(fields: [fk_PermissionId], references: [id])
+  role       Roles       @relation(fields: [fk_RoleId], references: [id])
 }
 
 model Form1 {
-  id         Int      @id @default(autoincrement())
-  email      String
-  question1  String?
-  question2  String?
-  question3  String?
-  question4  String?
-  question5  String?
-  question6  String?
-  question7  String?
-  question8  String?
-  question9  String?
-  created_at DateTime @default(now())
-
+  id            Int      @id @default(autoincrement())
+  email         String
+  question1     String?
+  question2     String?
+  question3     String?
+  question4     String?
+  question5     String?
+  question6     String?
+  question7     String?
+  question8     String?
+  question9     String?
+  created_at    DateTime @unique @default(now())
   fk_employeeId Int
-  Employee      Employee @relation(fields: [fk_employeeId], references: [id])
-  // onDelete: Cascade -> Deletar em cascata o DB
+
+  Employee Employee @relation(fields: [fk_employeeId], references: [id])
 
   @@map("formulario1")
 }
@@ -187,25 +181,26 @@ model Form2 {
   question10    String?
   created_at    DateTime @default(now())
   fk_employeeId Int
-
-  Employee Employee @relation(fields: [fk_employeeId], references: [id])
+  Employee      Employee @relation(fields: [fk_employeeId], references: [id])
 
   @@map("formulario2")
 }
 
 model Acess {
-  id           Int    @id @default(autoincrement())
-  titulo       String
-  url          String
-  login        String
-  senha        String
-  departamento String
+  id                Int    @id @default(autoincrement())
+  titulo            String
+  url               String
+  login             String
+  senha             String
+  fk_departamentoId Int
+
+  departamento Departamento @relation(fields: [fk_departamentoId], references: [id])
 
   @@map("acessos")
 }
 
 model TrabalheConosco {
-  id              Int           @id @default(autoincrement())
+  id              Int      @id @default(autoincrement())
   primeiroNome    String
   sobreNome       String
   email           String
@@ -214,14 +209,30 @@ model TrabalheConosco {
   disponibilidade String
   mensagem        String?
   anexo           String?
-  createdAt       DateTime      @default(now())
-  updateAt        DateTime      @default(now())
-  observacoes     Observacoes[]
+  createdAt       DateTime @default(now())
+  updateAt        DateTime @default(now())
+
+  observacoes Observacoes[]
 }
 
 model Observacoes {
   id                        Int             @id @default(autoincrement())
   observacao                String?
-  id_candidato              Int
-  candidato_trabalheConosco TrabalheConosco @relation(fields: [id_candidato], references: [id])
+  fk_candidatoId            Int
+  candidato_trabalheConosco TrabalheConosco @relation(fields: [fk_candidatoId], references: [id])
+}
+
+model Cargo {
+  id           Int        @id @default(autoincrement())
+  nome         String
+  descricao    String?
+  funcionarios Employee[]
+}
+
+model Departamento {
+  id           Int        @id @default(autoincrement())
+  nome         String
+  descricao    String?
+  funcionarios Employee[]
+  Acess        Acess[]
 }

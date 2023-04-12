@@ -15,8 +15,10 @@ const controller_permissions = require('../controllers/controller_Permissions');
 const controller_acl = require('../controllers/controller_AccessControlList');
 const controller_trabalheConosco = require("../controllers/controller_TrabalheConosco");
 const controller_recuperarSenha = require("../controllers/controller_RecuperacaoDeSenha");
-const controller_pipefy = require("../controllers/controller_Pipefy")
-const controller_criarAlgoJuntos = require("../controllers/controller_CriarAlgoJuntos")
+const controller_pipefy = require("../controllers/controller_Pipefy");
+const controller_criarAlgoJuntos = require("../controllers/controller_CriarAlgoJuntos");
+const controller_cargo = require("../controllers/controller_Cargo");
+const controller_departamento = require("../controllers/controller_Departamento");
 
 const middleware_autenticacao = require("../middlewares/middleware_autenticacao");
 const midlleware_RolePermission = require("../middlewares/middleware_roles")
@@ -204,5 +206,47 @@ routes.put("/candidatos/:id/obs/:idObs",middleware_autenticacao.auth,(req, res, 
 routes.delete("/candidatos/:id/obs/:idObs",middleware_autenticacao.auth,(req, res, next)=>{
     req.permission = "ApagarComentarioTrabalheConosco"
     next()},midlleware_RolePermission.verificaRole, controller_trabalheConosco.deleteObsOne);
+
+// Rotas de Cargo
+routes.get("/buscar/cargo",middleware_autenticacao.auth,(req, res, next)=>{
+    req.permission = "BuscarCargo"
+    next()},midlleware_RolePermission.verificaRole, controller_cargo.searchAll);
+
+routes.get("/buscar/cargo/:id", middleware_autenticacao.auth,(req, res, next)=>{
+    req.permission = "BuscarCargo"
+    next()},midlleware_RolePermission.verificaRole, controller_cargo.searchById);
+
+routes.post("/criar/cargo", middleware_autenticacao.auth,(req, res, next)=>{
+    req.permission = "CriarCargo"
+    next()},midlleware_RolePermission.verificaRole, controller_cargo.create);
+
+routes.put("/editar/cargo", middleware_autenticacao.auth,(req, res, next)=>{
+    req.permission = "EditarCargo"
+    next()},midlleware_RolePermission.verificaRole, controller_cargo.update);
+
+routes.delete("/delete/cargo", middleware_autenticacao.auth,(req, res, next)=>{
+    req.permission = "ApagarCargo"
+    next()},midlleware_RolePermission.verificaRole, controller_cargo.delete);
+
+// Rotas de Departamento
+routes.get("/buscar/departamento",middleware_autenticacao.auth,(req, res, next)=>{
+    req.permission = "BuscarDepartamento"
+    next()},midlleware_RolePermission.verificaRole, controller_departamento.searchAll);
+
+routes.get("/buscar/departamento/:id", middleware_autenticacao.auth,(req, res, next)=>{
+    req.permission = "BuscarDepartamento"
+    next()},midlleware_RolePermission.verificaRole, controller_departamento.searchById);
+
+routes.post("/criar/departamento", middleware_autenticacao.auth,(req, res, next)=>{
+    req.permission = "CriarDepartamento"
+    next()},midlleware_RolePermission.verificaRole, controller_departamento.create);
+
+routes.put("/editar/departamento", middleware_autenticacao.auth,(req, res, next)=>{
+    req.permission = "EditarDepartamento"
+    next()},midlleware_RolePermission.verificaRole, controller_departamento.update);
+
+routes.delete("/delete/departamento", middleware_autenticacao.auth,(req, res, next)=>{
+    req.permission = "ApagarDepartamento"
+    next()},midlleware_RolePermission.verificaRole, controller_departamento.delete);
 
 module.exports = routes;

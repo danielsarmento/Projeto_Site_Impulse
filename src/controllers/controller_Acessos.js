@@ -2,28 +2,23 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 exports.create = async (req, res) => {
-  const { titulo, url, login, senha, departamento } = req.body;
-  if( !titulo || 
-      !url ||
-      !login || 
-      !senha ||
-      !departamento){
-      return res.status(400).json({message: "Dados Inválidos"})
+  const { titulo, url, login, senha, departamentoId } = req.body;
+  if (!titulo || !url || !login || !senha || !departamentoId) {
+    return res.status(400).json({ message: "Dados Inválidos" });
   }
 
   try {
     const acesso = await prisma.acess.create({
-      data:{
-        titulo, 
-        url, 
-        login, 
-        senha, 
-        departamento
-      }
+      data: {
+        titulo,
+        url,
+        login,
+        senha,
+        fk_departamentoId: departamentoId,
+      },
     });
-    
-    res.status(200).json({acesso})
 
+    res.status(200).json({ acesso });
   } catch (err) {
     console.error(err);
     res.status(500).end();
@@ -31,21 +26,20 @@ exports.create = async (req, res) => {
 };
 
 exports.searchId = async (req, res) => {
-  const {id} = req.params;
-  if(!id){
-    return res.status(400).json({message: "Dados Inválidos"})
+  const { id } = req.params;
+  if (!id) {
+    return res.status(400).json({ message: "Dados Inválidos" });
   }
 
   const id_ = parseInt(id);
-  try{
+  try {
     const acesso = await prisma.acess.findMany({
       where: {
-        id: id_
+        id: id_,
       },
     });
 
-    res.status(200).json({acesso})
-    
+    res.status(200).json({ acesso });
   } catch (err) {
     console.error(err);
     res.status(500).end();
@@ -53,29 +47,28 @@ exports.searchId = async (req, res) => {
 };
 
 exports.searchAll = async (req, res) => {
-  try{
+  try {
     const id = req.sub;
-    const id_ = Number(id)
+    const id_ = Number(id);
 
     const users = await prisma.user.findFirst({
       where: {
-        id: id_
-      }
-    })
+        id: id_,
+      },
+    });
     const funcionario = await prisma.employee.findFirst({
       where: {
-        email: users.email
-      }
-    })
-    
-    const acesso = await prisma.acess.findMany({
+        email: users.email,
+      },
+    });
+    const acessos = await prisma.acess.findMany({
       where: {
-        departamento: funcionario.departamento
-      }
+        fk_departamentoId: funcionario.fk_departamentoId,
+      },
     });
 
-    res.status(200).json({acesso})
-    
+    res.status(200).json({acessos});
+
   } catch (err) {
     console.error(err);
     res.status(500).end();
@@ -84,40 +77,35 @@ exports.searchAll = async (req, res) => {
 
 exports.updateOne = async (req, res) => {
   const { id } = req.params;
-  const {
-    titulo, url, login, senha, departamento
-  } = req.body;
+  const { titulo, url, login, senha, departamentoId } = req.body;
 
-  if( !titulo || 
-      !url ||
-      !login || 
-      !senha ||
-      !departamento){
-        return res.status(400).json({message: "Dados Inválidos"})
+  if (!titulo || !url || !login || !senha || !departamentoId) {
+    return res.status(400).json({ message: "Dados Inválidos" });
   }
 
-  if(!id){
-    return res.status(400).json({message: "Dados Inválidos"})
+  if (!id) {
+    return res.status(400).json({ message: "Dados Inválidos" });
   }
 
   const id_ = parseInt(id);
 
-  try{
+  try {
     const acessoUpdate = await prisma.acess.update({
-      where:{
-        id: id_
+      where: {
+        id: id_,
       },
-      data:{
-        titulo, 
-        url, 
-        login, 
-        senha, 
-        departamento
-      }
+      data: {
+        titulo,
+        url,
+        login,
+        senha,
+        fk_departamentoId: departamentoId,
+      },
     });
 
-    res.status(200).json({message: 'Acesso editado com sucesso!', acessoUpdate });
-
+    res
+      .status(200)
+      .json({ message: "Acesso editado com sucesso!", acessoUpdate });
   } catch (err) {
     console.error(err);
     res.status(500).end();
@@ -126,20 +114,21 @@ exports.updateOne = async (req, res) => {
 
 exports.deleteOne = async (req, res) => {
   const { id } = req.params;
-  if(!id){
-    return res.status(400).json({message: "Dados Inválidos"})
+  if (!id) {
+    return res.status(400).json({ message: "Dados Inválidos" });
   }
   const id_ = parseInt(id);
 
   try {
     const acessoDelete = await prisma.acess.delete({
       where: {
-        id: id_
+        id: id_,
       },
     });
 
-    res.status(200).json({message: 'Acesso removido com sucesso!', acessoDelete});
-
+    res
+      .status(200)
+      .json({ message: "Acesso removido com sucesso!", acessoDelete });
   } catch (err) {
     console.error(err);
     res.status(500).end();

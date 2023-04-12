@@ -1,10 +1,26 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
+const dataAtual = new Date
+const [dataEdit,] = dataAtual.toISOString().split("T")
+const [ano,mes,] = dataEdit.split("-")
+
 exports.create = async (req, res) => {
     const { email, question1, question2, question3, question4, question5, question6, question7, question8, question9} = req.body;
     if(!email){
         return res.status(400).json({message: "Dados Inválidos"})
+    }
+    const formularioPreenchido = await prisma.form1.findMany({
+      where: {
+        email: email,
+        created_at:{
+          gte: new Date(`${ano}-${mes}-01T00:00:00.000Z`),
+          lte: new Date(`${ano}-${mes}-31T00:00:00.000Z`)
+        }
+      }
+    })
+    if(formularioPreenchido.length > 0){
+      return res.status(401).json({message: "Usuário já respondeu ao formulário este mês!"})
     }
 
     try{
@@ -18,7 +34,7 @@ exports.create = async (req, res) => {
             return res.status(404).json({message: 'Email não cadastrado'})
         }
         let fk_employeedId = funcionario[0].id;
-        
+  
         const form1 = await prisma.form1.create({
             data: {
                 email, 
@@ -48,6 +64,7 @@ exports.create = async (req, res) => {
 
 exports.searchOne = async (req, res) => {
     const { email } = req.body;
+    
     if(!email){
         return res.status(400).json({message: "Dados Inválidos"})
     }
