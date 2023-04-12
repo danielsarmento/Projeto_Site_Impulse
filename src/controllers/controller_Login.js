@@ -28,7 +28,7 @@ exports.autenticaUsuario = async (req, res) => {
                 UsersRoles: true
             }
         })
-        
+        console.log(users)
 
         if(email === users[0].email && senhaCrypto === users[0].senha){
             // Gerar Token
@@ -54,7 +54,7 @@ exports.autenticaUsuario = async (req, res) => {
                 7: "FuncFinanceiro"
               };
               
-            role = roleMap[users[0].UsersRoles[0].fk_RoleId];
+            role = roleMap[users[0].UsersRoles.fk_RoleId];
 
             return res.status(200).json({
                 id: users[0].id,
