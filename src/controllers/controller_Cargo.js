@@ -8,7 +8,7 @@ exports.create = async (req, res) => {
     }
 
     try{
-        const cargo = prisma.cargo.create({
+        const cargo = await prisma.cargo.create({
             nome,
             descricao
         })
@@ -23,7 +23,8 @@ exports.create = async (req, res) => {
 
 exports.searchAll = async (req, res) => {
     try{
-        const cargos = prisma.cargo.findMany()
+        const cargos = await prisma.cargo.findMany()
+        console.log(cargos)
 
         res.status(200).json(cargos)
 
@@ -39,7 +40,7 @@ exports.searchById = async (req, res) => {
         res.status(400).json({mensagem: "Dados incompletos"})
     }
     try{
-        const cargo = prisma.cargo.findUnique({
+        const cargo = await prisma.cargo.findUnique({
             where: {
                 id: Number(id)
             }
@@ -59,7 +60,7 @@ exports.update = async (req, res) => {
         res.status(400).json({mensagem: "Dados incompletos"})
     }
     try{
-        const cargo = prisma.cargo.update({
+        const cargo = await prisma.cargo.update({
             where: {
                 id: Number(id)
             },
@@ -80,7 +81,7 @@ exports.update = async (req, res) => {
 exports.delete = async (req, res) => {
     const {id} = req.body;
     try{
-        const cargo = prisma.cargo.delete({
+        const cargo = await prisma.cargo.delete({
             where: {
                 id: Number(id)
             }

@@ -8,7 +8,7 @@ exports.create = async (req, res) => {
     }
 
     try{
-        const departamento = prisma.departamento.create({
+        const departamento = await prisma.departamento.create({
             nome,
             descricao
         })
@@ -23,7 +23,7 @@ exports.create = async (req, res) => {
 
 exports.searchAll = async (req, res) => {
     try{
-        const departamentos = prisma.departamento.findMany()
+        const departamentos = await prisma.departamento.findMany()
 
         res.status(200).json(departamentos)
 
@@ -39,7 +39,7 @@ exports.searchById = async (req, res) => {
         res.status(400).json({mensagem: "Dados incompletos"})
     }
     try{
-        const departamento = prisma.departamento.findUnique({
+        const departamento = await prisma.departamento.findUnique({
             where: {
                 id: Number(id)
             }
@@ -59,7 +59,7 @@ exports.update = async (req, res) => {
         res.status(400).json({mensagem: "Dados incompletos"})
     }
     try{
-        const departamento = prisma.departamento.update({
+        const departamento = await prisma.departamento.update({
             where: {
                 id: Number(id)
             },
@@ -80,7 +80,7 @@ exports.update = async (req, res) => {
 exports.delete = async (req, res) => {
     const {id} = req.body;
     try{
-        const departamento = prisma.departamento.delete({
+        const departamento = await prisma.departamento.delete({
             where: {
                 id: Number(id)
             }
