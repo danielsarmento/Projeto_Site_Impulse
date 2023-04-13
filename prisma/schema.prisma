@@ -194,25 +194,21 @@ model Acess {
 }
 
 model TrabalheConosco {
-  id              Int           @id @default(autoincrement())
-  primeiroNome    String
-  sobreNome       String
-  email           String
-  vagaEscolhida   String
-  nivelAtual      String
-  disponibilidade String
-  mensagem        String?
-  anexo           String?
-  createdAt       DateTime      @default(now())
-  updateAt        DateTime      @default(now())
-  observacoes     Observacoes[]
-}
-
-model Observacoes {
-  id                        Int             @id @default(autoincrement())
-  observacao                String?
-  fk_candidatoId            Int
-  candidato_trabalheConosco TrabalheConosco @relation(fields: [fk_candidatoId], references: [id])
+  id            Int      @id @default(autoincrement())
+  nome          String
+  telefone      String
+  email         String
+  vagaEscolhida String
+  nivelAtual    String
+  pretensao     String
+  motivo        String?
+  anexo         String?
+  createdAt     DateTime @default(now())
+  updateAt      DateTime @default(now())
+  cargo         String?  @db.VarChar(255)
+  departamento  String?  @db.VarChar(255)
+  comentario    String?  @db.VarChar(255)
+  scores        scores[]
 }
 
 model Cargo {
@@ -230,9 +226,17 @@ model Departamento {
   funcionarios Employee[]
 }
 
-model indicadores_omie {
-  id        BigInt   @id @default(autoincrement())
+model omie {
+  id        BigInt   @id(map: "indicadores_omie_pkey") @default(autoincrement())
   indicador String   @db.VarChar(255)
   valor     Decimal? @db.Decimal(12, 2)
   mesref    String?  @db.VarChar(12)
+}
+
+model scores {
+  id              Int             @id(map: "Observacoes_pkey") @default(autoincrement())
+  softskills      String?
+  fk_candidatoId  Int
+  score           Int?            @default(0)
+  TrabalheConosco TrabalheConosco @relation(fields: [fk_candidatoId], references: [id], map: "Observacoes_fk_candidatoId_fkey")
 }
