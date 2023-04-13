@@ -172,9 +172,7 @@ routes.delete("/acessossites/:id",middleware_autenticacao.auth, (req, res, next)
     next()},midlleware_RolePermission.verificaRole, controller_acessos.deleteOne);
 
 //Rotas de Candidatos
-routes.post("/candidatos",middleware_autenticacao.auth,(req, res, next)=>{
-    req.permission = "CriarTrabalheConosco"
-    next()},midlleware_RolePermission.verificaRole, controller_trabalheConosco.create);
+routes.post("/candidatos", controller_trabalheConosco.create);
 routes.get("/candidatos",middleware_autenticacao.auth,(req, res, next)=>{
     req.permission = "BuscarTrabalheConosco"
     next()},midlleware_RolePermission.verificaRole, controller_trabalheConosco.searchAll);
@@ -267,5 +265,5 @@ routes.get("/omie/relatorio", middleware_autenticacao.auth,(req, res, next)=>{
     req.permission = "BuscarDashboardOmie"
     next()},midlleware_RolePermission.verificaRole, controller_omie.searchByIntervalo);
 
-    
+
 module.exports = routes;

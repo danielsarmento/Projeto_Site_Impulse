@@ -3,40 +3,40 @@ const prisma = new PrismaClient();
 
 exports.create = async (req, res) => {
   const {
-    primeiroNome,
-    sobreNome,
+    nome,
+    telefone,
     email,
     vagaEscolhida,
     nivelAtual,
-    disponibilidade,
-    mensagem,
+    pretensao,
+    motivo,
     anexo,
   } = req.body;
 
   if (
-    !primeiroNome ||
-    !sobreNome ||
+    !nome ||
+    !telefone ||
     !email ||
     !vagaEscolhida ||
     !nivelAtual ||
-    !disponibilidade
+    !pretensao
   ) {
     return res.status(400).json({
       message: "Dados Inválidos",
-      error: "Os campos obrigatórios não enviados.",
+      error: "Campos nome, telefone, email, vagaEscolhida, nivelAtual, pretensao são obrigatórios.",
     });
   }
 
   try {
     const novoCandidato = await prisma.trabalheConosco.create({
       data: {
-        primeiroNome,
-        sobreNome,
+        nome,
+        telefone,
         email,
         vagaEscolhida,
         nivelAtual,
-        disponibilidade,
-        mensagem,
+        pretensao,
+        motivo,
         anexo,
       },
     });
@@ -88,13 +88,13 @@ exports.searchById = async (req, res) => {
 };
 
 exports.searchByNameOrJobs = async (req, res) => {
-  const { primeiroNome, vagaEscolhida } = req.query;
+  const { nome, vagaEscolhida } = req.query;
 
   try {
     const candidatos = await prisma.trabalheConosco.findMany({
       where: {
-        primeiroNome: {
-          contains: primeiroNome || "",
+        nome: {
+          contains: nome || "",
         },
         vagaEscolhida: {
           contains: vagaEscolhida || "",
@@ -142,28 +142,28 @@ exports.updateOne = async (req, res) => {
   }
 
   const {
-    primeiroNome,
-    sobreNome,
+    nome,
+    telefone,
     email,
     vagaEscolhida,
     nivelAtual,
-    disponibilidade,
-    mensagem,
+    pretensao,
+    motivo,
     anexo,
   } = req.body;
 
   if (
-    !primeiroNome ||
-    !sobreNome ||
+    !nome ||
+    !telefone ||
     !email ||
     !vagaEscolhida ||
     !nivelAtual ||
-    !disponibilidade
+    !pretensao
   ) {
     return res.status(400).json({
       message: "Dados Inválidos",
       error:
-        "Os campos primeiroNome, sobreNome, email, vagaEscolhida, nivelAtual e disponibilidade são obrigatórios.",
+        "Os campos nome, telefone, email, vagaEscolhida, nivelAtual e pretensao são obrigatórios.",
     });
   }
 
@@ -175,13 +175,13 @@ exports.updateOne = async (req, res) => {
         id: id_,
       },
       data: {
-        primeiroNome,
-        sobreNome,
+        nome,
+        telefone,
         email,
         vagaEscolhida,
         nivelAtual,
-        disponibilidade,
-        mensagem,
+        pretensao,
+        motivo,
         anexo,
       },
     });
@@ -201,11 +201,11 @@ exports.createObs = async (req, res) => {
   }
   const candidatoId = parseInt(id);
 
-  const { observacao } = req.body;
-  if (!observacao) {
+  const { softskills, score } = req.body;
+  if (!softskills || !score) {
     return res
       .status(400)
-      .json({ message: "Necessário preencher a observação." });
+      .json({ message: "Necessário preencher a softskill e score." });
   }
 
   try {
@@ -219,10 +219,11 @@ exports.createObs = async (req, res) => {
       return res.status(404).json({ message: "Candidato não cadastrado" });
     }
 
-    const salvarObs = await prisma.observacoes.create({
+    const salvarObs = await prisma.scores.create({
       data: {
-        observacao,
-        candidato_trabalheConosco: {
+        score,
+        softskills,
+        TrabalheConosco: {
           connect: {
             id: candidato.id,
           },
@@ -247,19 +248,19 @@ exports.searchAllObs = async (req, res) => {
   const candidatoId = parseInt(id);
 
   try {
-    const observacoes = await prisma.observacoes.findMany({
+    const scores = await prisma.scores.findMany({
       where: {
-        id_candidato: candidatoId,
+        fk_candidatoId: candidatoId,
       },
     });
 
-    if (observacoes.length < 1) {
+    if (scores.length < 1) {
       return res
         .status(404)
         .json({ message: "Não existe observações para o candidato informado" });
     }
 
-    res.status(200).json({ observacoes });
+    res.status(200).json({ scores });
   } catch (err) {
     console.error(err);
     res.status(500).end();
@@ -277,16 +278,16 @@ exports.searchObsById = async (req, res) => {
   if (!idObs) {
     return res
       .status(400)
-      .json({ message: "Necessário informar a observação" });
+      .json({ message: "Necessário informar o score" });
   }
 
   const idObservacao = parseInt(idObs);
 
   try {
-    const observacao = await prisma.observacoes.findFirst({
+    const observacao = await prisma.scores.findFirst({
       where: {
         id: idObservacao,
-        id_candidato: candidatoId,
+        fk_candidatoId: candidatoId,
       },
     });
 
@@ -317,37 +318,31 @@ exports.updateObsOne = async (req, res) => {
 
   const idObservacao = parseInt(idObs);
 
-  const { observacao } = req.body;
-  if (!observacao) {
+  const { softskills, score } = req.body;
+  if (!softskills || !score) {
     return res
       .status(400)
-      .json({ message: "Necessário preencher a observação." });
+      .json({ message: "Necessário preencher a softskills e score." });
   }
 
   try {
-    const observacaoAntiga = await prisma.observacoes.findFirst({
+    const observacaoAntiga = await prisma.scores.findFirst({
       where: {
-        id: idObservacao,
-        id_candidato: candidatoId,
+        id: idObservacao
       },
     });
 
     if (!observacaoAntiga) {
-      return res.status(404).json({ message: "Observação não encontrada." });
+      return res.status(404).json({ message: "Candidado ou Scores não encontrados." });
     }
 
-    const observacaoAtualizada = await prisma.observacoes.update({
+    const observacaoAtualizada = await prisma.scores.update({
       where: {
-        id: idObservacao,
-        id_candidato: candidatoId,
+        id: idObservacao
       },
       data: {
-        observacao,
-        candidato_trabalheConosco: {
-          connect: {
-            id: candidatoId,
-          },
-        },
+        softskills,
+        score
       },
     });
 
@@ -383,10 +378,9 @@ exports.deleteObsOne = async (req, res) => {
   const idObservacao = parseInt(idObs);
 
   try {
-    const recursoExcluido = await prisma.observacoes.delete({
+    const recursoExcluido = await prisma.scores.delete({
       where: {
-        id: idObservacao,
-        id_candidato: candidatoId,
+        id: idObservacao
       },
     });
 
@@ -397,6 +391,6 @@ exports.deleteObsOne = async (req, res) => {
     });
   } catch (err) {
     console.error(err);
-    res.status(500).end();
+    res.status(500).json({ message: "Não foram encontrados candidados ou observação com os dados informados." });;
   }
 };
