@@ -19,6 +19,7 @@ const controller_pipefy = require("../controllers/controller_Pipefy");
 const controller_criarAlgoJuntos = require("../controllers/controller_CriarAlgoJuntos");
 const controller_cargo = require("../controllers/controller_Cargo");
 const controller_departamento = require("../controllers/controller_Departamento");
+const controller_omie = require('../controllers/controller_Omie');
 
 const middleware_autenticacao = require("../middlewares/middleware_autenticacao");
 const midlleware_RolePermission = require("../middlewares/middleware_roles")
@@ -249,4 +250,22 @@ routes.delete("/delete/departamento", middleware_autenticacao.auth,(req, res, ne
     req.permission = "ApagarDepartamento"
     next()},midlleware_RolePermission.verificaRole, controller_departamento.delete);
 
+    // Rotas do Omie
+routes.get("/omie/indicadores", middleware_autenticacao.auth,(req, res, next)=>{
+    req.permission = "BuscarDashboardOmie"
+    next()},midlleware_RolePermission.verificaRole, controller_omie.getDistinctIndicadores);
+
+routes.get("/omie/mesref", middleware_autenticacao.auth,(req, res, next)=>{
+    req.permission = "BuscarDashboardOmie"
+    next()},midlleware_RolePermission.verificaRole, controller_omie.getDistinctMesRef);
+
+routes.get("/omie/indicadores/mes", middleware_autenticacao.auth,(req, res, next)=>{
+    req.permission = "BuscarDashboardOmie"
+    next()},midlleware_RolePermission.verificaRole, controller_omie.searchByMesRef);
+
+routes.get("/omie/relatorio", middleware_autenticacao.auth,(req, res, next)=>{
+    req.permission = "BuscarDashboardOmie"
+    next()},midlleware_RolePermission.verificaRole, controller_omie.searchByIntervalo);
+
+    
 module.exports = routes;
