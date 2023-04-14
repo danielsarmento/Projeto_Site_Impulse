@@ -134,66 +134,6 @@ exports.deleteOne = async (req, res) => {
   }
 };
 
-exports.updateOne = async (req, res) => {
-  const { id } = req.params;
-
-  if (!id) {
-    return res.status(400).json({ message: "Dados Inválidos" });
-  }
-
-  const {
-    nome,
-    telefone,
-    email,
-    vagaEscolhida,
-    nivelAtual,
-    pretensao,
-    motivo,
-    anexo,
-  } = req.body;
-
-  if (
-    !nome ||
-    !telefone ||
-    !email ||
-    !vagaEscolhida ||
-    !nivelAtual ||
-    !pretensao
-  ) {
-    return res.status(400).json({
-      message: "Dados Inválidos",
-      error:
-        "Os campos nome, telefone, email, vagaEscolhida, nivelAtual e pretensao são obrigatórios.",
-    });
-  }
-
-  const id_ = parseInt(id);
-
-  try {
-    const candidatoAtualizado = await prisma.trabalheConosco.update({
-      where: {
-        id: id_,
-      },
-      data: {
-        nome,
-        telefone,
-        email,
-        vagaEscolhida,
-        nivelAtual,
-        pretensao,
-        motivo,
-        anexo,
-      },
-    });
-    res
-      .status(200)
-      .json({ message: "Candidato editado com sucesso!", candidatoAtualizado });
-  } catch (err) {
-    console.error(err);
-    res.status(500).end();
-  }
-};
-
 exports.createObs = async (req, res) => {
   const { id } = req.params;
   if (!id) {
