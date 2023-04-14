@@ -302,62 +302,44 @@ exports.searchObsById = async (req, res) => {
   }
 };
 
-exports.updateObsOne = async (req, res) => {
+exports.updateOne = async (req, res) => {
   const { id } = req.params;
+
   if (!id) {
-    return res.status(400).json({ message: "Necessário informar o candidato" });
-  }
-  const candidatoId = parseInt(id);
-
-  const { idObs } = req.params;
-  if (!idObs) {
-    return res
-      .status(400)
-      .json({ message: "Necessário informar a observação" });
+    return res.status(400).json({ message: "Dados Inválidos" });
   }
 
-  const idObservacao = parseInt(idObs);
+  const {
+    cargo, departamento, comentario
+  } = req.body;
 
-  const { softskills, score } = req.body;
-  if (!softskills || !score) {
-    return res
-      .status(400)
-      .json({ message: "Necessário preencher a softskills e score." });
+  if (
+    !comentario && !cargo && !departamento
+  ) {
+    return res.status(400).json({
+      message: "Dados Inválidos",
+      error:
+        "Pelo menos um desses campos comentário, departamento e comentário devem ser preenchidos",
+    });
   }
+
+  const id_ = parseInt(id);
 
   try {
-    const observacaoAntiga = await prisma.scores.findFirst({
+    const candidatoAtualizado = await prisma.trabalheConosco.update({
       where: {
-        id: idObservacao
-      },
-    });
-
-    if (!observacaoAntiga) {
-      return res.status(404).json({ message: "Candidado ou Scores não encontrados." });
-    }
-
-    const observacaoAtualizada = await prisma.scores.update({
-      where: {
-        id: idObservacao
+        id: id_,
       },
       data: {
-        softskills,
-        score
+        cargo, departamento, comentario
       },
     });
-
-    res.status(200).json({
-      message: "Observação atualizada com sucesso!",
-      observacaoAtualizada,
-    });
+    res
+      .status(200)
+      .json({ message: "Candidato editado com sucesso!", candidatoAtualizado });
   } catch (err) {
     console.error(err);
-
-    if (err.code === "P2025") {
-      return res.status(404).json({ message: "Observação não encontrada." });
-    }
-
-    res.status(500).json({ message: "Erro ao atualizar observação." });
+    res.status(500).end();
   }
 };
 
