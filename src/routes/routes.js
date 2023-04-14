@@ -201,7 +201,7 @@ routes.get("/candidatos/:id/obs/:idObs",middleware_autenticacao.auth,(req, res, 
     next()},midlleware_RolePermission.verificaRole, controller_trabalheConosco.searchObsById);
 routes.put("/candidatos/:id/obs/:idObs",middleware_autenticacao.auth,(req, res, next)=>{
     req.permission = "EditarComentarioTrabalheConosco"
-    next()},midlleware_RolePermission.verificaRole, controller_trabalheConosco.updateObsOne);
+    next()},midlleware_RolePermission.verificaRole, controller_trabalheConosco.updateOne);
 routes.delete("/candidatos/:id/obs/:idObs",middleware_autenticacao.auth,(req, res, next)=>{
     req.permission = "ApagarComentarioTrabalheConosco"
     next()},midlleware_RolePermission.verificaRole, controller_trabalheConosco.deleteObsOne);
