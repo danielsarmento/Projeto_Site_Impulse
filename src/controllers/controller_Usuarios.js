@@ -51,20 +51,21 @@ exports.searchUsers = async (req, res) => {
                 UsersRoles:true
             }
         })
+
         usuarios.map((obj) => {
-            if(obj.UsersRoles[0].fk_RoleId == 1){
+            if(obj.UsersRoles.fk_RoleId == 1){
                 funcao = "Admin"
-            } if(obj.UsersRoles[0].fk_RoleId == 2){
+            } if(obj.UsersRoles.fk_RoleId == 2){
                 funcao = "FuncInicial"
-            } if(obj.UsersRoles[0].fk_RoleId == 3){
+            } if(obj.UsersRoles.fk_RoleId == 3){
                 funcao = "Gerente"
-            } if(obj.UsersRoles[0].fk_RoleId == 4){
+            } if(obj.UsersRoles.fk_RoleId == 4){
                 funcao = "FuncDev"
-            } if(obj.UsersRoles[0].fk_RoleId == 5){
+            } if(obj.UsersRoles.fk_RoleId == 5){
                 funcao = "FuncRH"
-            } if(obj.UsersRoles[0].fk_RoleId == 6){
+            } if(obj.UsersRoles.fk_RoleId == 6){
                 funcao = "FuncComercial"
-            } if(obj.UsersRoles[0].fk_RoleId == 7){
+            } if(obj.UsersRoles.fk_RoleId == 7){
                 funcao = "FuncFinanceiro"
             }
             return usuariosTratados.push({
