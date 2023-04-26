@@ -17,6 +17,15 @@ exports.createUser = async (req, res) => {
     const senhaCrypto = criaHash(senha);
     
     try{
+        const verificaEmail = await prisma.user.findUnique({
+            where:{
+                email
+            }
+        })
+        
+        if(verificaEmail){
+            return res.status(400).json({message: "Email já cadastrado"})
+        }
         const novoUsuario = await prisma.user.create({
             data: {
                 nome, 
