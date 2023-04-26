@@ -47,6 +47,9 @@ exports.searchNotification = async (req, res) => {
       where:{
         fk_UserId: Number(id),
         check: false
+      },
+      include:{
+        Notificacao: true
       }
     })
 
