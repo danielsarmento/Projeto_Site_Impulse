@@ -11,7 +11,7 @@ const departamentoMap = {
 };
 
 exports.welcome = (req, res) => {
-  res.json({ API: "API Site Impulse" });
+  res.status(200).json({ API: "API Site Impulse" });
 };
 
 exports.create = async (req, res) => {

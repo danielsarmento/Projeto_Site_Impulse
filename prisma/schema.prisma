@@ -91,14 +91,16 @@ model Product {
 }
 
 model User {
-  id                   Int         @id @default(autoincrement())
+  id                   Int                    @id @default(autoincrement())
   nome                 String
-  email                String      @unique
+  email                String                 @unique
   senha                String
-  created_at           DateTime    @default(now())
+  created_at           DateTime               @default(now())
   passwordResetExpires DateTime?
   passwordResetToken   String?
   UsersRoles           UsersRoles?
+  Notificacao          Notificacao[]
+  ControleNotificacoes ControleNotificacoes[]
 
   @@map("usuarios")
 }
@@ -239,4 +241,25 @@ model scores {
   fk_candidatoId  Int
   score           Int?            @default(0)
   TrabalheConosco TrabalheConosco @relation(fields: [fk_candidatoId], references: [id], map: "Observacoes_fk_candidatoId_fkey")
+}
+
+model Notificacao {
+  id        Int      @id @default(autoincrement())
+  conteudo  String
+  createdAt DateTime @default(now())
+  fk_UserId Int
+
+  Usuario              User                   @relation(fields: [fk_UserId], references: [id])
+  ControleNotificacoes ControleNotificacoes[]
+}
+
+model ControleNotificacoes {
+  id        Int      @id @default(autoincrement())
+  fk_UserId Int
+  fk_NotfId Int
+  createdAt DateTime @default(now())
+  check     Boolean
+
+  Usuario     User        @relation(fields: [fk_UserId], references: [id])
+  Notificacao Notificacao @relation(fields: [fk_NotfId], references: [id])
 }

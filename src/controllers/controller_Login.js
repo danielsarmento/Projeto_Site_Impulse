@@ -11,7 +11,7 @@ exports.autenticaUsuario = async (req, res) => {
     const {email, senha} = req.body;
     const senhaCrypto = criaHash(senha)
     let role;
-
+    
     if(!email || !senha){
         return res.status(400).json({
             error: "Dados inválidos",
@@ -20,7 +20,7 @@ exports.autenticaUsuario = async (req, res) => {
     }
     try{
 
-        const users = await prisma.user.findMany({
+        const user = await prisma.user.findUnique({
             where: {
                 email: email
             },
@@ -28,18 +28,17 @@ exports.autenticaUsuario = async (req, res) => {
                 UsersRoles: true
             }
         })
-        console.log(users)
 
-        if(email === users[0].email && senhaCrypto === users[0].senha){
+        if(email === user.email && senhaCrypto === user.senha){
             // Gerar Token
             const token = sign(
                 {
-                    nome: users[0].nome,
-                    email: users[0].email
+                    nome: user.nome,
+                    email: user.email
                 },
                 process.env.JWT_SECRET,
                 {
-                    subject: `${users[0].id}`,
+                    subject: `${user.id}`,
                     expiresIn: '10h'
                 }
                 
@@ -54,12 +53,12 @@ exports.autenticaUsuario = async (req, res) => {
                 7: "FuncFinanceiro"
               };
               
-            role = roleMap[users[0].UsersRoles.fk_RoleId];
+            role = roleMap[user.UsersRoles.fk_RoleId];
 
             return res.status(200).json({
-                id: users[0].id,
-                nome: users[0].nome,
-                email: users[0].email,
+                id: user.id,
+                nome: user.nome,
+                email: user.email,
                 role: role,
                 token: token
             })

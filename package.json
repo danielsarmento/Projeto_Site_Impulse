@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js",
-    "start": "node index.js"
+    "dev": "node --watch index.js",
+    "start": "node index.js",
+    "test:dev": "node --test --watch ./tests/api.test.js",
+    "test": "node --test ./tests/api.test.js"
   },
   "keywords": [],
   "author": "",

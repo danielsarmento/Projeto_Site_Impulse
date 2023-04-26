@@ -20,12 +20,20 @@ const controller_criarAlgoJuntos = require("../controllers/controller_CriarAlgoJ
 const controller_cargo = require("../controllers/controller_Cargo");
 const controller_departamento = require("../controllers/controller_Departamento");
 const controller_omie = require('../controllers/controller_Omie');
+const controller_notificacao = require("../controllers/controller_Notificacoes");
 
 const middleware_autenticacao = require("../middlewares/middleware_autenticacao");
 const midlleware_RolePermission = require("../middlewares/middleware_roles")
 
+//Rotas de Notificação
+routes.post("/notificacao",middleware_autenticacao.auth,(req, res, next)=>{
+        req.permission = "CriarNotificacao"
+        next()},midlleware_RolePermission.verificaRole, controller_notificacao.createNotification);
+routes.get("/notificacoes",middleware_autenticacao.auth, controller_notificacao.searchNotification);
+routes.post("/notificacaoCheck",middleware_autenticacao.auth, controller_notificacao.checkNotification);
+
 // Rotas de Roles e Permissions
-routes.get("/",middleware_autenticacao.auth, controller_funcionarios.welcome);
+routes.get("/", controller_funcionarios.welcome);
 routes.put("/editRole",middleware_autenticacao.auth,(req, res, next)=>{
         req.permission = "EditarRole"
         next()},midlleware_RolePermission.verificaRole, controller_acl.editRoles);
@@ -117,17 +125,17 @@ routes.delete("/clienteservicos/:id",middleware_autenticacao.auth,(req, res, nex
     next()},midlleware_RolePermission.verificaRole, controller_aquisicoes.deleteOne);
 
 // Rotas de Usuários
-routes.post("/usuario/create", controller_usuarios.createUser);
+routes.post("/user/create", controller_usuarios.createUser);
 
 routes.get("/search/users",middleware_autenticacao.auth,(req, res, next)=>{
     req.permission = "BuscarUsuario"
     next()}, midlleware_RolePermission.verificaRole, controller_usuarios.searchUsers);
 
-routes.get("/usuario/:id",middleware_autenticacao.auth,(req, res, next)=>{
+routes.get("/user/:id",middleware_autenticacao.auth,(req, res, next)=>{
     req.permission = "BuscarUsuario"
     next()}, midlleware_RolePermission.verificaRole, controller_usuarios.searchUsersById);
 
-routes.put("/usuario/edit",middleware_autenticacao.auth,(req, res, next)=>{
+routes.put("/user/edit",middleware_autenticacao.auth,(req, res, next)=>{
     req.permission = "EditarUsuario"
     next()}, controller_usuarios.editFunc);
 //EditarUsuario
