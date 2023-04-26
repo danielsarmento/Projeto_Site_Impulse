@@ -2,7 +2,7 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 exports.createNotification = async (req, res) => {
-  const { conteudo, usuarios } = req.body;
+  const { titulo, conteudo, usuarios } = req.body;
   const id = req.sub;
   const dados = []
 
@@ -13,6 +13,7 @@ exports.createNotification = async (req, res) => {
   try {
     const notificacao = await prisma.notificacao.create({
       data: {
+        titulo,
         conteudo,
         Usuario:{
           connect:{
@@ -63,7 +64,6 @@ exports.searchNotification = async (req, res) => {
 
 exports.checkNotification = async (req, res) => {
   const {id} = req.body
-  const idNotificacoes = []
   
   try {
     const notificacaoVisualizada = await prisma.controleNotificacoes.updateMany({
