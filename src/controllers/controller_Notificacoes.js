@@ -63,11 +63,12 @@ exports.searchNotification = async (req, res) => {
 
 exports.checkNotification = async (req, res) => {
   const {id} = req.body
+  const idNotificacoes = []
   
   try {
-    const notificacaoVisualizada = await prisma.controleNotificacoes.update({
+    const notificacaoVisualizada = await prisma.controleNotificacoes.updateMany({
       where:{
-        id: Number(id)
+        fk_UserId: Number(id)
       },
       data: {
         check: true

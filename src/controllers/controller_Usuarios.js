@@ -53,20 +53,23 @@ exports.searchUsers = async (req, res) => {
         })
 
         usuarios.map((obj) => {
-            if(obj.UsersRoles.fk_RoleId == 1){
-                funcao = "Admin"
-            } if(obj.UsersRoles.fk_RoleId == 2){
-                funcao = "FuncInicial"
-            } if(obj.UsersRoles.fk_RoleId == 3){
-                funcao = "Gerente"
-            } if(obj.UsersRoles.fk_RoleId == 4){
-                funcao = "FuncDev"
-            } if(obj.UsersRoles.fk_RoleId == 5){
-                funcao = "FuncRH"
-            } if(obj.UsersRoles.fk_RoleId == 6){
-                funcao = "FuncComercial"
-            } if(obj.UsersRoles.fk_RoleId == 7){
-                funcao = "FuncFinanceiro"
+            let funcao;
+            if (obj.UsersRoles && obj.UsersRoles.fk_RoleId) {
+              if(obj.UsersRoles.fk_RoleId == 1){
+                  funcao = "Admin"
+              } if(obj.UsersRoles.fk_RoleId == 2){
+                  funcao = "FuncInicial"
+              } if(obj.UsersRoles.fk_RoleId == 3){
+                  funcao = "Gerente"
+              } if(obj.UsersRoles.fk_RoleId == 4){
+                  funcao = "FuncDev"
+              } if(obj.UsersRoles.fk_RoleId == 5){
+                  funcao = "FuncRH"
+              } if(obj.UsersRoles.fk_RoleId == 6){
+                  funcao = "FuncComercial"
+              } if(obj.UsersRoles.fk_RoleId == 7){
+                  funcao = "FuncFinanceiro"
+              }
             }
             return usuariosTratados.push({
                 id: obj.id,
@@ -74,7 +77,7 @@ exports.searchUsers = async (req, res) => {
                 email: obj.email,
                 funcao: funcao
             })
-        })
+          })
         res.status(200).json(usuariosTratados)
     } catch (err){
         console.error(err);
