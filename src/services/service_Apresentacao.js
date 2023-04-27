@@ -1,3 +1,6 @@
+//Acrescentado fetch e dependência paga que seja possível carregar os dados no servidor.
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+
 exports.valuesApresentacao = async () => {
     const phaseApresentacaoId = "310784708"
 
