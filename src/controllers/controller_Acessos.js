@@ -67,6 +67,11 @@ exports.searchAll = async (req, res) => {
         fk_departamentoId: funcionario.fk_departamentoId,
       },
     });
+    
+    //Incluído regra para retornar array vazio para carregar página quando não tiver dados cadastrados.
+    if (acessos.length ===0) {
+     return res.status(200).json([]); 
+    }
 
     res.status(200).json({acessos});
 
