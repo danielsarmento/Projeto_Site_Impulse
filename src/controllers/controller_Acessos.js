@@ -77,9 +77,9 @@ exports.searchAll = async (req, res) => {
     //Incluído regra para retornar array vazio para carregar página quando não tiver dados cadastrados em acessos.
     if (acessos.length === 0) {
      return res.status(200).json([]); 
+    } else {
+      res.status(200).json({acessos});
     }
-
-    res.status(200).json({acessos});
 
   } catch (err) {
     console.error(err);
