@@ -52,9 +52,10 @@ exports.create = async (req, res) => {
 exports.searchAll = async (req, res) => {
   try {
     const candidatos = await prisma.trabalheConosco.findMany();
+    /* Removido no dia 27-04-2023 para corrigir erro ao carregar página com todos os usuáios.
     if (candidatos.length < 1) {
       return res.status(404).json({ message: "Dados Não Encontrados" });
-    }
+    }*/
     res.status(200).json({ candidatos });
   } catch (err) {
     console.error(err);
