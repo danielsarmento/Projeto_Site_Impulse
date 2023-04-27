@@ -64,9 +64,9 @@ exports.searchAll = async (req, res) => {
     });
     
     //Incluído regra para retornar array vazio para carregar página quando não tiver dados cadastrados em funcionários.
-    if (funcionario.length === 0) {
-     return res.status(200).json([]); 
-    }
+    if (!funcionario) {
+      return res.status(200).json({ acessos: [] });
+    }    
     
     const acessos = await prisma.acess.findMany({
       where: {
@@ -75,7 +75,7 @@ exports.searchAll = async (req, res) => {
     });
     
     //Incluído regra para retornar array vazio para carregar página quando não tiver dados cadastrados em acessos.
-    if (acessos.length === 0) {
+    if (acessos.length < 1) {
      return res.status(200).json([]); 
     } else {
       res.status(200).json({acessos});
