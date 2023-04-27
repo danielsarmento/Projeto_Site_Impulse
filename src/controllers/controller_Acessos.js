@@ -46,6 +46,7 @@ exports.searchId = async (req, res) => {
   }
 };
 
+
 exports.searchAll = async (req, res) => {
   try {
     const id = req.sub;
@@ -74,6 +75,7 @@ exports.searchAll = async (req, res) => {
     res.status(500).end();
   }
 };
+
 
 exports.updateOne = async (req, res) => {
   const { id } = req.params;
