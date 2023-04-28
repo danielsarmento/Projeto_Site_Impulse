@@ -29,7 +29,10 @@ const midlleware_RolePermission = require("../middlewares/middleware_roles")
 routes.post("/notificacao",middleware_autenticacao.auth,(req, res, next)=>{
         req.permission = "CriarNotificacao"
         next()},midlleware_RolePermission.verificaRole, controller_notificacao.createNotification);
-routes.get("/notificacoes",middleware_autenticacao.auth, controller_notificacao.searchNotification);
+routes.post("/notificacaoAgendada",middleware_autenticacao.auth,(req, res, next)=>{
+        req.permission = "CriarNotificacao"
+        next()},midlleware_RolePermission.verificaRole, controller_notificacao.createNotificationScheduled);
+routes.get("/notificacoes",middleware_autenticacao.auth, controller_notificacao.searchNotification); 
 routes.post("/notificacaoCheck",middleware_autenticacao.auth, controller_notificacao.checkNotification);
 
 // Rotas de Roles e Permissions

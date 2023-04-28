@@ -10,7 +10,7 @@ datasource db {
 model Employee {
   id                Int          @id @default(autoincrement())
   nome              String
-  rg                String?      @unique
+  rg                String
   cpf               String       @unique
   dataNascimento    DateTime
   email             String       @unique
@@ -91,16 +91,18 @@ model Product {
 }
 
 model User {
-  id                   Int                    @id @default(autoincrement())
-  nome                 String
-  email                String                 @unique
-  senha                String
-  created_at           DateTime               @default(now())
-  passwordResetExpires DateTime?
-  passwordResetToken   String?
-  UsersRoles           UsersRoles?
-  Notificacao          Notificacao[]
-  ControleNotificacoes ControleNotificacoes[]
+  id                            Int                             @id @default(autoincrement())
+  nome                          String
+  email                         String                          @unique
+  senha                         String
+  created_at                    DateTime                        @default(now())
+  passwordResetExpires          DateTime?
+  passwordResetToken            String?
+  UsersRoles                    UsersRoles?
+  Notificacao                   Notificacao[]
+  ControleNotificacoes          ControleNotificacoes[]
+  NotificacaoAgendada           NotificacaoAgendada[]
+  ControleNotificacoesAgendadas ControleNotificacoesAgendadas[]
 
   @@map("usuarios")
 }
@@ -263,4 +265,27 @@ model ControleNotificacoes {
 
   Usuario     User        @relation(fields: [fk_UserId], references: [id])
   Notificacao Notificacao @relation(fields: [fk_NotfId], references: [id])
+}
+
+model NotificacaoAgendada {
+  id           Int      @id @default(autoincrement())
+  titulo       String
+  conteudo     String
+  createdAt    DateTime @default(now())
+  dataAgendada DateTime
+  fk_UserId    Int
+
+  Usuario                       User                            @relation(fields: [fk_UserId], references: [id])
+  ControleNotificacoesAgendadas ControleNotificacoesAgendadas[]
+}
+
+model ControleNotificacoesAgendadas {
+  id                Int      @id @default(autoincrement())
+  fk_UserId         Int
+  fk_NotAgendadafId Int
+  createdAt         DateTime @default(now())
+  check             Boolean
+
+  Usuario             User                @relation(fields: [fk_UserId], references: [id])
+  NotificacaoAgendada NotificacaoAgendada @relation(fields: [fk_NotAgendadafId], references: [id])
 }

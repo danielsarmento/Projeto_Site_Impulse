@@ -68,6 +68,18 @@ exports.create = async (req, res) => {
   }
 
   try {
+    const verificaCadastro = await prisma.employee.findFirst({
+      where:{
+        OR: [
+          {cpf}, {email}
+        ]
+      }
+    })
+
+    if(verificaCadastro){
+      return res.status(400).json({ message: "Dados conflitantes" });
+    }
+
     const funcionarioCadastrado = await prisma.employee.create({
       data: {
         nome,
