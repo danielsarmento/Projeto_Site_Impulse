@@ -83,6 +83,9 @@ exports.searchNotification = async (req, res) => {
 
 exports.checkNotification = async (req, res) => {
   const {id} = req.body
+  const dataAtual = new Date
+  const [dataEdit,] = dataAtual.toISOString().split("T")
+  const [ano,mes,dia] = dataEdit.split("-")
   
   try {
     const notificacaoVisualizada = await prisma.controleNotificacoes.updateMany({
@@ -96,7 +99,12 @@ exports.checkNotification = async (req, res) => {
 
     const notificacaoVisualizadaAgendadas = await prisma.controleNotificacoesAgendadas.updateMany({
       where:{
-        fk_UserId: Number(id)
+        fk_UserId: Number(id),
+        NotificacaoAgendada:{
+          dataAgendada:{
+            lte: new Date(`${ano}-${mes}-${dia}T00:00:00.000Z`)
+          }
+        }
       },
       data: {
         check: true
