@@ -4,6 +4,8 @@ const PORT = 3333;
 const cors = require("cors");
 const routes = require("./src/routes/routes");
 
+require('dotenv').config();
+
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
