@@ -84,11 +84,8 @@ exports.search = async (req, res) => {
       },
     });
 
-    if(client.length < 1){
-      res.status(404).json({ message: 'Cliente não encontrado'})
-    } else {
-      res.status(200).json({client})
-    }
+    res.status(200).json({client})
+    
     
   } catch (err) {
     console.error(err);
