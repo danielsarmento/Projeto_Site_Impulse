@@ -8,14 +8,27 @@ exports.create = async (req, res) => {
   }
 
   try {
-    const departamentos = await prisma.departamento.create({
-      data: {
-        nome,
-        descricao,
-      },
-    });
+    const data = {nome}
+    if(descricao){
+      data.descricao = descricao
+    }
+    const deps = [];
+    const departamentosExistentes = await prisma.departamento.findMany();
+    departamentosExistentes.map((dep) => {
+      if(dep.nome == nome){
+        deps.push(dep)
+      }
+    })
 
-    res.status(200).json(departamentos);
+    if(deps.length > 0){
+      return res.status(409).json({mensagem: "Nome de departamento já cadastrado"})
+    } else {
+      const departamentos = await prisma.departamento.create({
+        data
+      });
+      return res.status(200).json(departamentos);
+    }
+
   } catch (err) {
     console.error(err);
     res.status(500).end();
@@ -58,14 +71,15 @@ exports.update = async (req, res) => {
     res.status(400).json({ mensagem: "Dados incompletos" });
   }
   try {
+    const data = {id, nome}
+    if(descricao){
+      data.descricao = descricao
+    }
     const departamento = await prisma.departamento.update({
       where: {
         id: Number(id),
       },
-      data: {
-        nome,
-        descricao,
-      },
+      data,
     });
 
     res.status(200).json(departamento);
