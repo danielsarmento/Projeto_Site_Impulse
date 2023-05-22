@@ -52,34 +52,44 @@ exports.searchAll = async (req, res) => {
     const id = req.sub;
     const id_ = Number(id);
 
-    const users = await prisma.user.findFirst({
-      where: {
-        id: id_,
-      },
-    });
-    const funcionario = await prisma.employee.findFirst({
-      where: {
-        email: users.email,
-      },
-    });
-    
-    //Incluído regra para retornar array vazio para carregar página quando não tiver dados cadastrados em funcionários.
-    if (!funcionario) {
-      return res.status(200).json({ acessos: [] });
-    }    
-    
-    const acessos = await prisma.acess.findMany({
-      where: {
-        fk_departamentoId: funcionario.fk_departamentoId,
-      },
-    });
-    
-    //Incluído regra para retornar array vazio para carregar página quando não tiver dados cadastrados em acessos.
-    if (acessos.length < 1) {
-     return res.status(200).json([]); 
+    const role = await prisma.usersRoles.findFirst({
+      where:{
+        fk_UserId: id_
+      }
+    })
+
+    if(role.fk_RoleId == 1 || role.fk_RoleId == 3){
+      const acessos = await prisma.acess.findMany();
+      return res.status(200).json({acessos});
     } else {
-      res.status(200).json({acessos});
+      const users = await prisma.user.findFirst({
+        where: {
+          id: id_,
+        },
+      });
+      const funcionario = await prisma.employee.findFirst({
+        where: {
+          email: users.email,
+        },
+      });
+  
+      
+      //Incluído regra para retornar array vazio para carregar página quando não tiver dados cadastrados em funcionários.
+      if (!funcionario) {
+        return res.status(200).json({ acessos: [] });
+      }    
+      
+      const acessos = await prisma.acess.findMany({
+        where: {
+          fk_departamentoId: funcionario.fk_departamentoId,
+        },
+      });
+      
+      //Incluído regra para retornar array vazio para carregar página quando não tiver dados cadastrados em acessos.
+      return res.status(200).json({acessos}); 
     }
+
+    
 
   } catch (err) {
     console.error(err);
