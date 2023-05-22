@@ -8,15 +8,27 @@ exports.create = async (req, res) => {
     }
 
     try{
-        const cargo = await prisma.cargo.create({
-            data: {
-                nome,
-                descricao
+        const data = {nome};
+        if(descricao){
+            data.descricao = descricao
+        }
+        const cargoExistente = [];
+        const cargosExistentes = await prisma.cargo.findMany();
+        cargosExistentes.map((obj) => {
+            if(obj.nome == nome){
+                cargoExistente.push(obj)
             }
-            
         })
 
-        res.status(200).json(cargo)
+        if(cargoExistente.length > 0){
+            return res.status(409).json({mensagem: "Nome de cargo já cadastrado"})
+        } else{
+            const cargo = await prisma.cargo.create({
+                data
+            });
+    
+            return res.status(200).json(cargo)
+        }
 
     } catch (err) {
         console.error(err);
@@ -62,14 +74,15 @@ exports.update = async (req, res) => {
         res.status(400).json({mensagem: "Dados incompletos"})
     }
     try{
+        const data = {nome};
+        if(descricao){
+            data.descricao = descricao
+        }
         const cargo = await prisma.cargo.update({
             where: {
                 id: Number(id)
             },
-            data:{
-                nome,
-                descricao
-            }
+            data
         })
 
         res.status(200).json(cargo)
