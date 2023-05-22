@@ -8,12 +8,12 @@ datasource db {
 }
 
 model Employee {
-  id                Int          @id @default(autoincrement())
+  id                Int           @id @default(autoincrement())
   nome              String
   rg                String
-  cpf               String       @unique
+  cpf               String        @unique
   dataNascimento    DateTime
-  email             String       @unique
+  email             String        @unique
   telefoneWapp      String
   salario           String?
   codBanco          String?
@@ -35,6 +35,7 @@ model Employee {
   cidade            String
   estado            String
   cep               String
+  dia_pgto          DateTime?
   fk_cargoId        Int?
   fk_departamentoId Int?
   formulario1       Form1[]
@@ -187,7 +188,7 @@ model Form2 {
 }
 
 model Acess {
-  id                Int          @id @default(autoincrement())
+  id                Int           @id @default(autoincrement())
   titulo            String
   url               String
   login             String
@@ -253,7 +254,7 @@ model Notificacao {
   createdAt DateTime @default(now())
   fk_UserId Int?
 
-  Usuario              User?                   @relation(fields: [fk_UserId], references: [id])
+  Usuario              User?                  @relation(fields: [fk_UserId], references: [id])
   ControleNotificacoes ControleNotificacoes[]
 }
 
@@ -276,7 +277,7 @@ model NotificacaoAgendada {
   dataAgendada DateTime
   fk_UserId    Int?
 
-  Usuario                       User?                            @relation(fields: [fk_UserId], references: [id])
+  Usuario                       User?                           @relation(fields: [fk_UserId], references: [id])
   ControleNotificacoesAgendadas ControleNotificacoesAgendadas[]
 }
 

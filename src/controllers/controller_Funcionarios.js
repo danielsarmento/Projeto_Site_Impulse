@@ -40,6 +40,7 @@ exports.create = async (req, res) => {
     complemento,
     bairro,
     cidade,
+    dia_pgto,
     estado,
     cep,
     departamentoId,
@@ -109,6 +110,7 @@ exports.create = async (req, res) => {
         cidade,
         estado,
         cep,
+        dia_pgto,
         departamento: {
           connect: {
             id: Number(departamentoId),
@@ -235,6 +237,7 @@ exports.updateOne = async (req, res) => {
     cidade,
     estado,
     cep,
+    dia_pgto,
     departamentoId,
     cargoId
   } = req.body;
@@ -297,6 +300,7 @@ exports.updateOne = async (req, res) => {
         cidade,
         estado,
         cep,
+        dia_pgto,
         departamento: {
           connect: {
             id: Number(departamentoId),
