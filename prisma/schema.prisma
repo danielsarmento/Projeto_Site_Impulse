@@ -35,12 +35,12 @@ model Employee {
   cidade            String
   estado            String
   cep               String
-  fk_cargoId        Int
-  fk_departamentoId Int
+  fk_cargoId        Int?
+  fk_departamentoId Int?
   formulario1       Form1[]
   formulario2       Form2[]
-  cargo             Cargo        @relation(fields: [fk_cargoId], references: [id])
-  departamento      Departamento @relation(fields: [fk_departamentoId], references: [id])
+  cargo             Cargo?        @relation(fields: [fk_cargoId], references: [id])
+  departamento      Departamento? @relation(fields: [fk_departamentoId], references: [id])
 
   @@map("funcionarios")
 }
@@ -77,7 +77,7 @@ model Acquisition {
   valorMensal    String?
   fk_clientId    Int
   descricao      String?
-  client         Client    @relation(fields: [fk_clientId], references: [id])
+  client         Client    @relation(fields: [fk_clientId], references: [id], onDelete: Cascade)
 
   @@map("aquisicoes")
 }
@@ -134,8 +134,8 @@ model UsersRoles {
   fk_UserId  Int      @unique
   fk_RoleId  Int
   created_at DateTime @default(now())
-  role       Roles    @relation(fields: [fk_RoleId], references: [id])
-  user       User     @relation(fields: [fk_UserId], references: [id])
+  role       Roles    @relation(fields: [fk_RoleId], references: [id], onDelete: Cascade)
+  user       User     @relation(fields: [fk_UserId], references: [id], onDelete: Cascade)
 }
 
 model RolesPermissions {
@@ -143,8 +143,8 @@ model RolesPermissions {
   fk_RoleId       Int
   fk_PermissionId Int
   created_at      DateTime    @default(now())
-  permission      Permissions @relation(fields: [fk_PermissionId], references: [id])
-  role            Roles       @relation(fields: [fk_RoleId], references: [id])
+  permission      Permissions @relation(fields: [fk_PermissionId], references: [id], onDelete: Cascade)
+  role            Roles       @relation(fields: [fk_RoleId], references: [id], onDelete: Cascade)
 }
 
 model Form1 {
@@ -161,7 +161,7 @@ model Form1 {
   question9     String?
   created_at    DateTime @unique @default(now())
   fk_employeeId Int
-  Employee      Employee @relation(fields: [fk_employeeId], references: [id])
+  Employee      Employee @relation(fields: [fk_employeeId], references: [id], onDelete: Cascade)
 
   @@map("formulario1")
 }
@@ -181,7 +181,7 @@ model Form2 {
   question10    String?
   created_at    DateTime @default(now())
   fk_employeeId Int
-  Employee      Employee @relation(fields: [fk_employeeId], references: [id])
+  Employee      Employee @relation(fields: [fk_employeeId], references: [id], onDelete: Cascade)
 
   @@map("formulario2")
 }
@@ -192,8 +192,8 @@ model Acess {
   url               String
   login             String
   senha             String
-  fk_departamentoId Int
-  departamento      Departamento @relation(fields: [fk_departamentoId], references: [id])
+  fk_departamentoId Int?
+  departamento      Departamento? @relation(fields: [fk_departamentoId], references: [id])
 
   @@map("acessos")
 }
@@ -243,7 +243,7 @@ model scores {
   softskills      String?
   fk_candidatoId  Int
   score           Int?            @default(0)
-  TrabalheConosco TrabalheConosco @relation(fields: [fk_candidatoId], references: [id], map: "Observacoes_fk_candidatoId_fkey")
+  TrabalheConosco TrabalheConosco @relation(fields: [fk_candidatoId], references: [id], map: "Observacoes_fk_candidatoId_fkey", onDelete: Cascade)
 }
 
 model Notificacao {
@@ -251,9 +251,9 @@ model Notificacao {
   titulo    String
   conteudo  String
   createdAt DateTime @default(now())
-  fk_UserId Int
+  fk_UserId Int?
 
-  Usuario              User                   @relation(fields: [fk_UserId], references: [id])
+  Usuario              User?                   @relation(fields: [fk_UserId], references: [id])
   ControleNotificacoes ControleNotificacoes[]
 }
 
@@ -264,8 +264,8 @@ model ControleNotificacoes {
   createdAt DateTime @default(now())
   check     Boolean
 
-  Usuario     User        @relation(fields: [fk_UserId], references: [id])
-  Notificacao Notificacao @relation(fields: [fk_NotfId], references: [id])
+  Usuario     User        @relation(fields: [fk_UserId], references: [id], onDelete: Cascade)
+  Notificacao Notificacao @relation(fields: [fk_NotfId], references: [id], onDelete: Cascade)
 }
 
 model NotificacaoAgendada {
@@ -274,9 +274,9 @@ model NotificacaoAgendada {
   conteudo     String
   createdAt    DateTime @default(now())
   dataAgendada DateTime
-  fk_UserId    Int
+  fk_UserId    Int?
 
-  Usuario                       User                            @relation(fields: [fk_UserId], references: [id])
+  Usuario                       User?                            @relation(fields: [fk_UserId], references: [id])
   ControleNotificacoesAgendadas ControleNotificacoesAgendadas[]
 }
 
@@ -287,6 +287,6 @@ model ControleNotificacoesAgendadas {
   createdAt         DateTime @default(now())
   check             Boolean
 
-  Usuario             User                @relation(fields: [fk_UserId], references: [id])
-  NotificacaoAgendada NotificacaoAgendada @relation(fields: [fk_NotAgendadafId], references: [id])
+  Usuario             User                @relation(fields: [fk_UserId], references: [id], onDelete: Cascade)
+  NotificacaoAgendada NotificacaoAgendada @relation(fields: [fk_NotAgendadafId], references: [id], onDelete: Cascade)
 }

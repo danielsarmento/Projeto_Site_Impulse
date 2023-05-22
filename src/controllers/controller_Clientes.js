@@ -59,9 +59,6 @@ exports.searchAll = async (req, res) => {
 
   try{
     const clients = await prisma.client.findMany();
-    if(clients.length < 1){
-      return res.status(404).json({message: "Dados Não Encontrados"})
-    }
     res.status(200).json({clients})
     
   } catch (err) {
