@@ -35,7 +35,7 @@ model Employee {
   cidade            String
   estado            String
   cep               String
-  dia_pgto          DateTime?
+  dia_pgto          String?
   fk_cargoId        Int?
   fk_departamentoId Int?
   formulario1       Form1[]
