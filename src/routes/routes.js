@@ -23,7 +23,10 @@ const controller_omie = require('../controllers/controller_Omie');
 const controller_notificacao = require("../controllers/controller_Notificacoes");
 
 const middleware_autenticacao = require("../middlewares/middleware_autenticacao");
-const midlleware_RolePermission = require("../middlewares/middleware_roles")
+const midlleware_RolePermission = require("../middlewares/middleware_roles");
+
+// Testes
+
 
 //Rotas de Notificação
 routes.post("/notificacao",middleware_autenticacao.auth,(req, res, next)=>{
@@ -162,6 +165,12 @@ routes.post("/formularios/form2/buscar",middleware_autenticacao.auth,(req, res, 
 routes.get("/formularios/relatorio",middleware_autenticacao.auth,(req, res, next)=>{
     req.permission = "BuscarRelatorioFormularioNPS"
     next()},midlleware_RolePermission.verificaRole, controller_form1.relatorio);
+routes.get('/formularios/form1/informacoes',middleware_autenticacao.auth,(req, res, next)=>{
+    req.permission = "BuscarFormularioNPS"
+    next()},midlleware_RolePermission.verificaRole, controller_form1.formulariosSearch);
+routes.get('/formularios/form1/:id',middleware_autenticacao.auth,(req, res, next)=>{
+    req.permission = "BuscarFormularioNPS"
+    next()},midlleware_RolePermission.verificaRole, controller_form1.formulariosSearchById);
 
 // Rotas de Acessos/acessossites
 routes.post("/acessossites",middleware_autenticacao.auth, (req, res, next)=>{

@@ -7,23 +7,26 @@ const [ano,mes,] = dataEdit.split("-")
 
 exports.create = async (req, res) => {
     const { email, question1, question2, question3, question4, question5, question6, question7, question8, question9} = req.body;
+    const dataAtual = new Date
+    const [dataEdit,] = dataAtual.toISOString().split("T")
+    const [ano,mes,] = dataEdit.split("-")
     if(!email){
         return res.status(400).json({message: "Dados Inválidos"})
     }
-    const formularioPreenchido = await prisma.form1.findMany({
-      where: {
-        email: email,
-        created_at:{
-          gte: new Date(`${ano}-${mes}-01T00:00:00.000Z`),
-          lte: new Date(`${ano}-${mes}-31T00:00:00.000Z`)
-        }
-      }
-    })
-    if(formularioPreenchido.length > 0){
-      return res.status(401).json({message: "Usuário já respondeu ao formulário este mês!"})
-    }
-
+    
     try{
+      const formularioPreenchido = await prisma.form1.findMany({
+        where: {
+          email: email,
+          created_at:{
+            gte: new Date(`${ano}-${mes}-01T00:00:00.000Z`),
+            lte: new Date(`${ano}-${mes}-31T00:00:00.000Z`)
+          }
+        }
+      })
+      if(formularioPreenchido.length > 0){
+        return res.status(401).json({message: "Usuário já respondeu ao formulário este mês!"})
+      }
         const funcionario = await prisma.employee.findMany({
             where: {
                 email: email
@@ -140,4 +143,138 @@ exports.relatorio = async (req, res) => {
     } catch (error) {
         console.error(error);
     }
+}
+
+//"/formularios?mes=janeiro&ano=2023"
+exports.formulariosSearch = async (req, res) => {
+  const {mes, ano} = req.query
+  
+  const dataAtual = new Date
+  const [dataEdit,] = dataAtual.toISOString().split("T")
+  const [year,month,] = dataEdit.split("-")
+
+  const numberYear = Number(year)
+  
+  try {
+    if(!mes && !ano){
+      const formularios = await prisma.form1.findMany();
+      console.log('Não Filtrou')
+      const data = await buscarFormularios(formularios)
+      return res.status(200).json(data)
+    }
+
+    if(mes && ano){
+      const formularios = await prisma.form1.findMany({
+        where: {
+          created_at:{
+            gte: new Date(`${ano}-${mes}-01T00:00:00.000Z`),
+            lte: new Date(`${ano}-${mes}-31T00:00:00.000Z`)
+          }
+        }
+      })
+      console.log('Enviou Mês e Ano')
+      const data = await buscarFormularios(formularios)
+      return res.status(200).json(data)
+    }
+
+    if(mes && !ano){
+      const formularios = await prisma.form1.findMany({
+        where: {
+          created_at:{
+            gte: new Date(`2000-${mes}-01T00:00:00.000Z`),
+            lte: new Date(`${numberYear}-${mes}-31T00:00:00.000Z`)
+          }
+        }
+      });
+      console.log('Enviou Apenas Mês')
+      const data = await buscarFormularios(formularios)
+      return res.status(200).json(data)
+    }
+
+    if(!mes && ano){
+      const formularios = await prisma.form1.findMany({
+        where: {
+          created_at:{
+            gte: new Date(`${ano}-01-01T00:00:00.000Z`),
+            lte: new Date(`${ano}-12-31T00:00:00.000Z`)
+          }
+        }
+      });
+      console.log('Enviou Apenas Ano')
+      const data = await buscarFormularios(formularios)
+      return res.status(200).json(data)
+    }
+
+  } catch (err){
+    console.log(err);
+    res.status(500).end()
+  }
+}
+
+async function buscarFormularios (formularios) {
+  const meses = {
+    Jan : "Janeiro",
+    Feb : "Fevereiro",
+    Mar : "Março",
+    Apr : "Abril",
+    May : "Maio",
+    Jun : "Junho",
+    Jul : "Julho",
+    Aug : "Agosto",
+    Sep : "Setembro",
+    Oct : "Outubro",
+    Nov : "Novembro",
+    Dec : "Dezembro"
+  }
+
+  let funcionarios = [];
+  let data = [];
+  let anos = [];
+
+  //Buscando os Anos dos Registros
+  formularios.map((form) => {
+    let text = String(form.created_at)
+    const [, , ,year,] = text.split(" ")
+    if(!anos.includes(year)){
+      anos.push(year)
+    }
+  })
+
+  //Salvando os funcionários no array funcionarios
+  await Promise.all(
+    formularios.map(async (obj) => {
+      //console.log(obj)
+    const func = await prisma.employee.findFirst({
+      where:{
+        id: obj.fk_employeeId
+      },
+      include:{
+        cargo: true,
+        departamento: true
+      }
+    })
+    let mes = String(obj.created_at)
+    const [, mesObtido,] = mes.split(" ")
+    funcionarios.push({idFuncionario: func.id, nome: func.nome ,cargo: func.cargo.nome, departamento: func.departamento.nome, idFormulario: obj.id, mes:meses[mesObtido]})
+  }));
+  
+  
+  return {anos, funcionarios}
+}
+
+exports.formulariosSearchById = async (req, res) => {
+  const {id} = req.params
+  const _id = Number(id)
+
+  try{
+    const formulario = await prisma.form1.findUnique({
+      where:{
+        id: _id
+      }
+    })
+    res.status(200).json(formulario)
+  } catch (err){
+    console.log(err)
+    res.status(500).end()
+  }
 }
