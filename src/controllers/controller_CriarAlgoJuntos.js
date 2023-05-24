@@ -30,7 +30,7 @@ exports.criarCard = async (req, res) => {
         });
 
         const novoCardOportunidadeJSON = novoCardOportunidade.json()
-        res.status(200).json({message: "Sucess"})
+        res.status(200).json({mensagem: "Sucesso!"})
 
     } catch (err) {
         console.error(err);

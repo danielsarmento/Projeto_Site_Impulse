@@ -12,7 +12,7 @@ exports.createPermission = async (req, res) =>{
         });
 
         if(existPermission.length > 0){
-            return res.status(200).json({message:"Permission already exists"})
+            return res.status(200).json({mensagem:"Permissão já cadastrada!"})
         }
 
         const newPermission = await prisma.permissions.create({

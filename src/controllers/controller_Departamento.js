@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 exports.create = async (req, res) => {
   const { nome, descricao } = req.body;
   if (!nome) {
-    res.status(400).json({ mensagem: "Dados incompletos" });
+    res.status(400).json({ mensagem: "Nome é requerido!" });
   }
 
   try {
@@ -49,7 +49,7 @@ exports.searchAll = async (req, res) => {
 exports.searchById = async (req, res) => {
   const { id } = req.params;
   if (!id) {
-    res.status(400).json({ mensagem: "Dados incompletos" });
+    res.status(400).json({ mensagem: "Id é requerido!" });
   }
   try {
     const departamento = await prisma.departamento.findUnique({
@@ -68,7 +68,7 @@ exports.searchById = async (req, res) => {
 exports.update = async (req, res) => {
   const { id, nome, descricao } = req.body;
   if (!id || !nome) {
-    res.status(400).json({ mensagem: "Dados incompletos" });
+    res.status(400).json({ mensagem: "Id e nome são requeridos!" });
   }
   try {
     const data = {id, nome}
@@ -91,6 +91,9 @@ exports.update = async (req, res) => {
 
 exports.delete = async (req, res) => {
   const { id } = req.body;
+  if(!id){
+    res.status(400).json({mensagem: "Id é requerido!"})
+  }
   try {
     const departamento = await prisma.departamento.delete({
       where: {
@@ -98,7 +101,7 @@ exports.delete = async (req, res) => {
       },
     });
 
-    res.status(200).json(departamento);
+    res.status(200).json({mensagem: "Departamento removido com sucesso!"});
   } catch (err) {
     console.error(err);
     res.status(500).end();

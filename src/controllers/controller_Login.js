@@ -13,10 +13,7 @@ exports.autenticaUsuario = async (req, res) => {
     let role;
     
     if(!email || !senha){
-        return res.status(400).json({
-            error: "Dados inválidos",
-            message: "Um ou mais campos estão inválidos"
-        })
+        return res.status(400).json({mensagem: "Dados inválidos!"})
     }
     try{
 
@@ -28,6 +25,10 @@ exports.autenticaUsuario = async (req, res) => {
                 UsersRoles: true
             }
         })
+
+        if(!user){
+            return res.status(404).json({mensagem: "Usuário não encontrado!"})
+        }
 
         if(email === user.email && senhaCrypto === user.senha){
             // Gerar Token
@@ -64,7 +65,7 @@ exports.autenticaUsuario = async (req, res) => {
             })
         } else {
             return res.status(401).json({
-                message: "Email ou senha estão inválidos",
+                mensagem: "Email ou senha inválidos!"
               }); 
         }
 

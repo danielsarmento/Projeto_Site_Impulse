@@ -66,7 +66,7 @@ exports.create = async (req, res) => {
     !departamentoId ||
     !cargoId
   ) {
-    return res.status(400).json({ message: "Dados Inválidos" });
+    return res.status(400).json({ mensagem: "Um ou mais campos obrigatórios não enviados!" });
   }
 
   try {
@@ -79,7 +79,7 @@ exports.create = async (req, res) => {
     })
 
     if(verificaCadastro){
-      return res.status(400).json({ message: "Dados conflitantes" });
+      return res.status(409).json({ mensagem: "Dados já cadastrados!" });
     }
 
     const funcionarioCadastrado = await prisma.employee.create({
@@ -124,7 +124,7 @@ exports.create = async (req, res) => {
       },
     });
     res.status(200).json({
-      message: "Funcionário cadastrado com sucesso!",
+      mensagem: "Funcionário cadastrado com sucesso!",
       funcionarioCadastrado,
     });
   } catch (err) {
@@ -155,7 +155,7 @@ exports.search = async (req, res) => {
   const { nomeFuncionario } = req.params;
 
   if (!nomeFuncionario) {
-    return res.status(404).json({ message: "Dados Inválidos" });
+    return res.status(404).json({ mensagem: "Nome é requerido!" });
   }
   try {
     const func = await prisma.employee.findMany({
@@ -181,7 +181,7 @@ exports.search = async (req, res) => {
 exports.search_Id = async (req, res) => {
   const { id } = req.params;
   if (!id) {
-    return res.status(400).json({ message: "Dados Inválidos" });
+    return res.status(400).json({ mensagem: "Id é requerido!" });
   }
   const id_ = parseInt(id);
 
@@ -206,7 +206,7 @@ exports.search_Id = async (req, res) => {
 exports.updateOne = async (req, res) => {
   const { id } = req.params;
   if (!id) {
-    return res.status(400).json({ message: "Dados Inválidos" });
+    return res.status(400).json({ mensagem: "Id é requerido!" });
   }
 
   const id_ = parseInt(id);
@@ -243,7 +243,7 @@ exports.updateOne = async (req, res) => {
   } = req.body;
 
   if (!id) {
-    return res.status(400).json({ message: "Dados Inválidos" });
+    return res.status(400).json({ mensagem: "Id é requerido!" });
   }
 
   if (
@@ -265,7 +265,7 @@ exports.updateOne = async (req, res) => {
     !departamentoId ||
     !cargoId
   ) {
-    return res.status(400).json({ message: "Dados Inválidos" });
+    return res.status(400).json({ mensagem: "Um ou mais campos obrigatórios não enviados!" });
   }
 
   try {
@@ -316,7 +316,7 @@ exports.updateOne = async (req, res) => {
 
     res
       .status(200)
-      .json({ message: "Funcionário editado com sucesso!", func_edit });
+      .json({ mensagem: "Funcionário editado com sucesso!", func_edit });
   } catch (err) {
     console.error(err);
     res.status(500).end();
@@ -327,7 +327,7 @@ exports.deleteOne = async (req, res) => {
   const { id } = req.params;
 
   if (!id) {
-    return res.status(400).json({ message: "Dados Inválidos" });
+    return res.status(400).json({ mensagem: "Id é requerido!" });
   }
   const id_ = parseInt(id);
 
@@ -340,7 +340,7 @@ exports.deleteOne = async (req, res) => {
 
     res
       .status(200)
-      .json({ message: "Funcionário removido com sucesso!", func_edit });
+      .json({ mensagem: "Funcionário removido com sucesso!", func_edit });
   } catch (err) {
     console.error(err);
     res.status(500).end();

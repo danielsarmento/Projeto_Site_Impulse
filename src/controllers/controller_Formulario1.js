@@ -11,7 +11,7 @@ exports.create = async (req, res) => {
     const [dataEdit,] = dataAtual.toISOString().split("T")
     const [ano,mes,] = dataEdit.split("-")
     if(!email){
-        return res.status(400).json({message: "Dados Inválidos"})
+        return res.status(400).json({mensagem: "Email é requerido!"})
     }
     
     try{
@@ -25,7 +25,7 @@ exports.create = async (req, res) => {
         }
       })
       if(formularioPreenchido.length > 0){
-        return res.status(401).json({message: "Usuário já respondeu ao formulário este mês!"})
+        return res.status(401).json({mensagem: "Usuário já respondeu ao formulário este mês!"})
       }
         const funcionario = await prisma.employee.findMany({
             where: {
@@ -34,7 +34,7 @@ exports.create = async (req, res) => {
         });
 
         if(funcionario.length < 1){
-            return res.status(404).json({message: 'Email não cadastrado'})
+            return res.status(404).json({mensagem: 'Email não cadastrado'})
         }
         let fk_employeedId = funcionario[0].id;
   
@@ -69,7 +69,7 @@ exports.searchOne = async (req, res) => {
     const { email } = req.body;
     
     if(!email){
-        return res.status(400).json({message: "Dados Inválidos"})
+        return res.status(400).json({mensagem: "Email é requerido!"})
     }
 
     try{
@@ -138,10 +138,11 @@ exports.relatorio = async (req, res) => {
         return acc;
       }, {});
   
-      return res.json(result);
+      return res.status(200).json(result);
 
     } catch (error) {
         console.error(error);
+        res.status(500).end()
     }
 }
 

@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 exports.create = async (req, res) => {
   const { titulo, url, login, senha, departamentoId } = req.body;
   if (!titulo || !url || !login || !senha || !departamentoId) {
-    return res.status(400).json({ message: "Dados Inválidos" });
+    return res.status(400).json({ mensagem: "Um ou mais campos obrigatórios não enviados!" });
   }
 
   try {
@@ -28,7 +28,7 @@ exports.create = async (req, res) => {
 exports.searchId = async (req, res) => {
   const { id } = req.params;
   if (!id) {
-    return res.status(400).json({ message: "Dados Inválidos" });
+    return res.status(400).json({ mensagem: "Id é requerido!" });
   }
 
   const id_ = parseInt(id);
@@ -46,21 +46,20 @@ exports.searchId = async (req, res) => {
   }
 };
 
-
 exports.searchAll = async (req, res) => {
   try {
     const id = req.sub;
     const id_ = Number(id);
 
     const role = await prisma.usersRoles.findFirst({
-      where:{
-        fk_UserId: id_
-      }
-    })
+      where: {
+        fk_UserId: id_,
+      },
+    });
 
-    if(role.fk_RoleId == 1 || role.fk_RoleId == 3){
+    if (role.fk_RoleId == 1 || role.fk_RoleId == 3) {
       const acessos = await prisma.acess.findMany();
-      return res.status(200).json({acessos});
+      return res.status(200).json({ acessos });
     } else {
       const users = await prisma.user.findFirst({
         where: {
@@ -72,42 +71,37 @@ exports.searchAll = async (req, res) => {
           email: users.email,
         },
       });
-  
-      
+
       //Incluído regra para retornar array vazio para carregar página quando não tiver dados cadastrados em funcionários.
       if (!funcionario) {
         return res.status(200).json({ acessos: [] });
-      }    
-      
+      }
+
       const acessos = await prisma.acess.findMany({
         where: {
           fk_departamentoId: funcionario.fk_departamentoId,
         },
       });
-      
+
       //Incluído regra para retornar array vazio para carregar página quando não tiver dados cadastrados em acessos.
-      return res.status(200).json({acessos}); 
+      return res.status(200).json({ acessos });
     }
-
-    
-
   } catch (err) {
     console.error(err);
     res.status(500).end();
   }
 };
 
-
 exports.updateOne = async (req, res) => {
   const { id } = req.params;
   const { titulo, url, login, senha, departamentoId } = req.body;
 
   if (!titulo || !url || !login || !senha || !departamentoId) {
-    return res.status(400).json({ message: "Dados Inválidos" });
+    return res.status(400).json({ mensagem: "Um ou mais campos obrigatórios não enviados!" });
   }
 
   if (!id) {
-    return res.status(400).json({ message: "Dados Inválidos" });
+    return res.status(400).json({ mensagem: "Id é requerido!" });
   }
 
   const id_ = parseInt(id);
@@ -128,7 +122,7 @@ exports.updateOne = async (req, res) => {
 
     res
       .status(200)
-      .json({ message: "Acesso editado com sucesso!", acessoUpdate });
+      .json({ mensagem: "Acesso editado com sucesso!", acessoUpdate });
   } catch (err) {
     console.error(err);
     res.status(500).end();
@@ -138,7 +132,7 @@ exports.updateOne = async (req, res) => {
 exports.deleteOne = async (req, res) => {
   const { id } = req.params;
   if (!id) {
-    return res.status(400).json({ message: "Dados Inválidos" });
+    return res.status(400).json({ mensagem: "Id é requerido!" });
   }
   const id_ = parseInt(id);
 
@@ -151,7 +145,7 @@ exports.deleteOne = async (req, res) => {
 
     res
       .status(200)
-      .json({ message: "Acesso removido com sucesso!", acessoDelete });
+      .json({ mensagem: "Acesso removido com sucesso!", acessoDelete });
   } catch (err) {
     console.error(err);
     res.status(500).end();

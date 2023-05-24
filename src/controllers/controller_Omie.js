@@ -35,7 +35,7 @@ exports.searchByMesRef = async (req, res) => {
     const { mesref } = req.query
 
     if (!mesref) {
-        res.status(400).json({ mensagem: "Dados incompletos" })
+        res.status(400).json({ mensagem: "Mês é requerido!" })
     }
 
     try {
@@ -67,7 +67,7 @@ exports.searchByIntervalo = async (req, res) => {
     const { indicador, mesref_inicio, mesref_fim } = req.query;
 
     if (!indicador || !mesref_inicio || !mesref_fim) {
-        res.status(400).json({ mensagem: "Dados incompletos" });
+        res.status(400).json({ mensagem: "Um ou mais campos obrigatórios não enviados!" });
     }
 
     try {

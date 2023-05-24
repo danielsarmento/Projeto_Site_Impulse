@@ -22,8 +22,7 @@ exports.create = async (req, res) => {
     !pretensao
   ) {
     return res.status(400).json({
-      message: "Dados Inválidos",
-      error: "Campos nome, telefone, email, vagaEscolhida, nivelAtual, pretensao são obrigatórios.",
+      mensagem: "Um ou mais campos obrigatórios não enviados!"
     });
   }
 
@@ -42,7 +41,7 @@ exports.create = async (req, res) => {
     });
     res
       .status(200)
-      .json({ message: "Candidato cadastrado com sucesso!", novoCandidato });
+      .json({ mensagem: "Candidato cadastrado com sucesso!", novoCandidato });
   } catch (err) {
     console.error(err);
     res.status(500).end();
@@ -66,7 +65,7 @@ exports.searchAll = async (req, res) => {
 exports.searchById = async (req, res) => {
   const { id } = req.params;
   if (!id) {
-    return res.status(400).json({ message: "Dados Inválidos" });
+    return res.status(400).json({ mensagem: "Id é requerido!" });
   }
 
   const id_ = parseInt(id);
@@ -78,7 +77,7 @@ exports.searchById = async (req, res) => {
     });
 
     if (candidato.length < 1) {
-      res.status(404).json({ message: "Candidato não encontrado" });
+      res.status(404).json({ mensagem: "Candidato não encontrado!" });
     } else {
       res.status(200).json({ candidato });
     }
@@ -104,7 +103,7 @@ exports.searchByNameOrJobs = async (req, res) => {
     });
 
     if (candidatos.length === 0) {
-      return res.status(404).json({ message: "Nenhum candidato encontrado" });
+      return res.status(404).json({ mensagem: "Nenhum candidato encontrado!" });
     }
 
     res.status(200).json({ candidatos });
@@ -117,7 +116,7 @@ exports.searchByNameOrJobs = async (req, res) => {
 exports.deleteOne = async (req, res) => {
   const { id } = req.params;
   if (!id) {
-    return res.status(400).json({ message: "Dados Inválidos" });
+    return res.status(400).json({ mensagem: "Id é requerido!" });
   }
   const id_ = parseInt(id);
 
@@ -128,7 +127,7 @@ exports.deleteOne = async (req, res) => {
       },
     });
 
-    res.status(200).json({ message: "Recurso removido com sucesso!", recursoExcluido });
+    res.status(200).json({ mensagem: "Recurso removido com sucesso!"});
   } catch (err) {
     console.error(err);
     res.status(500).end();
@@ -138,7 +137,7 @@ exports.deleteOne = async (req, res) => {
 exports.createObs = async (req, res) => {
   const { id } = req.params;
   if (!id) {
-    return res.status(400).json({ message: "Necessário informar o candidato" });
+    return res.status(400).json({ mensagem: "Id é requerido!" });
   }
   const candidatoId = parseInt(id);
 
@@ -146,7 +145,7 @@ exports.createObs = async (req, res) => {
   if (!softskills || !score) {
     return res
       .status(400)
-      .json({ message: "Necessário preencher a softskill e score." });
+      .json({ mensagem: "Softskill e Score são requeridos!" });
   }
 
   try {
@@ -157,7 +156,7 @@ exports.createObs = async (req, res) => {
     });
 
     if (!candidato) {
-      return res.status(404).json({ message: "Candidato não cadastrado" });
+      return res.status(404).json({ mensagem: "Candidato não cadastrado!" });
     }
 
     const salvarObs = await prisma.scores.create({
@@ -175,7 +174,7 @@ exports.createObs = async (req, res) => {
     res.status(200).json({ salvarObs });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Erro ao salvar observação" });
+    res.status(500).end()
   }
 };
 
@@ -183,7 +182,7 @@ exports.searchAllObs = async (req, res) => {
   const { id } = req.params;
   if (!id || isNaN(parseInt(id))) {
     return res.status(400).json({
-      message: "Necessário informar o id do candidato como um número",
+      mensagem: "Id é requerido!",
     });
   }
   const candidatoId = parseInt(id);
@@ -198,7 +197,7 @@ exports.searchAllObs = async (req, res) => {
     if (scores.length < 1) {
       return res
         .status(404)
-        .json({ message: "Não existe observações para o candidato informado" });
+        .json({ mensagem: "Não existem observações para o candidato informado!" });
     }
 
     res.status(200).json({ scores });
@@ -211,7 +210,7 @@ exports.searchAllObs = async (req, res) => {
 exports.searchObsById = async (req, res) => {
   const { id } = req.params;
   if (!id) {
-    return res.status(400).json({ message: "Necessário informar o candidato" });
+    return res.status(400).json({ mensagem: "Id é requerido!" });
   }
   const candidatoId = parseInt(id);
 
@@ -219,7 +218,7 @@ exports.searchObsById = async (req, res) => {
   if (!idObs) {
     return res
       .status(400)
-      .json({ message: "Necessário informar o score" });
+      .json({ mensagem: "Score é requerido!" });
   }
 
   const idObservacao = parseInt(idObs);
@@ -233,7 +232,7 @@ exports.searchObsById = async (req, res) => {
     });
 
     if (!observacao) {
-      res.status(404).json({ message: "Observação não encontrada" });
+      res.status(404).json({ mensagem: "Observação não encontrada!" });
     } else {
       res.status(200).json({ observacao });
     }
@@ -247,7 +246,7 @@ exports.updateOne = async (req, res) => {
   const { id } = req.params;
 
   if (!id) {
-    return res.status(400).json({ message: "Dados Inválidos" });
+    return res.status(400).json({ mensagem: "Id é requerido!" });
   }
 
   const {
@@ -258,9 +257,7 @@ exports.updateOne = async (req, res) => {
     !comentario && !cargo && !departamento
   ) {
     return res.status(400).json({
-      message: "Dados Inválidos",
-      error:
-        "Pelo menos um desses campos comentário, departamento e comentário devem ser preenchidos",
+      mensagem: "Um ou mais campos obrigatórios não enviados!"
     });
   }
 
@@ -277,7 +274,7 @@ exports.updateOne = async (req, res) => {
     });
     res
       .status(200)
-      .json({ message: "Candidato editado com sucesso!", candidatoAtualizado });
+      .json({ mensagem: "Candidato editado com sucesso!", candidatoAtualizado });
   } catch (err) {
     console.error(err);
     res.status(500).end();
@@ -287,7 +284,7 @@ exports.updateOne = async (req, res) => {
 exports.deleteObsOne = async (req, res) => {
   const { id } = req.params;
   if (!id) {
-    return res.status(400).json({ message: "Necessário informar o candidato" });
+    return res.status(400).json({ mensagem: "Id é requerido!" });
   }
   const candidatoId = parseInt(id);
 
@@ -295,7 +292,7 @@ exports.deleteObsOne = async (req, res) => {
   if (!idObs) {
     return res
       .status(400)
-      .json({ message: "Necessário informar a observação" });
+      .json({ mensagem: "Id Observação é requerida!" });
   }
 
   const idObservacao = parseInt(idObs);
@@ -309,11 +306,10 @@ exports.deleteObsOne = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: "Recurso removido com sucesso!",
-      recursoExcluido,
+      mensagem: "Recurso removido com sucesso!"
     });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: "Não foram encontrados candidados ou observação com os dados informados." });;
+    res.status(500).end()
   }
 };

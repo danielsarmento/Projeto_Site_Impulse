@@ -38,7 +38,7 @@ exports.verificaRole = async (req, res, next) => {
         if(namePermissoes.includes(permission)){
             next()
         } else {
-            return res.status(401).json({message: "Unauthorized"})
+            return res.status(401).json({mensagem: "Não autorizado!"})
         }
         
     } catch (err) {

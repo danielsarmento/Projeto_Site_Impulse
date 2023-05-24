@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 exports.create = async (req, res) => {
     const {nome, descricao} = req.body;
     if(!nome){
-        res.status(400).json({mensagem: "Dados incompletos"})
+        res.status(400).json({mensagem: "Campo nome é requerido!"})
     }
 
     try{
@@ -51,7 +51,7 @@ exports.searchAll = async (req, res) => {
 exports.searchById = async (req, res) => {
     const {id} = req.params
     if(!id){
-        res.status(400).json({mensagem: "Dados incompletos"})
+        res.status(400).json({mensagem: "Id é requerido!"})
     }
     try{
         const cargo = await prisma.cargo.findUnique({
@@ -71,7 +71,7 @@ exports.searchById = async (req, res) => {
 exports.update = async (req, res) => {
     const {id, nome, descricao} = req.body;
     if(!id || !nome){
-        res.status(400).json({mensagem: "Dados incompletos"})
+        res.status(400).json({mensagem: "Id e nome são requeridos!"})
     }
     try{
         const data = {nome};
@@ -95,6 +95,9 @@ exports.update = async (req, res) => {
 
 exports.delete = async (req, res) => {
     const {id} = req.body;
+    if(!id){
+        res.status(400).json({mensagem: "Id é requerido!"})
+    }
     try{
         const cargo = await prisma.cargo.delete({
             where: {

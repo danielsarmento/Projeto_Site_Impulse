@@ -25,7 +25,7 @@ exports.create = async (req, res) => {
       !emailResponsavel ||
       !nomeResponsavel || 
       !situacao){
-        return res.status(400).json({message: "Dados Inválidos"})
+        return res.status(400).json({mensagem: "Um ou mais campos obrigatórios não enviados!"})
   }
 
   try{
@@ -47,7 +47,7 @@ exports.create = async (req, res) => {
         situacao
       }
     })
-    res.status(200).json({message: "Cliente cadastrado com sucesso!", newClient});
+    res.status(200).json({mensagem: "Cliente cadastrado com sucesso!", newClient});
 
   } catch (err) {
     console.error(err);
@@ -70,7 +70,7 @@ exports.searchAll = async (req, res) => {
 exports.search = async (req, res) => {
   const {id} = req.params;
   if(!id){
-    return res.status(400).json({message: "Dados Inválidos"})
+    return res.status(400).json({mensagem: "Id é requerido!"})
   }
 
   const id_ = parseInt(id);
@@ -115,10 +115,10 @@ exports.updateOne = async (req, res) => {
         !emailResponsavel ||
         !nomeResponsavel || 
         !situacao){
-          return res.status(400).json({message: "Dados Inválidos"})
+          return res.status(400).json({mensagem: "Um ou mais campos obrigatórios não enviados!"})
     }
     if(!id){
-      return res.status(400).json({message: "Dados Inválidos"})
+      return res.status(400).json({mensagem: "Id é requerido!"})
     }
 
     const id_ = parseInt(id);
@@ -145,7 +145,7 @@ exports.updateOne = async (req, res) => {
         situacao
       }
     });
-    res.status(200).json({message: 'Cliente editado com sucesso!', clientUpdate });
+    res.status(200).json({mensagem: 'Cliente editado com sucesso!', clientUpdate });
   }catch (err) {
     console.error(err);
     res.status(500).end();
@@ -156,7 +156,7 @@ exports.updateOne = async (req, res) => {
 exports.deleteOne = async (req, res) => {
   const { id } = req.params;
   if(!id){
-    return res.status(400).json({message: "Dados Inválidos"})
+    return res.status(400).json({mensagem: "Id é requerido!"})
   }
   const id_ = parseInt(id);
 
@@ -167,7 +167,7 @@ exports.deleteOne = async (req, res) => {
       },
     });
 
-    res.status(200).json({message: 'Cliente removido com sucesso!', client_delete});
+    res.status(200).json({mensagem: 'Cliente removido com sucesso!'});
 
   } catch (err) {
     console.error(err);

@@ -11,7 +11,7 @@ exports.createUser = async (req, res) => {
     if( !nome || 
         !email ||
         !senha){
-          return res.status(400).json({message: "Dados Inválidos"})
+          return res.status(400).json({mensagem: "Um ou mais campos obrigatórios não enviados!"})
     }
 
     const senhaCrypto = criaHash(senha);
@@ -24,7 +24,7 @@ exports.createUser = async (req, res) => {
         })
         
         if(verificaEmail){
-            return res.status(400).json({message: "Email já cadastrado"})
+            return res.status(400).json({mensagem: "Email já cadastrado!"})
         }
         const novoUsuario = await prisma.user.create({
             data: {
@@ -43,7 +43,7 @@ exports.createUser = async (req, res) => {
             }
         })
         
-        res.status(200).json({message: "Usuário Cadastrado Com Sucesso!", novoUsuario})
+        res.status(200).json({mensagem: "Usuário Cadastrado Com Sucesso!", novoUsuario})
 
     } catch (err) {
         console.error(err);

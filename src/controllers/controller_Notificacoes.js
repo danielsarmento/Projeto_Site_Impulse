@@ -7,7 +7,7 @@ exports.createNotification = async (req, res) => {
   const dados = []
 
   if(!conteudo){
-    res.status(400).end();
+    res.status(400).json({mensagem: "Campo de conteúdo é obrigatório!"});
   }
 
   try {
@@ -45,7 +45,7 @@ exports.searchNotification = async (req, res) => {
   const dataAtual = new Date
   const [dataEdit,] = dataAtual.toISOString().split("T")
   const [ano,mes,dia] = dataEdit.split("-")
-  console.log()
+  
   
   try {
     const notificacoesDisponiveis = await prisma.controleNotificacoes.findMany({
@@ -127,7 +127,7 @@ exports.createNotificationScheduled = async (req, res) => {
   const dados = []
 
   if(!conteudo){
-    res.status(400).end();
+    res.status(400).json({mensagem: "Campo de conteúdo é obrigatório!"});
   }
 
   try {

@@ -12,7 +12,7 @@ exports.createRole = async (req, res) =>{
         });
 
         if(existRole.length > 0){
-            return res.status(200).json({message:"Role already exists"})
+            return res.status(200).json({mensagem:"Role já cadastrada!"})
         }
 
         const newRole = await prisma.roles.create({

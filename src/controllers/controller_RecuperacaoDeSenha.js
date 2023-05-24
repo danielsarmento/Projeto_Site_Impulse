@@ -66,7 +66,7 @@ exports.index = async (req, res) => {
         })
 
         if(!users){
-            res.status(400).json({error: "Usuário não existe"})
+            res.status(400).json({mensagem: "Usuário não existe!"})
         }
         const tokenDeRecuperacao = randomBytes(15).toString("hex")
         const dateNow = new Date()
@@ -102,11 +102,11 @@ exports.index = async (req, res) => {
             },
         });
 
-        res.json({message: "Token de verificação enviado para o celular cadastrado!"})
+        res.json({mensagem: "Token de verificação enviado para o celular cadastrado!"})
 
     }catch (err){
         console.log(err)
-        res.json({error: "Error"})
+        res.status(500).end()
     }
 }
 
@@ -116,7 +116,7 @@ exports.updatePassword = async (req, res) => {
     const newPasswordCrypto = criaHash(newPassword)
 
     if(!email || !token || !newPassword){
-        res.json({error: "Dados inválidos!"})
+        res.json({mensagem: "Um ou mais campos obrigatórios não enviados!"})
     }
 
     try{
@@ -126,13 +126,13 @@ exports.updatePassword = async (req, res) => {
             }
         })
         if(!user){
-            return res.json({error: "Dados inválidos!"})
+            return res.json({mensagem: "Usuário não existe!"})
         } 
         if(user.passwordResetToken !== token){
-            return res.status(200).json({error: "Token inválido!"})
+            return res.status(200).json({mensagem: "Token inválido!"})
         } 
         if(user.senha === newPasswordCrypto){
-           return res.json({error: "A senha não pode ser igual a anteriro!"})
+           return res.json({mensagem: "A senha não pode ser igual a anteriro!"})
         }
         
         await prisma.user.update({
@@ -144,11 +144,11 @@ exports.updatePassword = async (req, res) => {
             }
         })
 
-        res.json({message: "Senha atualizada com sucesso!"})
+        res.json({mensagem: "Senha atualizada com sucesso!"})
         //console.timeEnd('speed')
 
     } catch(err) {
         console.log(err)
-        res.json({error: "Erro ao modificar senha!"})
+        res.status(500).end()
     }
 }

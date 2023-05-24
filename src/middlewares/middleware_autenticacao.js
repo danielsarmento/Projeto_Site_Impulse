@@ -5,7 +5,7 @@ exports.auth = async (req, res, next) => {
 
     //Verifica se o token foi enviado na requisição
     if(!authToken){
-        return res.status(401).json({message: "Token is missing"});
+        return res.status(401).json({mensagem: "Token é requerido!"});
     }
 
     // Separar a palavra Bearer do token
@@ -17,6 +17,6 @@ exports.auth = async (req, res, next) => {
         return next()
 
     } catch (err){
-        return res.status(401).json({message: "Token invalid"})
+        return res.status(401).json({mensagem: "Token inválido!"})
     }
 }

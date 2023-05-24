@@ -16,7 +16,7 @@ exports.create = async (req, res) => {
         
     if( 
         !fk_clientId){
-            return res.status(400).json({message: "Dados Inválidos"})
+            return res.status(400).json({mensagem: "Id do cliente é requerido!"})
     }
     const id = parseInt(fk_clientId);
     try{
@@ -27,7 +27,7 @@ exports.create = async (req, res) => {
             });
 
             if(client.length < 1){
-                return res.status(404).json({message: "Cliente não encontrado!"})
+                return res.status(404).json({mensagem: "Cliente não encontrado!"})
             }
 
             const aquisicaoCadastrada = await prisma.acquisition.create({
@@ -55,7 +55,7 @@ exports.create = async (req, res) => {
 exports.searchId = async (req, res) => {
     const {id} = req.params;
     if(!id){
-        return res.status(400).json({message: "Dados Inválidos"})
+        return res.status(400).json({mensagem: "Id é requerido!"})
     }
     const id_ = parseInt(id);
 
@@ -79,7 +79,7 @@ exports.searchId = async (req, res) => {
 exports.searchIdFk = async (req, res) => {
     const {id} = req.params;
     if(!id){
-        return res.status(400).json({message: "Dados Inválidos"})
+        return res.status(400).json({mensagem: "Id é requerido!"})
     }
     const id_ = parseInt(id);
 
@@ -117,7 +117,7 @@ exports.searchAll = async (req, res) => {
 exports.updateOne = async (req, res) => {
     const {id} = req.params;
     if(!id){
-        return res.status(400).json({message: "Dados Inválidos"})
+        return res.status(400).json({mensagem: "Id é requerido!"})
     }
 
     const {
@@ -161,7 +161,7 @@ exports.updateOne = async (req, res) => {
 exports.deleteOne = async (req, res) => {
     const {id} = req.params;
     if(!id){
-        return res.status(400).json({message: "Dados Inválidos"})
+        return res.status(400).json({mensagem: "Id é requerido!"})
     }
     
     const id_ = parseInt(id);
@@ -171,7 +171,7 @@ exports.deleteOne = async (req, res) => {
                 id: id_
             },
         })
-        res.status(204).json({Message: "Recurso Deletado", produtoDeletado})
+        res.status(204).json({mensagem: "Recurso Deletado", produtoDeletado})
     } catch (err) {
         console.log(err)
         res.status(500).end();

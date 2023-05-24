@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 exports.create = async (req, res) => {
   const { nome, segmento, descricao } = req.body;
   if (!nome || !segmento) {
-    return res.status(400).json({ message: "Dados Inválidos" });
+    return res.status(400).json({ mensagem: "Nome e Segmento são requeridos!" });
   }
 
   try {
@@ -18,7 +18,7 @@ exports.create = async (req, res) => {
 
     res
       .status(200)
-      .json({ message: "Produto cadastrado com sucesso!", produto });
+      .json({ mensagem: "Produto cadastrado com sucesso!", produto });
   } catch (err) {
     console.log(err);
     res.status(500).end();
@@ -39,7 +39,7 @@ exports.searchAll = async (req, res) => {
 exports.searchId = async (req, res) => {
   const { id } = req.params;
   if (!id) {
-    return res.status(400).json({ message: "Dados Inválidos" });
+    return res.status(400).json({ mensagem: "Id é requerido!" });
   }
 
   const id_ = parseInt(id);
@@ -49,7 +49,7 @@ exports.searchId = async (req, res) => {
         id: id_,
       },
     });
-    res.status(200).json({ message: "Produto cadastrado", produtos });
+    res.status(200).json({ mensagem: "Produto cadastrado com sucesso!", produtos });
   } catch (err) {
     console.log(err);
     res.status(500).end();
@@ -59,12 +59,12 @@ exports.searchId = async (req, res) => {
 exports.updateOne = async (req, res) => {
   const { id } = req.params;
   if (!id) {
-    return res.status(400).json({ message: "Dados Inválidos" });
+    return res.status(400).json({ mensagem: "Id é requerido!" });
   }
 
   const { nome, segmento, descricao } = req.body;
   if (!nome || !segmento) {
-    return res.status(400).json({ message: "Dados Inválidos" });
+    return res.status(400).json({ mensagem: "Nome e Segmento são requeridos!" });
   }
 
   const id_ = parseInt(id);
@@ -79,7 +79,7 @@ exports.updateOne = async (req, res) => {
         descricao,
       },
     });
-    res.status(200).json({ message: "Produto editado com sucesso", produtos });
+    res.status(200).json({ mensagem: "Produto editado com sucesso!", produtos });
   } catch (err) {
     console.log(err);
     res.status(500).end();
@@ -89,7 +89,7 @@ exports.updateOne = async (req, res) => {
 exports.deleteOne = async (req, res) => {
   const { id } = req.params;
   if (!id) {
-    return res.status(400).json({ message: "Dados Inválidos" });
+    return res.status(400).json({ mensagem: "Id é requerido!" });
   }
 
   const id_ = parseInt(id);
@@ -99,7 +99,7 @@ exports.deleteOne = async (req, res) => {
         id: id_,
       },
     });
-    res.status(200).json({ Message: "Recurso Deletado", produtoDeletado });
+    res.status(200).json({ mensagem: "Recurso deletado!"});
   } catch (err) {
     console.log(err);
     res.status(500).end();
