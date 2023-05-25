@@ -26,6 +26,7 @@
     "jsonwebtoken": "^9.0.0",
     "node-fetch": "^3.3.1",
     "nodemailer": "^6.9.1",
-    "omie-api-node": "^1.0.5"
+    "omie-api-node": "^1.0.5",
+    "swagger-ui-express": "^4.6.3"
   }
 }

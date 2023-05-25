@@ -24,7 +24,7 @@ exports.createUser = async (req, res) => {
         })
         
         if(verificaEmail){
-            return res.status(400).json({mensagem: "Email já cadastrado!"})
+            return res.status(409).json({mensagem: "Email já cadastrado!"})
         }
         const novoUsuario = await prisma.user.create({
             data: {
