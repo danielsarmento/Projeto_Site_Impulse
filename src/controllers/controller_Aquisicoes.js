@@ -63,6 +63,9 @@ exports.searchId = async (req, res) => {
         const aquisicao = await prisma.acquisition.findMany({
             where: {
                 id: id_
+            },
+            include:{
+                client: true
             }
         })
         
@@ -87,6 +90,9 @@ exports.searchIdFk = async (req, res) => {
         const aquisicao = await prisma.acquisition.findMany({
             where: {
                 fk_clientId: id_
+            },
+            include: {
+                client: true
             }
         })
         
@@ -102,10 +108,14 @@ exports.searchIdFk = async (req, res) => {
 
 exports.searchAll = async (req, res) => {
      try{
-        const aquisicao = await prisma.acquisition.findMany();
+        const aquisicoes = await prisma.acquisition.findMany({
+            include:{
+                client: true
+            }
+        });
         
         res.status(200).json({
-            aquisicao
+            aquisicoes
         });
         
      }catch(err){

@@ -60,7 +60,12 @@ exports.searchAll = async (req, res) => {
 
     // Caso o usuário tenha permissão de Adm(roleId=1) ou de Gerente(roleId=3) deve retornar todos os acessos cadastrados
     if (role.fk_RoleId == 1 || role.fk_RoleId == 3) {
-      const acessos = await prisma.acess.findMany();
+      const acessos = await prisma.acess.findMany({
+        include:{
+          departamento: true
+        }
+      })
+
       return res.status(200).json({ acessos });
 
     } else {
@@ -86,11 +91,7 @@ exports.searchAll = async (req, res) => {
           fk_departamentoId: funcionario.fk_departamentoId,
         },
         include:{
-          departamento: {
-            select:{
-              nome: true
-            }
-          }
+          departamento: true
         }
       });
 
