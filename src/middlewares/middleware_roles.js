@@ -12,6 +12,9 @@ exports.verificaRole = async (req, res, next) => {
                 fk_UserId: id_
             }
         })
+        if(!roleUser){
+            return res.status(404).json({mensagem: "Não autorizado!"})
+        }
         const rolePermission = await prisma.rolesPermissions.findMany({
             where: {
                 fk_RoleId: roleUser.fk_RoleId

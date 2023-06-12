@@ -51,21 +51,25 @@ exports.searchAll = async (req, res) => {
     const id = req.sub;
     const id_ = Number(id);
 
+    //Busca as informações de Função do Usuário que está solicitando os acessos
     const role = await prisma.usersRoles.findFirst({
       where: {
         fk_UserId: id_,
       },
     });
 
+    // Caso o usuário tenha permissão de Adm(roleId=1) ou de Gerente(roleId=3) deve retornar todos os acessos cadastrados
     if (role.fk_RoleId == 1 || role.fk_RoleId == 3) {
       const acessos = await prisma.acess.findMany();
       return res.status(200).json({ acessos });
+
     } else {
       const users = await prisma.user.findFirst({
         where: {
           id: id_,
         },
       });
+
       const funcionario = await prisma.employee.findFirst({
         where: {
           email: users.email,
@@ -81,9 +85,16 @@ exports.searchAll = async (req, res) => {
         where: {
           fk_departamentoId: funcionario.fk_departamentoId,
         },
+        include:{
+          departamento: {
+            select:{
+              nome: true
+            }
+          }
+        }
       });
 
-      //Incluído regra para retornar array vazio para carregar página quando não tiver dados cadastrados em acessos.
+      
       return res.status(200).json({ acessos });
     }
   } catch (err) {
