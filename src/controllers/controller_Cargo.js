@@ -94,18 +94,18 @@ exports.update = async (req, res) => {
 }
 
 exports.delete = async (req, res) => {
-    const {id} = req.body;
+    const {id} = req.params;
     if(!id){
         res.status(400).json({mensagem: "Id é requerido!"})
     }
     try{
-        const cargo = await prisma.cargo.delete({
+        await prisma.cargo.delete({
             where: {
                 id: Number(id)
             }
         })
 
-        res.status(200).json(cargo)
+        res.status(200).json({mensagem: "Cargo removido com sucesso!"})
 
     } catch (err) {
         console.error(err);

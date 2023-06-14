@@ -158,12 +158,11 @@ exports.deleteOne = async (req, res) => {
   if(!id){
     return res.status(400).json({mensagem: "Id é requerido!"})
   }
-  const id_ = parseInt(id);
 
   try {
-    const client_delete = await prisma.client.delete({
+    await prisma.client.delete({
       where: {
-        id: id_
+        id: Number(id)
       },
     });
 

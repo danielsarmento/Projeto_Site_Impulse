@@ -94,7 +94,7 @@ exports.deleteOne = async (req, res) => {
 
   const id_ = parseInt(id);
   try {
-    const produtoDeletado = await prisma.product.delete({
+    await prisma.product.delete({
       where: {
         id: id_,
       },

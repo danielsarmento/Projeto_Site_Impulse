@@ -329,18 +329,17 @@ exports.deleteOne = async (req, res) => {
   if (!id) {
     return res.status(400).json({ mensagem: "Id é requerido!" });
   }
-  const id_ = parseInt(id);
 
   try {
-    const func_edit = await prisma.employee.delete({
+    await prisma.employee.delete({
       where: {
-        id: id_,
+        id: Number(id)
       },
     });
 
     res
       .status(200)
-      .json({ mensagem: "Funcionário removido com sucesso!", func_edit });
+      .json({ mensagem: "Funcionário removido com sucesso!"});
   } catch (err) {
     console.error(err);
     res.status(500).end();

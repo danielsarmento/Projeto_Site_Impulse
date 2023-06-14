@@ -149,7 +149,7 @@ exports.deleteOne = async (req, res) => {
   const id_ = parseInt(id);
 
   try {
-    const acessoDelete = await prisma.acess.delete({
+    await prisma.acess.delete({
       where: {
         id: id_,
       },
@@ -157,7 +157,7 @@ exports.deleteOne = async (req, res) => {
 
     res
       .status(200)
-      .json({ mensagem: "Acesso removido com sucesso!", acessoDelete });
+      .json({ mensagem: "Acesso removido com sucesso!"});
   } catch (err) {
     console.error(err);
     res.status(500).end();

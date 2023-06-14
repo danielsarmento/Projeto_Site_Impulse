@@ -90,12 +90,12 @@ exports.update = async (req, res) => {
 };
 
 exports.delete = async (req, res) => {
-  const { id } = req.body;
+  const { id } = req.params;
   if(!id){
     res.status(400).json({mensagem: "Id é requerido!"})
   }
   try {
-    const departamento = await prisma.departamento.delete({
+    await prisma.departamento.delete({
       where: {
         id: Number(id),
       },

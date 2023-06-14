@@ -243,7 +243,7 @@ routes.put("/editar/cargo", middleware_autenticacao.auth,(req, res, next)=>{
     req.permission = "EditarCargo"
     next()},midlleware_RolePermission.verificaRole, controller_cargo.update);
 
-routes.delete("/delete/cargo", middleware_autenticacao.auth,(req, res, next)=>{
+routes.delete("/delete/cargo/:id", middleware_autenticacao.auth,(req, res, next)=>{
     req.permission = "ApagarCargo"
     next()},midlleware_RolePermission.verificaRole, controller_cargo.delete);
 
@@ -264,7 +264,7 @@ routes.put("/editar/departamento", middleware_autenticacao.auth,(req, res, next)
     req.permission = "EditarDepartamento"
     next()},midlleware_RolePermission.verificaRole, controller_departamento.update);
 
-routes.delete("/delete/departamento", middleware_autenticacao.auth,(req, res, next)=>{
+routes.delete("/delete/departamento/:id", middleware_autenticacao.auth,(req, res, next)=>{
     req.permission = "ApagarDepartamento"
     next()},midlleware_RolePermission.verificaRole, controller_departamento.delete);
 
