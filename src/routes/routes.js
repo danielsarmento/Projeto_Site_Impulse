@@ -45,7 +45,7 @@ routes.put("/editRole",middleware_autenticacao.auth,(req, res, next)=>{
         next()},midlleware_RolePermission.verificaRole, controller_acl.editRoles);
 
 // Rotas de Captura do Site
-routes.post("/captura", controller_criarAlgoJuntos.criarCard)
+routes.post("/nov0l34d", controller_criarAlgoJuntos.criarCard)
 
 // Rota de Recuperação de Senhas 
 routes.post("/recuperarSenha", controller_recuperarSenha.index);
