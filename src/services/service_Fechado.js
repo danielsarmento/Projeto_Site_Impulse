@@ -11,7 +11,7 @@ exports.valuesFechado = async () => {
                 method: "POST",
                 headers: {
                 "Content-Type": "application/json",
-                'Authorization': "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJ1c2VyIjp7ImlkIjozMDIxNTk5NTQsImVtYWlsIjoiZGFuaWVsLmltcHVsc2ViQGdtYWlsLmNvbSIsImFwcGxpY2F0aW9uIjozMDAyMTcyNTB9fQ.OPT1Bn55gTEq7IMaJdTkdYuGf5vufNlnDKXYGzsnYEXz4Ny1zB6mXQZN5at4EpPbCH_THZXMoAcsyS1eDvOHwA",
+                'Authorization': "Bearer Ji6ZzpeBWxRHQ1QRcor8",
                 },
                 body: JSON.stringify({
                 "query": `{ phase ( id: ${phaseFechadoId}) { cards {edges { node { fields { name value }}}}cards_count}}`,
